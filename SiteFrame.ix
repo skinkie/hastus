@@ -1,0 +1,111 @@
+att omit_null_values
+basetype time { mask "0hh'mm" }
+basetype date { mask "!yyyymmdd|xxxx-xx-xx" }
+
+definitions MainDefinitions {
+	code
+	DEFINE md_operatorId { "HTM" }
+	DEFINE md_operatorName { "HTM" }
+	DEFINE md_frameVersion { v_source + "_" + Format(datetoday(),"!yyyymmdd|xxxx-xx-xx") }
+	end
+}   
+
+var part1 {type 'string'}
+var v_source { type 'string' assign 'IF p_CalendarId<>NULL THEN p_CalendarId ELSE IF p_SchedUnit<>NULL THEN p_SchedUnit '}
+
+array_var av_plc { key_part 'part1' type 'integer' }
+
+
+
+file garage {
+	name '"NeTEx_SiteFrame.xml"'
+
+	xmlelement PublicationDelivery {
+		xmlattribute xmlns { value '"http://www.netex.org.uk/netex"' }
+		xmlattribute xmlns:gml { value '"http://www.opengis.net/gml/3.2"' }
+		xmlattribute version { value '"1.0"' }
+		
+		xmlelement PublicationTimestamp { value 'DateToday()' }
+		xmlelement ParticipantRef { value '"NDOV"' }
+		
+		xmlelement dataObjects {
+			xmlelement CompositeFrame {			
+				xmlelement FrameDefaults {
+					xmlelement DefaultDataSourceRef {
+						xmlattribute ref { value '"BISON:DataSource:" + md_operatorId' }
+						xmlattribute version { value '"any"' }
+					}
+				}
+			
+				xmlelement frames {
+					xmlelement ResourceFrame {
+						xmlelement DataSource {
+							xmlattribute id { value '"BISON:DataSource:" + md_operatorId' }
+							xmlattribute version { value '"any"' }
+							xmlelement ShortName { value 'md_operatorId' }
+							xmlelement Description { value 'md_operatorName' }
+						}
+					}
+				
+					# Theoretically speaking could SiteFrame be provided directly from CHB.
+					# We might want to map Hastus Places to StopArea's instead.
+					
+					xmlelement SiteFrame {
+						xmlelement stopPlaces {                    
+                            foreach place {
+								from 'GetAll(vehicle_schedule, vsc_is_current).Get(stop).Get(place)'                                
+                                var part1 {assign 'plc_identifier' }
+                                array_var av_plc {assign 'IF av_plc = NULL THEN 1 ELSE av_plc+1'}
+
+                                xmlelement StopPlace {
+                                    condition 'av_plc=1'
+                                    xmlattribute id           {value 'md_operatorId + ":StopPlace:1" + plc_identifier' }
+                                    xmlelement Name           {value 'plc_description' }
+                                    xmlelement ShortName      {value 'plc_identifier' }
+									xmlattribute version 	  {value 'md_frameVersion' }
+
+                                    xmlelement Centroid {
+                                        xmlelement Location {
+                                            xmlelement gml:pos {
+                                                xmlattribute srsName            { value '"EPSG:28992"' }
+                                                value 'Trim(Format(loca_x_coord, "zzzzzn" )) + " " + Trim(Format(loca_y_coord, "zzzzzn" ))'
+                                            } # xmlelement gml:pos
+                                        }
+                                    }
+
+                                    # ReferencePointRef
+                                    # xmlattribute "referencePlaceId" {value 'IF plc_ud_refplace <>NULL THEN plc_ud_refplace ELSE plc_reference_place' }
+                                }
+								
+                                var part1   {assign 'Object(place,plc_reference_place).plc_identifier' }
+                                array_var av_plc {assign 'IF av_plc = NULL THEN 1 ELSE av_plc+1'}
+
+                                xmlelement Place {
+                                    condition 'av_plc=1'
+
+                                    xmlattribute id           {value 'md_operatorId + ":StopPlace:1" + Object(place,plc_reference_place).plc_identifier' }
+                                    xmlelement Name           {value 'Object(place,plc_reference_place).plc_description' }
+                                    xmlelement ShortName      {value 'Object(place,plc_reference_place).plc_identifier' }
+									xmlattribute version 	  {value 'md_frameVersion' }
+
+                                    xmlelement Centroid {
+                                        xmlelement Location {
+                                            xmlelement gml:pos {
+                                                xmlattribute srsName { value '"EPSG:28992"' }
+                                                value 'Trim(Format(plc_reference_place.loca_x_coord, "zzzzzn" )) + " " + Trim(Format(plc_reference_place.loca_y_coord, "zzzzzn" ))'
+                                            } # xmlelement gml:pos
+                                        }
+                                    }
+
+                                    # ReferencePointRef
+                                    # xmlattribute "referencePlaceId" {value 'IF Object(place,plc_reference_place).plc_ud_refplace <>NULL THEN Object(place,plc_reference_place).plc_ud_refplace ELSE Object(place,plc_reference_place).plc_reference_place' }
+
+                                }
+                            } # foreach place
+						}										
+					}
+				}
+			}
+		}
+	}	
+}
