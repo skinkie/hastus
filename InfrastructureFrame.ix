@@ -13,7 +13,7 @@ array_var av_used_gar			{ key_part 'gar_id' type 'boolean' assign 'false' }
 array_var av_used_gar_stop		{ key_part 'stp_identifier' type 'boolean' assign 'false' }
 array_var av_used_vehicle_group	{ key_part 'vehg_identifier' type 'boolean' assign 'false' }
 
-file garage {
+file infrastructureframe {
 	name '"NeTEx_InfrastructureFrame.xml"'
 
 	xmlelement PublicationDelivery {

@@ -17,7 +17,7 @@ array_var av_plc { key_part 'part1' type 'integer' }
 
 
 
-file garage {
+file siteframe {
 	name '"NeTEx_SiteFrame.xml"'
 
 	xmlelement PublicationDelivery {
