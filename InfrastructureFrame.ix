@@ -119,6 +119,7 @@ file garage {
 									xmlattribute id { value 'md_operatorId + ":GaragePoint:" + stp_identifier' }
 									xmlattribute version { value '"any"' }
 									xmlelement Name { value 'stp_description' }
+									xmlelement ShortName { value 'stp_identifier' }
 								}
 							}
 						}
@@ -145,6 +146,7 @@ file garage {
 									xmlattribute id { value 'md_operatorId + ":VehicleType:" + vehg_identifier' }
 									xmlattribute version { value '"any"' }
 									xmlelement Name { value 'vehg_description' }
+									xmlelement ShortName { value 'vehg_identifier' }
 								}
 							}
 						}										
