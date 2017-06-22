@@ -2,15 +2,6 @@ att omit_null_values
 basetype time { mask "0hh'mm" }
 basetype date { mask "!yyyymmdd|xxxx-xx-xx" }
 
-parameter p_Print_Seconds
-   {
-   title  "Include seconds"
-   desc   "This parameter is considered at the beginning of the process execution"
-   type   'bool'
-   def_value '0'
-   }
-
-
 definitions MainDefinitions {
 	code
 	DEFINE md_operatorId { "HTM" }
