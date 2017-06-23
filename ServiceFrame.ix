@@ -7,11 +7,18 @@ definitions MainDefinitions {
 	DEFINE md_operatorId { "HTM" }
 	DEFINE md_operatorName { "HTM" }
 	DEFINE md_frameVersion { v_source + "_" + Format(datetoday(),"!yyyymmdd|xxxx-xx-xx") }
+	DEFINE md_trp_valid CLASS trip { trp_duration > 0h00 }
 	end
 }
 
 var part1 {type 'string'}
 var v_source { type 'string' assign 'IF p_CalendarId<>NULL THEN p_CalendarId ELSE IF p_SchedUnit<>NULL THEN p_SchedUnit '}
+
+array_var av_printed_itn {
+	key_part 'itn_stop_start'
+	key_part 'itn_stop_end'
+	type 'boolean' assign 'FALSE'
+}
 
 file serviceframe {
 	name '"NeTEx_ServiceFrame.xml"'
@@ -111,8 +118,58 @@ file serviceframe {
 							} # foreach trip
 						}
 						
-						# routePoints
-						# routeLinks
+						xmlelement routePoints {
+							foreach trip_pattern_point { 	
+								from 'GetAll(vehicle_schedule).get(trip, md_trp_valid).get(trip_pattern).get(trip_pattern_point)'
+								condition 'tpatpt_itinerary <> NULL'
+								unique_on 'stp_identifier'
+								xmlelement RoutePoint {	
+									xmlattribute id 				{ value 'md_operatorId + ":RoutePoint:" + stp_identifier' }
+									xmlattribute version 			{ value 'md_frameVersion' }
+									xmlelement Location {
+										xmlelement gml:pos {
+											xmlattribute srsName 			{ value '"EPSG:28992"' }
+											value 'Trim(Format(Object(stop,stp_identifier).loca_x_coord, "zzzzzn")) + " " + Trim(Format(Object(stop,stp_identifier).loca_y_coord, "zzzzzn" ))'
+		
+											# Hastus 2016 and higher
+ 											# value 'Trim(Format(Object(stop_location,stp_locations).loca_x_coord, "zzzzzn" )) + " " + Trim(Format(Object(stop_location,stp_locations).loca_y_coord, "zzzzzn" ))'											
+											} # xmlelement gml:pos 
+										} # xmlelement Location
+									} # xmlelement RoutePoint
+								} # foreach trip_pattern_point
+							} # xmlelement routePoints
+							
+						xmlelement routeLinks {
+							foreach itinerary {
+								from 'GetAll(vehicle_schedule, vsc_is_current).Get(block).Get(trip).Get(trip_pattern).Get(itinerary)'
+								condition 'not av_printed_itn AND itn_stop_start <> itn_stop_end'
+								sort_by rteVersion
+								{ 
+									criteria rte_version
+									criteria trp_route
+									criteria trp_via_variant
+									criteria trp_direction
+								}
+
+								xmlelement RouteLink
+								{
+									xmlattribute "id"				{ value 'md_operatorId + ":RouteLink:" +itn_stop_start+"-"+itn_stop_end' }
+									xmlattribute version 			{ value 'md_frameVersion' }
+									xmlelement "Name"				{ value 'itn_stop_start+"-"+itn_stop_end' }
+									xmlelement "Distance"				{ value 'itn_calc_distance' } # TODO: controleren
+									xmlelement gml:LineString {
+										xmlattribute id 			{ value 'md_operatorId + "_LineString_" +itn_stop_start+"-"+itn_stop_end' }
+										xmlattribute srsName 			{ value '"EPSG:28992"' }
+										xmlelement gml:posList 		{ value 'Concat(Trim(Format(itn_coord,"nnnnnn")), " ")' }
+									}
+									xmlelement "FromPointRef"		{ value 'md_operatorId + ":RoutePoint:" +itn_stop_start' }
+									xmlelement "ToPointRef"			{ value 'md_operatorId + ":RoutePoint:" +itn_stop_end' }
+								}
+								array_var av_printed_itn {assign 'TRUE'} 					
+								
+							} # foreach itinerary
+						}
+						
 						# routes
 						# lines
 						
@@ -129,7 +186,50 @@ file serviceframe {
 							} # foreach veh_disp_code
 						}
 						
-						# scheduledStopPoints
+						xmlelement scheduledStopPoints {
+							foreach stop {
+								from 'GetAll(vehicle_schedule, vsc_is_current).stps_in_vsc'
+								unique_on 'stp_identifier'
+								condition 'stp_is_public'
+								sort_by 'stp_identifier'
+								xmlelement ScheduledStopPoint {
+									xmlattribute id 				{ value 'md_operatorId + ":StopPoint:" + stp_identifier' }
+									xmlattribute version 			{ value 'md_frameVersion' }
+									xmlelement keyList {
+										xmlelement KeyValue {
+											xmlelement Key 			{ value '"UserStopCode"' }
+											xmlelement Value 		{ value 'stp_identifier' }
+										} # xmlelement KeyValue
+									} # xmlelement keyList
+									xmlelement Name 				{ value 'stp_description' }
+									xmlelement projections	{										
+										xmlelement PointProjection {	
+											xmlelement ProjectToPointRef {
+												xmlattribute nameOfRefClass 		{ value '"RoutePoint"' }
+												xmlattribute ref 					{ value 'md_operatorId + ":RoutePoint:" + stp_identifier' }
+												xmlattribute version 				{ value 'md_frameVersion' }
+											}
+										}
+									} # xmlelement projections
+									xmlelement tariffZones {
+										xmlelement TariffZoneRef {
+											xmlattribute ref { value '"NL:TariffZone:" + stp_zone' }
+											xmlattribute version { value '"any"' }
+										}
+										
+										# Arriva TariffZone
+										# xmlelement TariffZoneRef {
+										#	xmlattribute ref { value '"ARR:TariffZone:" + stp_short_name' }
+										#	xmlattribute version { value 'md_frameVersion' }
+										# }
+									}
+									
+									xmlelement ShortName			{ value 'stp_identifier' }
+									xmlelement ForAlighting 		{ value 'IF stp_allow_debarking THEN "true" ELSE "false"' }
+									xmlelement ForBoarding 			{ value 'IF stp_allow_boarding THEN   "true" ELSE "false"' }								
+								} # xmlelement ScheduledStopPoint
+							} # foreach stop
+						}
 						
 						xmlelement tariffZones {
 							foreach stop {
@@ -139,7 +239,7 @@ file serviceframe {
 								
 								xmlelement TariffZone {
 									xmlattribute id             {value '"NL:TariffZone:" + stp_zone' }
-									xmlattribute version        {value 'md_frameVersion'}
+									xmlattribute version        {value '"any"'}
 									xmlelement Name             {value 'DefNull(zon_description,stp_zone)' }
 									xmlelement ShortName        {value 'stp_zone' }
 									xmlelement types {
