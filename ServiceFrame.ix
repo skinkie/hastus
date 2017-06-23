@@ -41,6 +41,58 @@ file serviceframe {
 							xmlelement ShortName { value 'md_operatorId' }
 							xmlelement Description { value 'md_operatorName' }
 						}
+						
+						# responsibilitySets
+						
+						xmlelement organisations {
+							xmlelement Operator {
+								xmlattribute id { value '"BISON:Operator:" + md_operatorId' }
+								xmlattribute version { value '"any"' }
+								xmlelement Name  { value 'md_operatorName' }
+								xmlelement ShortName { value 'md_operatorId' }
+								
+								# TODO members
+								# xmlelement parts {
+								#	from 'GetAll(vehicle_schedule, vsc_is_current).Get(block).Get(trip).Get(trip_stop)
+								#	foreach district {
+								#	}
+								# }
+							}
+							
+							
+							foreach trip_stop {
+								from 'GetAll(vehicle_schedule, vsc_is_current).Get(block).Get(trip).Get(trip_stop)'
+								condition 'trp_duration > 0h00 AND trp_is_in_service'
+								unique_on 'tstp_district'
+
+								xmlelement Authority {						
+									xmlattribute id { value '"BISON:Authority:" + tstp_district' }
+									xmlattribute version { value '"any"' }
+									xmlelement Name { value 'DefNull(tstp_district.dst_description,tstp_district)' }
+								}
+							}
+						}
+						
+						xmlelement typesOfValue {
+							xmlelement ValueSet {
+								xmlelement Name { value '"Zone types"'}
+								xmlelement values {
+									xmlelement TypeOfZone {
+										xmlattribute id { value '"BISON:TypeOfZone:Zone"' }
+										xmlattribute version { value '"any"' }
+										xmlelement Name { value '"Nationale Zone"' }
+									}
+									
+									# Arriva TariffStop via stp_short_name
+									#
+									# xmlelement TypeOfZone {
+									#	xmlattribute id { value '"ARR:TypeOfZone:TariffStop"' }
+									#	xmlattribute version { value '"any"' }
+									#	xmlelement Name { value '"Tariefhalte"' }
+									# }
+								}
+							}
+						}
 					}
 
 					xmlelement ServiceFrame {
@@ -74,11 +126,53 @@ file serviceframe {
 									xmlelement Name			{ value 'vdc_message3' }
 									xmlelement ShortName	{ value 'vdc_message1' }
 								}
-							}
+							} # foreach veh_disp_code
 						}
 						
 						# scheduledStopPoints
-						# tariffZones
+						
+						xmlelement tariffZones {
+							foreach stop {
+								from 'GetAll(vehicle_schedule, vsc_is_current).stps_in_vsc'
+								condition 'stp_zone <> null'
+								unique_on 'stp_zone'
+								
+								xmlelement TariffZone {
+									xmlattribute id             {value '"NL:TariffZone:" + stp_zone' }
+									xmlattribute version        {value 'md_frameVersion'}
+									xmlelement Name             {value 'DefNull(zon_description,stp_zone)' }
+									xmlelement ShortName        {value 'stp_zone' }
+									xmlelement types {
+										xmlelement TypeOfZoneRef {
+											xmlattribute ref 	{ value '"BISON:TypeOfZone:Zone"' }
+											xmlattribute version { value '"any"' }
+										}
+									}								
+								}
+							}
+							
+							# Arriva TariffStops via stp_short_name
+							# 
+							# foreach stop {
+							#	from 'GetAll(vehicle_schedule, vsc_is_current).stps_in_vsc'
+							#	condition 'stp_short_name <> null'
+							#	unique_on 'stp_short_name'
+							#
+							#	xmlelement TariffZone {
+							#		xmlattribute id             {value '"ARR:TariffZone:" + stp_short_name' }
+							#		xmlattribute version        {value 'md_frameVersion'}
+							#		xmlelement Name             {value 'stp_short_name' }
+							#		xmlelement ShortName        {value 'stp_short_name' }
+							#		xmlelement types {
+							#			xmlelement TypeOfZoneRef {
+							#				xmlattribute ref 	{ value '"ARR:TypeOfZone:TariffStop"' }
+							#				xmlattribute version { value '"any"' }
+							#			}
+							#		}								
+							#	}
+							# }
+						}
+						
 						# stopAssignments
 						# timingPoints
 						# timingLinks
