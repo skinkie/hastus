@@ -1,0 +1,66 @@
+att omit_null_values
+basetype time { mask "0hh'mm" }
+basetype date { mask "!yyyymmdd|xxxx-xx-xx" }
+
+definitions MainDefinitions {
+	code
+	DEFINE md_operatorId { "HTM" }
+	DEFINE md_operatorName { "HTM" }
+	DEFINE md_frameVersion { v_source + "_" + Format(datetoday(),"!yyyymmdd|xxxx-xx-xx") }
+	end
+}
+
+var part1 {type 'string'}
+var v_source { type 'string' assign 'IF p_CalendarId<>NULL THEN p_CalendarId ELSE IF p_SchedUnit<>NULL THEN p_SchedUnit '}
+
+file serviceframe {
+	name '"NeTEx_ServiceFrame.xml"'
+
+	xmlelement PublicationDelivery {
+		xmlattribute xmlns { value '"http://www.netex.org.uk/netex"' }
+		xmlattribute xmlns:gml { value '"http://www.opengis.net/gml/3.2"' }
+		xmlattribute version { value '"1.0"' }
+
+		xmlelement PublicationTimestamp { value 'DateToday()' }
+		xmlelement ParticipantRef { value '"NDOV"' }
+
+		xmlelement dataObjects {
+			xmlelement CompositeFrame {
+				xmlelement FrameDefaults {
+					xmlelement DefaultDataSourceRef {
+						xmlattribute ref { value '"BISON:DataSource:" + md_operatorId' }
+						xmlattribute version { value '"any"' }
+					}
+				}
+
+				xmlelement frames {
+					xmlelement ResourceFrame {
+						xmlelement DataSource {
+							xmlattribute id { value '"BISON:DataSource:" + md_operatorId' }
+							xmlattribute version { value '"any"' }
+							xmlelement ShortName { value 'md_operatorId' }
+							xmlelement Description { value 'md_operatorName' }
+						}
+					}
+
+					xmlelement ServiceFrame {
+						xmlelement directions {
+							foreach trip {
+								from 'GetAll(vehicle_schedule, vsc_is_current).Get(block).Get(trip)'
+								unique_on 'tpat_direction'
+								condition 'tpat_direction <> ""'
+
+								xmlelement Direction {
+									xmlattribute id			{value 'md_operatorId + ":Direction:" + tpat_direction' }
+									xmlelement Name			{value 'tpat_direction' mask "CHO_TITLE" }
+									xmlelement ShortName	{value 'tpat_direction' mask "CHO_NAME"}
+									xmlattribute version	{value '"any"' }
+								}
+							} # foreach trip
+						}
+					}
+				}
+			}
+		}
+	}
+}
