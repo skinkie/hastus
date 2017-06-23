@@ -51,13 +51,40 @@ file serviceframe {
 								condition 'tpat_direction <> ""'
 
 								xmlelement Direction {
-									xmlattribute id			{value 'md_operatorId + ":Direction:" + tpat_direction' }
-									xmlelement Name			{value 'tpat_direction' mask "CHO_TITLE" }
-									xmlelement ShortName	{value 'tpat_direction' mask "CHO_NAME"}
-									xmlattribute version	{value '"any"' }
+									xmlattribute id			{ value 'md_operatorId + ":Direction:" + tpat_direction' }
+									xmlelement Name			{ value 'tpat_direction' mask "CHO_TITLE" }
+									xmlelement ShortName	{ value 'tpat_direction' mask "CHO_NAME"}
+									xmlattribute version	{ value '"any"' }
 								}
 							} # foreach trip
 						}
+						
+						# routePoints
+						# routeLinks
+						# routes
+						# lines
+						
+						xmlelement destinationDisplays {
+							foreach veh_disp_code {
+								from 'GetAll(vehicle_schedule, vsc_is_current).Get(trip_pattern).Get(veh_disp_code)'
+								unique_on 'vdc_id'
+								xmlelement DestinationDisplay {
+									xmlattribute id			{ value 'md_operatorId + ":DestinationDisplay:" + vdc_id' }
+									xmlattribute version	{ value 'md_frameVersion' }
+									xmlelement Name			{ value 'vdc_message3' }
+									xmlelement ShortName	{ value 'vdc_message1' }
+								}
+							}
+						}
+						
+						# scheduledStopPoints
+						# tariffZones
+						# stopAssignments
+						# timingPoints
+						# timingLinks
+						# journeyPatterns
+						# timeDemandTypes
+						
 					}
 				}
 			}
