@@ -8,11 +8,18 @@ definitions MainDefinitions {
 	DEFINE md_operatorName { "HTM" }
 	DEFINE md_frameVersion { v_source + "_" + Format(datetoday(),"!yyyymmdd|xxxx-xx-xx") }
 	DEFINE md_trp_valid CLASS trip { trp_duration > 0h00 }
+	DEFINE md_rte_service_mode CLASS route {
+		IF rte_service_mode = 0 /* BUS */ THEN "bus"
+		ELSE IF rte_service_mode = 1 /* TRAMWAY */ THEN "tram"
+		ELSE IF rte_service_mode = 2 /* METRO */ THEN "metro" 
+		ELSE "rail"
+		}
 	end
 }
 
 var part1 {type 'string'}
 var v_source { type 'string' assign 'IF p_CalendarId<>NULL THEN p_CalendarId ELSE IF p_SchedUnit<>NULL THEN p_SchedUnit '}
+var v_tpat_link_index 					{ type 'integer' assign '0' }
 
 array_var av_printed_itn {
 	key_part 'itn_stop_start'
@@ -139,6 +146,8 @@ file serviceframe {
 								} # foreach trip_pattern_point
 							} # xmlelement routePoints
 							
+							
+						# TODO: werkt nog niet bij HTM
 						xmlelement routeLinks {
 							foreach itinerary {
 								from 'GetAll(vehicle_schedule, vsc_is_current).Get(block).Get(trip).Get(trip_pattern).Get(itinerary)'
@@ -170,8 +179,93 @@ file serviceframe {
 							} # foreach itinerary
 						}
 						
-						# routes
-						# lines
+						xmlelement routes {
+							foreach trip_pattern {
+								from 'GetAll(vehicle_schedule).get(trip, md_trp_valid).get(trip_pattern)'
+								sort_by TripSort {
+									criteria tpat_route
+									criteria tpat_external_id
+								} # sort_by TripSort
+								unique_on 'tpat_route, tpat_external_id'
+								condition 'md_trp_valid AND trp_is_in_service'								
+								var v_tpat_link_index 		{assign '0'}	
+							
+								xmlelement Route {
+									xmlattribute id 				{ value 'md_operatorId + ":Route:" + Trim(tpat_route) + ":" + tpat_external_id' }
+									xmlattribute version 			{ value 'md_frameVersion' }
+									xmlelement LineRef {
+										xmlattribute ref 			{ value 'md_operatorId + ":Line:" + Trim(tpat_route)' }
+										xmlattribute version 		{ value 'md_frameVersion' }
+									} # xmlelement LineRef
+									xmlelement pointsInSequence {
+										foreach trip_pattern_point {
+											var v_tpat_link_index {assign ' v_tpat_link_index + 1 '}										
+											xmlelement PointOnRoute {
+												xmlattribute id 			{ value 'md_operatorId + ":PointOnRoute:" + Trim(tpat_route) + ":" + tpat_external_id + ":" + v_tpat_link_index' }
+												xmlattribute version 		{ value 'md_frameVersion' }
+												xmlattribute order 			{ value 'v_tpat_link_index' }
+												xmlelement RoutePointRef {
+													xmlattribute ref { value 'md_operatorId + ":RoutePoint:" + stp_identifier ' }
+													xmlattribute version { value 'md_frameVersion' }
+												} # xmlelement RoutePointRef							
+											} # xmlelement PointOnRoute
+										} # foreach trip_pattern_point
+									} # xmlelement pointsInSequence
+								} # xmlelement Route
+							}	
+						}
+						
+						xmlelement lines {
+							foreach trip {
+								from 'GetFirstOfAll(vehicle_schedule, vsc_is_current, 1).Get(trip, md_trp_valid)'
+								condition 'trp_is_public'
+								unique_on 'trp_route'
+								sort_by 'trp_route'
+								xmlelement Line {
+									xmlattribute id 			{ value 'md_operatorId + ":Line:" + Trim(trp_route)' }
+									xmlattribute version 		{ value 'md_frameVersion' }
+									xmlelement keyList {
+										xmlelement KeyValue {
+											xmlelement Key 			{ value '"VeTagLineNumber"' }
+											xmlelement Value 		{ value 'Trim(Object(route,trp_route).rte_pub_id)' }
+										} # xmlelement KeyValue
+										xmlelement KeyValue {
+											xmlelement Key 			{ value '"LinePlanningNumber"' }
+											xmlelement Value 		{ value 'Trim(Object(route,trp_route).rte_identifier)' }
+										} # xmlelement KeyValue										
+									} # xmlelement keyList
+									xmlelement Name 				{ value 'Object(route,trp_route).rte_description' }
+									xmlelement TransportMode 		{ value 'md_rte_service_mode' }
+									xmlelement PublicCode 			{ value 'Trim(Object(route,trp_route).rte_pub_id)' }
+									
+									foreach trip_stop {
+										unique_on 'tstp_district'
+										xmlelement AuthorityRef	{
+											xmlattribute ref 			{ value '"BISON:Authority:" + tstp_district' }
+											xmlattribute version		{ value '"any"' }
+										} # xmlelement AuthorityRef
+									}
+
+									xmlelement Monitored 			{ value 'IF trp_is_in_service THEN "true" ELSE "false"' }
+									
+									# TODO: AccessibilityAssessment per line.
+									#
+									# xmlelement AccessibilityAssessment {
+									#	xmlattribute id 			{ value 'md_operatorId + ":AccessibilityAssessment:" + trp_route' }
+									#	xmlattribute version 		{ value 'md_frameVersion' }
+									#	xmlelement MobilityImpairedAccess { value 'false' }
+									#	xmlelement suitabilities {
+									#		xmlelement Suitability {
+									#			xmlattribute id { value '"BISON:Suitability:WheelchairNotSuitable"' }
+									#			xmlattribute version { value '"any"' }
+									#			xmlelement MobilityNeed { value '"wheelchair"' }
+									#			xmlelement Suitable { value '"notSuitable"' }
+									#		}
+									#	}
+									# } # xmlelement AccessibilityAssessment
+								} # xmlelement Line									
+							} # foreach trip
+						} # xmlelement lines
 						
 						xmlelement destinationDisplays {
 							foreach veh_disp_code {
