@@ -111,7 +111,7 @@ file serviceframe {
 												xmlelement WaitTime { value '"PT" + md_loadtime + "S"' }
 											} # xmlelement JourneyWaitTime
 										} # foreach run_time_pattern_stop															
-									}								
+									} # xmlelement waitTimes
 								} # xmlelement TimeDemandType
 							} # foreach run_time_pattern
 						}				
