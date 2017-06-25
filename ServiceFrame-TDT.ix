@@ -1,0 +1,123 @@
+att omit_null_values
+basetype time { mask "0hh'mm" }
+basetype date { mask "!yyyymmdd|xxxx-xx-xx" }
+
+definitions MainDefinitions {
+	code
+	DEFINE md_operatorId { "HTM" }
+	DEFINE md_operatorName { "HTM" }
+	DEFINE md_authority { "MRDH" }
+	DEFINE md_frameVersion { v_source + "_" + Format(datetoday(),"!yyyymmdd|xxxx-xx-xx") }
+	DEFINE md_trp_valid CLASS trip { trp_duration > 0h00 }
+	DEFINE md_rte_service_mode CLASS route {
+		IF rte_service_mode = 0 /* BUS */ THEN "bus"
+		ELSE IF rte_service_mode = 1 /* TRAMWAY */ THEN "tram"
+		ELSE IF rte_service_mode = 2 /* METRO */ THEN "metro" 
+		ELSE "rail"
+		}
+	DEFINE md_runtime { Trim(Format(rpst_stp_run_time, "ssss")) }
+	DEFINE md_loadtime { Trim(Format(rpst_stp_load_time, "ssss")) }
+		
+	DEFINE md_link_authority { IF Prev().tstp_district <> "" THEN Prev().tstp_district ELSE md_authority }
+	end
+}
+
+var part1 {type 'string'}
+var v_source { type 'string' assign 'IF p_CalendarId<>NULL THEN p_CalendarId ELSE IF p_SchedUnit<>NULL THEN p_SchedUnit '}
+var v_tpat_link_index 					{ type 'integer' assign '0' }
+var v_tpat_stop_index 					{ type 'integer' assign '0' }
+
+array_var av_printed_itn {
+	key_part 'itn_stop_start'
+	key_part 'itn_stop_end'
+	type 'boolean' assign 'FALSE'
+}
+
+file serviceframe {
+	name '"NeTEx_ServiceFrame_TimeDemandTypes.xml"'
+
+	xmlelement PublicationDelivery {
+		xmlattribute xmlns { value '"http://www.netex.org.uk/netex"' }
+		xmlattribute xmlns:gml { value '"http://www.opengis.net/gml/3.2"' }
+		xmlattribute version { value '"1.0"' }
+
+		xmlelement PublicationTimestamp { value 'DateToday()' }
+		xmlelement ParticipantRef { value '"NDOV"' }
+
+		xmlelement dataObjects {
+			xmlelement CompositeFrame {
+				xmlelement FrameDefaults {
+					xmlelement DefaultDataSourceRef {
+						xmlattribute ref { value '"BISON:DataSource:" + md_operatorId' }
+						xmlattribute version { value '"any"' }
+					}
+				}
+
+				xmlelement frames {
+					xmlelement ResourceFrame {
+						xmlelement DataSource {
+							xmlattribute id { value '"BISON:DataSource:" + md_operatorId' }
+							xmlattribute version { value '"any"' }
+							xmlelement ShortName { value 'md_operatorId' }
+							xmlelement Description { value 'md_operatorName' }
+						}					
+					}
+
+					xmlelement ServiceFrame {						
+						xmlelement timeDemandTypes {
+							foreach run_time_pattern {
+								from 'GetAll(vehicle_schedule).get(trip, md_trp_valid).get(run_time_pattern)'
+								sort_by TripSort {
+									criteria rpat_route
+									criteria rpat_identifier
+								} # sort_by TripSort
+								unique_on 'rpat_route, rpat_identifier'
+								condition 'trp_is_in_service'
+								var v_tpat_link_index {assign '0'}
+								var v_tpat_stop_index {assign '0'}
+								
+								xmlelement TimeDemandType {								
+									xmlattribute id 			{ value 'md_operatorId + ":TimeDemandType:" + rpat_identifier' }
+									xmlattribute version 		{ value 'md_frameVersion' }
+									xmlelement runTimes {																											
+										foreach run_time_pattern_stp {												
+											condition 'Prev().stp_identifier <> ""'
+											var v_tpat_link_index 		{assign ' v_tpat_link_index + 1 '}
+											xmlelement JourneyRunTime {
+												xmlattribute id 			{ value 'md_operatorId + ":JourneyRunTime:" + rpat_identifier + ":" + v_tpat_link_index' }												
+												xmlattribute version 		{ value 'md_frameVersion' }
+												xmlelement TimingLinkRef {
+													xmlattribute ref 		{ value 'md_operatorId + ":TimingLink:" + Prev().stp_identifier + "-" + stp_identifier' }
+													xmlattribute version 	{ value 'md_frameVersion' }
+												} # xmlelement TimingLinkRef
+												xmlelement RunTime { value '"PT" + md_runtime + "S"' }
+											} # xmlelement JourneyRunTime		
+										} # foreach run_time_pattern_stop					
+									} # xmlelement runTimes;
+									
+									xmlelement waitTimes {										
+										foreach run_time_pattern_stp {										
+											# TODO: ideally we would not export waitTimes if all waitTimes are 0
+											# We would like to export the v_tpat_stop_index to be 'aligned' with the actual index
+											# condition 'md_loadtime > 0'
+											var v_tpat_link_index 		{assign ' v_tpat_stop_index + 1 '}											
+											xmlelement JourneyWaitTime {
+												xmlattribute id 			{ value 'md_operatorId + ":JourneyWaitTime:" + rpat_identifier + ":" + v_tpat_stop_index' }
+												xmlattribute version 		{ value 'md_frameVersion' }
+												xmlelement ScheduledStopPointRef {
+													xmlattribute ref 		{ value 'md_operatorId + ":ScheduledStopPoint:" + stp_identifier' }
+													xmlattribute version 	{ value 'md_frameVersion' }
+												} # xmlelement TimingLinkRef
+												xmlelement WaitTime { value '"PT" + md_loadtime + "S"' }
+											} # xmlelement JourneyWaitTime
+										} # foreach run_time_pattern_stop															
+									}								
+								} # xmlelement TimeDemandType
+							} # foreach run_time_pattern
+						}				
+					}
+				}
+			}
+		}
+	}
+}
