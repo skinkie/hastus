@@ -12,12 +12,12 @@ definitions MainDefinitions {
 	DEFINE md_rte_service_mode CLASS route {
 		IF rte_service_mode = 0 /* BUS */ THEN "bus"
 		ELSE IF rte_service_mode = 1 /* TRAMWAY */ THEN "tram"
-		ELSE IF rte_service_mode = 2 /* METRO */ THEN "metro" 
+		ELSE IF rte_service_mode = 2 /* METRO */ THEN "metro"
 		ELSE "rail"
 		}
 	DEFINE md_runtime { Trim(Format(rpst_stp_run_time, "ssss")) }
 	DEFINE md_loadtime { Trim(Format(rpst_stp_load_time, "ssss")) }
-		
+
 	DEFINE md_link_authority { IF Prev().tstp_district <> "" THEN Prev().tstp_district ELSE md_authority }
 	end
 }
@@ -60,10 +60,10 @@ file serviceframe {
 							xmlattribute version { value '"any"' }
 							xmlelement ShortName { value 'md_operatorId' }
 							xmlelement Description { value 'md_operatorName' }
-						}					
+						}
 					}
 
-					xmlelement ServiceFrame {						
+					xmlelement ServiceFrame {
 						xmlelement timeDemandTypes {
 							foreach run_time_pattern {
 								from 'GetAll(vehicle_schedule).get(trip, md_trp_valid).get(run_time_pattern)'
@@ -75,32 +75,32 @@ file serviceframe {
 								condition 'trp_is_in_service'
 								var v_tpat_link_index {assign '0'}
 								var v_tpat_stop_index {assign '0'}
-								
-								xmlelement TimeDemandType {								
+
+								xmlelement TimeDemandType {
 									xmlattribute id 			{ value 'md_operatorId + ":TimeDemandType:" + rpat_identifier' }
 									xmlattribute version 		{ value 'md_frameVersion' }
-									xmlelement runTimes {																											
-										foreach run_time_pattern_stp {												
+									xmlelement runTimes {
+										foreach run_time_pattern_stp {
 											condition 'Prev().stp_identifier <> ""'
 											var v_tpat_link_index 		{assign ' v_tpat_link_index + 1 '}
 											xmlelement JourneyRunTime {
-												xmlattribute id 			{ value 'md_operatorId + ":JourneyRunTime:" + rpat_identifier + ":" + v_tpat_link_index' }												
+												xmlattribute id 			{ value 'md_operatorId + ":JourneyRunTime:" + rpat_identifier + ":" + v_tpat_link_index' }
 												xmlattribute version 		{ value 'md_frameVersion' }
 												xmlelement TimingLinkRef {
 													xmlattribute ref 		{ value 'md_operatorId + ":TimingLink:" + Prev().stp_identifier + "-" + stp_identifier' }
 													xmlattribute version 	{ value 'md_frameVersion' }
 												} # xmlelement TimingLinkRef
 												xmlelement RunTime { value '"PT" + md_runtime + "S"' }
-											} # xmlelement JourneyRunTime		
-										} # foreach run_time_pattern_stop					
+											} # xmlelement JourneyRunTime
+										} # foreach run_time_pattern_stop
 									} # xmlelement runTimes;
-									
-									xmlelement waitTimes {										
-										foreach run_time_pattern_stp {										
+
+									xmlelement waitTimes {
+										foreach run_time_pattern_stp {
 											# TODO: ideally we would not export waitTimes if all waitTimes are 0
 											# We would like to export the v_tpat_stop_index to be 'aligned' with the actual index
 											# condition 'md_loadtime > 0'
-											var v_tpat_link_index 		{assign ' v_tpat_stop_index + 1 '}											
+											var v_tpat_link_index 		{assign ' v_tpat_stop_index + 1 '}
 											xmlelement JourneyWaitTime {
 												xmlattribute id 			{ value 'md_operatorId + ":JourneyWaitTime:" + rpat_identifier + ":" + v_tpat_stop_index' }
 												xmlattribute version 		{ value 'md_frameVersion' }
@@ -110,11 +110,11 @@ file serviceframe {
 												} # xmlelement TimingLinkRef
 												xmlelement WaitTime { value '"PT" + md_loadtime + "S"' }
 											} # xmlelement JourneyWaitTime
-										} # foreach run_time_pattern_stop															
+										} # foreach run_time_pattern_stop
 									} # xmlelement waitTimes
 								} # xmlelement TimeDemandType
 							} # foreach run_time_pattern
-						}				
+						}
 					}
 				}
 			}
