@@ -7,18 +7,19 @@ definitions MainDefinitions {
 	DEFINE md_operatorId { "HTM" }
 	DEFINE md_operatorName { "HTM" }
 	DEFINE md_frameVersion { v_source + "_" + Format(datetoday(),"!yyyymmdd|xxxx-xx-xx") }
+	DEFINE md_trp_valid CLASS trip { trp_duration > 0h00 }
+	DEFINE md_departureTime { StrReplace(Format(trp_time_start_24h, "0hh\'mm:ss"), ";", ":") }
 	end
 }
 
 var part1 {type 'string'}
 var v_source { type 'string' assign 'IF p_CalendarId<>NULL THEN p_CalendarId ELSE IF p_SchedUnit<>NULL THEN p_SchedUnit '}
+var v_valid_days { type 'string' }
 
 array_var av_plc { key_part 'part1' type 'integer' }
 
-
-
 file timetableframe {
-	name '"NeTEx_SiteFrame.xml"'
+	name '"NeTEx_TimetableFrame.xml"'
 
 	xmlelement PublicationDelivery {
 		xmlattribute xmlns { value '"http://www.netex.org.uk/netex"' }
@@ -55,7 +56,7 @@ file timetableframe {
 
 								foreach scheduling_unit_date {
 									from 'GetSchedUnitDates(vehicle_schedule, p_SchedSet, p_SchedUnit, p_ProdPhase, p_DateStart, p_DateEnd, p_CalType, p_CalendarId)'
-										var v_valid_days    { assign 'IF Count(GetSchedUnitDates(getCurrent(vehicle_schedule), p_SchedSet, p_SchedUnit, p_ProdPhase, scud_date, scud_date, p_CalType, p_CalendarId))=1 THEN v_valid_days + "1" ELSe v_valid_days + "0" '}
+										var v_valid_days    { assign 'IF Count(GetSchedUnitDates(getCurrent(vehicle_schedule), p_SchedSet, p_SchedUnit, p_ProdPhase, scud_date, scud_date, p_CalType, p_CalendarId))=1 THEN v_valid_days + "1" ELSE v_valid_days + "0" '}
 								} # foreach scheduling_unit_date
 
 								xmlelement AvailabilityCondition {
@@ -93,7 +94,7 @@ file timetableframe {
 										xmlelement validityConditions {
 											xmlelement AvailabilityConditionRef {
 												# TODO: uitzoeken wat de relatie trip naar scheduling_unit is
-												xmlattribute ref        { value 'md_operatorId + ":ValidityCondition:" + ":" + vsc_int_id ' }
+												xmlattribute ref        { value 'md_operatorId + ":ValidityCondition:" + vsc_int_id ' }
 											} # xmlelement AvailabilityConditionRef
 										} # xmlelement validityConditions
 
@@ -104,8 +105,8 @@ file timetableframe {
 											} # xmlelement keyList
 										}
 
-										# TODO: DepartureTime
-										xmlelement DepartureTime { value 'trp_time_start' }
+										xmlelement DepartureTime { value 'md_departureTime' }
+										xmlelement DepartureDayOffset { value 'IF trp_time_start >= 24:00 THEN 1 ELSE IF trp_time_start < 0:00 THEN -1 ELSE 0' }
 
 										# TODO: DayTypes
 
