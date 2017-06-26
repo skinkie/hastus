@@ -1,0 +1,134 @@
+att omit_null_values
+basetype time { mask "0hh'mm" }
+basetype date { mask "!yyyymmdd|xxxx-xx-xx" }
+
+definitions MainDefinitions {
+	code
+	DEFINE md_operatorId { "HTM" }
+	DEFINE md_operatorName { "HTM" }
+	DEFINE md_frameVersion { v_source + "_" + Format(datetoday(),"!yyyymmdd|xxxx-xx-xx") }
+	end
+}
+
+var part1 {type 'string'}
+var v_source { type 'string' assign 'IF p_CalendarId<>NULL THEN p_CalendarId ELSE IF p_SchedUnit<>NULL THEN p_SchedUnit '}
+
+array_var av_plc { key_part 'part1' type 'integer' }
+
+
+
+file timetableframe {
+	name '"NeTEx_SiteFrame.xml"'
+
+	xmlelement PublicationDelivery {
+		xmlattribute xmlns { value '"http://www.netex.org.uk/netex"' }
+		xmlattribute xmlns:gml { value '"http://www.opengis.net/gml/3.2"' }
+		xmlattribute version { value '"1.0"' }
+
+		xmlelement PublicationTimestamp { value 'DateToday()' }
+		xmlelement ParticipantRef { value '"NDOV"' }
+
+		xmlelement dataObjects {
+			xmlelement CompositeFrame {
+				xmlelement FrameDefaults {
+					xmlelement DefaultDataSourceRef {
+						xmlattribute ref { value '"BISON:DataSource:" + md_operatorId' }
+						xmlattribute version { value '"any"' }
+					}
+				}
+
+				xmlelement frames {
+					xmlelement ResourceFrame {
+						xmlelement DataSource {
+							xmlattribute id { value '"BISON:DataSource:" + md_operatorId' }
+							xmlattribute version { value '"any"' }
+							xmlelement ShortName { value 'md_operatorId' }
+							xmlelement Description { value 'md_operatorName' }
+						}
+					}
+
+					xmlelement TimetableFrame {
+						xmlelement contentValidityConditions {
+							foreach vehicle_schedule {
+								condition 'vsc_is_multiple'
+								var v_valid_days        { assign '""' }
+
+								foreach scheduling_unit_date {
+									from 'GetSchedUnitDates(vehicle_schedule, p_SchedSet, p_SchedUnit, p_ProdPhase, p_DateStart, p_DateEnd, p_CalType, p_CalendarId)'
+										var v_valid_days    { assign 'IF Count(GetSchedUnitDates(getCurrent(vehicle_schedule), p_SchedSet, p_SchedUnit, p_ProdPhase, scud_date, scud_date, p_CalType, p_CalendarId))=1 THEN v_valid_days + "1" ELSe v_valid_days + "0" '}
+								} # foreach scheduling_unit_date
+
+								xmlelement AvailabilityCondition {
+									xmlattribute id             { value 'md_operatorId + ":AvailabilityCondition:" + v_valid_days + ":" + vsc_int_id' }
+									xmlattribute version        { value 'md_frameVersion' }
+									xmlelement FromDate         { value 'p_DateStart' }
+									xmlelement ToDate           { value 'p_DateEnd' }
+								} # xmlelement AvailabilityCondition
+							} # foreach vehicle_schedule
+						} # xmlelement contentValidityConditions
+
+						xmlelement OperatorView {
+							xmlelement OperatorRef {
+								xmlattribute ref        { value '"BISON:Operator:" + md_operatorId' }
+								xmlattribute version	{ value '"any"' }
+							} # xmlelement OperatorRef
+						} # xmlelement OperatorView
+
+						xmlelement vehicleJourneys {
+							foreach trip {
+								from 'GetFirstOfAll(vehicle_schedule, vsc_is_current, 1).Get(trip, md_trp_valid)'
+									condition 'md_trp_valid'
+									unique_on 'vsc_int_id,vsc_sched_type,trp_route,trp_number'
+									sort_by TripStopSort {
+										criteria vsc_int_id
+										criteria vsc_sched_type
+										criteria trp_route
+										criteria trp_number
+									} # sort_by TripStopSort
+
+									xmlelement ServiceJourney {
+										xmlattribute ref        { value 'md_operatorId + ":ServiceJourney:" + trim(trp_number)' }
+										xmlattribute version	{ value '"any"' }
+
+										xmlelement validityConditions {
+											xmlelement AvailabilityConditionRef {
+												# TODO: uitzoeken wat de relatie trip naar scheduling_unit is
+												xmlattribute ref        { value 'md_operatorId + ":ValidityCondition:" + ":" + vsc_int_id ' }
+											} # xmlelement AvailabilityConditionRef
+										} # xmlelement validityConditions
+
+										xmlelement keyList {
+											xmlelement KeyValue {
+												xmlelement Key              { value '"JourneyNumber"' }
+												xmlelement Value            { value 'trim(trp_number)' }
+											} # xmlelement keyList
+										}
+
+										# TODO: DepartureTime
+										xmlelement DepartureTime { value 'trp_time_start' }
+
+										# TODO: DayTypes
+
+										xmlelement ServiceJourneyPatternRef {
+											xmlattribute ref                { value 'md_operatorId + ":ServiceJourneyPattern:" + tpat_external_id' }
+											xmlattribute version			{ value '"any"' }
+										} # xmlelement JourneyPatternRef
+
+										xmlelement TimeDemandTypeRef {
+											xmlattribute ref                { value 'md_operatorId + ":TimeDemandType:" + trp_run_time_pattern ' }
+											xmlattribute version            { value 'md_frameVersion' }
+										} # xmlelement TimeDemandTypeRef
+
+										xmlelement BlockRef {
+											xmlattribute ref				{ value 'md_operatorId + ":Block:" + trim(trp_block) ' }
+											xmlattribute version			{ value 'md_frameVersion' }
+										} # xmlelement BlockRef
+								} # xmlelement ServiceJourney
+							} # foreach trip
+						} # xmlelement vehicleJourneys
+					} # xmlelement TimetableFrame
+				}
+			}
+		}
+	}
+}
