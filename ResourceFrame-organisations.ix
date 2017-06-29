@@ -1,0 +1,27 @@
+xmlelement organisations {
+	xmlelement Operator {
+		xmlattribute id { value '"BISON:Operator:" + md_operatorId' }
+		xmlattribute version { value '"any"' }
+		xmlelement Name  { value 'md_operatorName' }
+		xmlelement ShortName { value 'md_operatorId' }
+
+		# TODO members
+		# xmlelement parts {
+		#	from 'GetAll(vehicle_schedule, vsc_is_current).Get(block).Get(trip).Get(trip_stop)
+		#	foreach district {
+		#	}
+		# }
+	}
+
+	foreach trip_stop {
+		from 'GetAll(vehicle_schedule, vsc_is_current).Get(block).Get(trip).Get(trip_stop)'
+		condition 'trp_duration > 0h00 AND trp_is_in_service'
+		unique_on 'tstp_district'
+
+		xmlelement Authority {
+			xmlattribute id { value '"BISON:Authority:" + tstp_district' }
+			xmlattribute version { value '"any"' }
+			xmlelement Name { value 'DefNull(tstp_district.dst_description,tstp_district)' }
+		}
+	}
+}

@@ -1,0 +1,23 @@
+xmlelement tariffZones {
+	foreach stop {
+		from 'GetAll(vehicle_schedule, vsc_is_current).stps_in_vsc'
+		condition 'stp_zone <> null'
+		unique_on 'stp_zone'
+
+		xmlelement TariffZone {
+			xmlattribute id             {value '"NL:TariffZone:" + stp_zone' }
+			xmlattribute version        {value '"any"'}
+			xmlelement Name             {value 'DefNull(zon_description,stp_zone)' }
+			xmlelement ShortName        {value 'stp_zone' }
+			xmlelement types {
+				xmlelement TypeOfZoneRef {
+					xmlattribute ref 	{ value '"BISON:TypeOfZone:Zone"' }
+					xmlattribute version { value '"any"' }
+				}
+			}
+		}
+	}
+	
+	# Arriva TariffStops via stp_short_name
+	# &include ServiceFrame-tariffZones-Arriva.ix
+}

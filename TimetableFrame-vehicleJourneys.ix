@@ -1,0 +1,103 @@
+xmlelement vehicleJourneys {
+	foreach trip {
+		from 'GetFirstOfAll(vehicle_schedule, vsc_is_current, 1).Get(trip, md_trp_valid)'
+			condition 'md_trp_valid AND trp_is_in_service'
+			unique_on 'vsc_int_id,vsc_sched_type,trp_route,trp_number'
+			sort_by TripStopSort {
+				criteria vsc_int_id
+				criteria vsc_sched_type
+				criteria trp_route
+				criteria trp_number
+			} # sort_by TripStopSort
+
+			xmlelement ServiceJourney {
+				xmlattribute id         { value 'md_operatorId + ":ServiceJourney:" + Trim(trp_route) + ":" + trim(trp_number)' }
+				xmlattribute version	{ value '"any"' }
+
+				xmlelement validityConditions {
+					xmlelement AvailabilityConditionRef {
+						# TODO: uitzoeken wat de relatie trip naar scheduling_unit is
+						xmlattribute ref        { value 'md_operatorId + ":ValidityCondition:" + vsc_int_id ' }
+					} # xmlelement AvailabilityConditionRef
+				} # xmlelement validityConditions
+
+				xmlelement keyList {
+					xmlelement KeyValue {
+						xmlelement Key              { value '"JourneyNumber"' }
+						xmlelement Value            { value 'trim(trp_number)' }
+					} # xmlelement keyList
+				}
+
+				xmlelement DepartureTime { value 'md_departureTime' }
+				xmlelement DepartureDayOffset { value 'IF trp_time_start >= 24:00 THEN 1 ELSE IF trp_time_start < 0:00 THEN -1 ELSE 0' }
+
+				# TODO: DayTypes
+
+				xmlelement ServiceJourneyPatternRef {
+					xmlattribute ref                { value 'md_operatorId + ":ServiceJourneyPattern:" + Trim(tpat_route) + ":" + md_tpat_id' }
+					xmlattribute version			{ value '"any"' }
+				} # xmlelement JourneyPatternRef
+
+				xmlelement TimeDemandTypeRef {
+					xmlattribute ref                { value 'md_operatorId + ":TimeDemandType:" + Trim(tpat_route) + ":" + trp_run_time_pattern' }
+					xmlattribute version            { value 'md_frameVersion' }
+				} # xmlelement TimeDemandTypeRef
+
+				xmlelement BlockRef {
+					xmlattribute ref				{ value 'md_operatorId + ":Block:" + trim(trp_block) ' }
+					xmlattribute version			{ value 'md_frameVersion' }
+				} # xmlelement BlockRef
+		} # xmlelement ServiceJourney
+	} # foreach trip
+	
+	foreach trip {
+		from 'GetFirstOfAll(vehicle_schedule, vsc_is_current, 1).Get(trip, md_trp_valid)'
+			condition 'md_trp_valid AND trp_is_in_service'
+			unique_on 'vsc_int_id,vsc_sched_type,trp_route,trp_number'
+			sort_by TripStopSort {
+				criteria vsc_int_id
+				criteria vsc_sched_type
+				criteria trp_route
+				criteria trp_number
+			} # sort_by TripStopSort
+
+			xmlelement DeadRun {
+				xmlattribute id        { value 'md_operatorId + ":DeadRun:" + Trim(trp_route) + ":" + trim(trp_number)' }
+				xmlattribute version	{ value '"any"' }
+
+				xmlelement validityConditions {
+					xmlelement AvailabilityConditionRef {
+						# TODO: uitzoeken wat de relatie trip naar scheduling_unit is
+						xmlattribute ref        { value 'md_operatorId + ":ValidityCondition:" + vsc_int_id ' }
+					} # xmlelement AvailabilityConditionRef
+				} # xmlelement validityConditions
+
+				xmlelement keyList {
+					xmlelement KeyValue {
+						xmlelement Key              { value '"JourneyNumber"' }
+						xmlelement Value            { value 'trim(trp_number)' }
+					} # xmlelement keyList
+				}
+
+				xmlelement DepartureTime { value 'md_departureTime' }
+				xmlelement DepartureDayOffset { value 'IF trp_time_start >= 24:00 THEN 1 ELSE IF trp_time_start < 0:00 THEN -1 ELSE 0' }
+
+				# TODO: DayTypes
+
+				xmlelement DeadRunJourneyPatternRef {
+					xmlattribute ref                { value 'md_operatorId + ":DeadRunJourneyPattern:" + Trim(tpat_route) + ":" + DefNull(tpat_external_id, tpat_id)' }
+					xmlattribute version			{ value '"any"' }
+				} # xmlelement DeadRunJourneyPatternRef
+
+				xmlelement TimeDemandTypeRef {
+					xmlattribute ref                { value 'md_operatorId + ":TimeDemandType:" + Trim(tpat_route) + ":" + trp_run_time_pattern' }
+					xmlattribute version            { value 'md_frameVersion' }
+				} # xmlelement TimeDemandTypeRef
+
+				xmlelement BlockRef {
+					xmlattribute ref				{ value 'md_operatorId + ":Block:" + trim(trp_block) ' }
+					xmlattribute version			{ value 'md_frameVersion' }
+				} # xmlelement BlockRef
+		} # xmlelement ServiceJourney
+	} # foreach trip							
+} # xmlelement vehicleJourneys

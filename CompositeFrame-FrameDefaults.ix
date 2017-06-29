@@ -1,0 +1,6 @@
+xmlelement FrameDefaults {
+	xmlelement DefaultDataSourceRef {
+		xmlattribute ref { value '"BISON:DataSource:" + md_operatorId' }
+		xmlattribute version { value '"any"' }
+	}
+}

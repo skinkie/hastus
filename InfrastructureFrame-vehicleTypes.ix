@@ -1,0 +1,26 @@
+# At both HTM as Arriva vehicle types are being defined in Hastus
+# under vehicle groups, where vehicle types are left empty.
+
+xmlelement vehicleTypes {
+
+	# This segment selects the vehicleTypes actually in use.
+	foreach block {
+		unique_on 'vehg_identifier'
+		foreach vehicle_group {
+			from 'Object(vehg_identifier)'
+			array_var av_used_vehicle_group	{ assign 'true' }
+		}
+	}
+
+	foreach vehicle_group {
+		from 'GetAll(vehicle_group, av_used_vehicle_group)'
+		unique_on 'vehg_identifier'
+
+		xmlelement VehicleType {
+			xmlattribute id { value 'md_operatorId + ":VehicleType:" + vehg_identifier' }
+			xmlattribute version { value '"any"' }
+			xmlelement Name { value 'vehg_description' }
+			xmlelement ShortName { value 'vehg_identifier' }
+		}
+	}
+}

@@ -1,0 +1,37 @@
+# TODO: werkt nog niet bij HTM
+xmlelement routeLinks {
+	foreach itinerary {
+		from 'GetAll(vehicle_schedule, vsc_is_current).Get(block).Get(trip).Get(trip_pattern).Get(itinerary)'
+		condition 'not av_printed_itn AND itn_stop_start <> itn_stop_end'
+		sort_by rteVersion
+		{
+			criteria rte_version
+			criteria trp_route
+			criteria trp_via_variant
+			criteria trp_direction
+		}
+
+		xmlelement RouteLink
+		{
+			xmlattribute "id"				{ value 'md_operatorId + ":RouteLink:" +itn_stop_start+"-"+itn_stop_end' }
+			xmlattribute version 			{ value 'md_frameVersion' }
+			xmlelement "Name"				{ value 'itn_stop_start+"-"+itn_stop_end' }
+			xmlelement "Distance"			{ value 'itn_calc_distance' } # TODO: controleren
+			xmlelement gml:LineString {
+				xmlattribute id 			{ value 'md_operatorId + "_LineString_" +itn_stop_start+"-"+itn_stop_end' }
+				xmlattribute srsName		{ value '"EPSG:28992"' }
+				xmlelement gml:posList 		{ value 'Concat(Trim(Format(itn_coord,"nnnnnn")), " ")' }
+			}
+			xmlelement "FromPointRef" {
+				xmlattribute ref			{ value 'md_operatorId + ":RoutePoint:" +itn_stop_start' }
+				xmlattribute version 		{ value 'md_frameVersion' }
+			}
+			xmlelement "ToPointRef"	{
+				xmlattribute ref			{ value 'md_operatorId + ":RoutePoint:" +itn_stop_end' }
+				xmlattribute version		{ value 'md_frameVersion' }
+			}
+		}
+		array_var av_printed_itn {assign 'TRUE'}
+
+	} # foreach itinerary
+}

@@ -1,0 +1,7 @@
+# Arriva TariffStop via stp_short_name
+
+xmlelement TypeOfZone {
+	xmlattribute id { value '"ARR:TypeOfZone:TariffStop"' }
+	xmlattribute version { value '"any"' }
+	xmlelement Name { value '"Tariefhalte"' }
+}

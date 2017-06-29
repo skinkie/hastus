@@ -1,0 +1,66 @@
+xmlelement garages {
+
+	# This segment selects the garages actually in use.
+	foreach block {
+		unique_on 'blk_gar_plc_strt, blk_gar_plc_end'
+		foreach garage {
+			from 'Object(blk_gar_plc_strt)'
+			array_var av_used_gar		{ assign 'true' }
+
+			foreach stop {
+				from 'Object(gar_pull_in_stop)'
+				array_var av_used_gar_stop { assign 'true' }
+			}
+
+			foreach stop {
+				from 'Object(gar_pull_out_stop)'
+				array_var av_used_gar_stop { assign 'true' }
+			}
+
+		} # foreach garage
+		foreach garage {
+			from 'Object(blk_gar_plc_end)'
+			array_var av_used_gar		{ assign 'true' }
+
+			foreach stop {
+				from 'Object(gar_pull_in_stop)'
+				array_var av_used_gar_stop { assign 'true' }
+			}
+
+			foreach stop {
+				from 'Object(gar_pull_out_stop)'
+				array_var av_used_gar_stop { assign 'true' }
+			}
+
+		} # foreach garage
+	} # foreach block
+
+	foreach garage {
+		from 'GetAll(garage, av_used_gar)'
+		unique_on 'gar_id'
+
+		xmlelement Garage {
+			xmlattribute id { value 'md_operatorId + ":Garage:" + gar_id' }
+			xmlattribute version { value '"any"' }
+			xmlattribute responsibilitySetRef {
+				condition 'gar_depot_id <> ""'
+				value 'md_operatorId + ":ResponsibilitySet:" + gar_depot_id'
+			}
+			xmlelement Name { value 'gar_description' }
+			# xmlelement ShortName { value 'gar_id' }
+			xmlelement members {
+				xmlelement GaragePointRef {
+					xmlattribute ref { value 'md_operatorId + ":GaragePoint:" + gar_pull_in_stop' }
+					xmlattribute version { value '"any"' }
+				}
+
+				xmlelement GaragePointRef {
+					condition 'gar_pull_in_stop <> gar_pull_out_stop'
+					xmlattribute ref { value 'md_operatorId + ":GaragePoint:" + gar_pull_out_stop' }
+					xmlattribute version { value '"any"' }
+
+				}
+			}
+		}
+	}
+}

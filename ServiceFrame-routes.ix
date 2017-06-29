@@ -1,0 +1,35 @@
+xmlelement routes {
+	foreach trip_pattern {
+		from 'GetAll(vehicle_schedule).get(trip, md_trp_valid).get(trip_pattern)'
+		sort_by TripSort {
+			criteria tpat_route
+			criteria tpat_external_id
+		} # sort_by TripSort
+		unique_on 'tpat_route, tpat_external_id'
+		condition 'md_trp_valid AND trp_is_in_service'
+		var v_tpat_link_index 		{assign '0'}
+
+		xmlelement Route {
+			xmlattribute id 				{ value 'md_operatorId + ":Route:" + Trim(tpat_route) + ":" + tpat_external_id' }
+			xmlattribute version 			{ value 'md_frameVersion' }
+			xmlelement LineRef {
+				xmlattribute ref 			{ value 'md_operatorId + ":Line:" + Trim(tpat_route)' }
+				xmlattribute version 		{ value 'md_frameVersion' }
+			} # xmlelement LineRef
+			xmlelement pointsInSequence {
+				foreach trip_pattern_point {
+					var v_tpat_link_index {assign ' v_tpat_link_index + 1 '}
+					xmlelement PointOnRoute {
+						xmlattribute id 			{ value 'md_operatorId + ":PointOnRoute:" + Trim(tpat_route) + ":" + tpat_external_id + ":" + v_tpat_link_index' }
+						xmlattribute version 		{ value 'md_frameVersion' }
+						xmlattribute order 			{ value 'v_tpat_link_index' }
+						xmlelement RoutePointRef {
+							xmlattribute ref { value 'md_operatorId + ":RoutePoint:" + stp_identifier ' }
+							xmlattribute version { value 'md_frameVersion' }
+						} # xmlelement RoutePointRef
+					} # xmlelement PointOnRoute
+				} # foreach trip_pattern_point
+			} # xmlelement pointsInSequence
+		} # xmlelement Route
+	}
+}

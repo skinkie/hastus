@@ -1,0 +1,8 @@
+xmlelement dataSources {
+	xmlelement DataSource {
+		xmlattribute id { value '"BISON:DataSource:" + md_operatorId' }
+		xmlattribute version { value '"any"' }
+		xmlelement ShortName { value 'md_operatorId' }
+		xmlelement Description { value 'md_operatorName' }
+	}
+}

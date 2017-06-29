@@ -1,0 +1,14 @@
+xmlelement directions {
+	foreach trip {
+		from 'GetAll(vehicle_schedule, vsc_is_current).Get(block).Get(trip)'
+		unique_on 'tpat_direction'
+		condition 'tpat_direction <> ""'
+
+		xmlelement Direction {
+			xmlattribute id			{ value 'md_operatorId + ":Direction:" + tpat_direction' }
+			xmlelement Name			{ value 'tpat_direction' mask "CHO_TITLE" }
+			xmlelement ShortName	{ value 'tpat_direction' mask "CHO_NAME"}
+			xmlattribute version	{ value '"any"' }
+		}
+	} # foreach trip
+}

@@ -1,0 +1,13 @@
+xmlelement vehicleAndCrewPoints {
+	foreach stop {
+		from 'GetAll(stop, av_used_gar_stop)'
+		unique_on 'stp_identifier'
+
+		xmlelement GaragePoint {
+			xmlattribute id { value 'md_operatorId + ":GaragePoint:" + stp_identifier' }
+			xmlattribute version { value '"any"' }
+			xmlelement Name { value 'stp_description' }
+			xmlelement ShortName { value 'stp_identifier' }
+		}
+	}
+}

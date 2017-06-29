@@ -1,0 +1,12 @@
+xmlelement destinationDisplays {
+	foreach veh_disp_code {
+		from 'GetAll(vehicle_schedule, vsc_is_current).Get(trip_pattern).Get(veh_disp_code)'
+		unique_on 'vdc_id'
+		xmlelement DestinationDisplay {
+			xmlattribute id			{ value 'md_operatorId + ":DestinationDisplay:" + vdc_id' }
+			xmlattribute version	{ value 'md_frameVersion' }
+			xmlelement Name			{ value 'vdc_message3' }
+			xmlelement ShortName	{ value 'vdc_message1' }
+		}
+	} # foreach veh_disp_code
+}

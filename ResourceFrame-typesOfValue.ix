@@ -1,0 +1,14 @@
+xmlelement typesOfValue {
+	xmlelement ValueSet {
+		xmlelement Name { value '"Zone types"'}
+		xmlelement values {
+			xmlelement TypeOfZone {
+				xmlattribute id { value '"BISON:TypeOfZone:Zone"' }
+				xmlattribute version { value '"any"' }
+				xmlelement Name { value '"Nationale Zone"' }
+			}
+			
+			&include ResourceFrame-TypeOfZone-TariffStop.ix
+		}
+	}
+}

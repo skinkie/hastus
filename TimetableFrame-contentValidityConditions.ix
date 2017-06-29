@@ -1,0 +1,18 @@
+xmlelement contentValidityConditions {
+	foreach vehicle_schedule {
+		condition 'vsc_is_multiple'
+		var v_valid_days        { assign '""' }
+
+		foreach scheduling_unit_date {
+			from 'GetSchedUnitDates(vehicle_schedule, p_SchedSet, p_SchedUnit, p_ProdPhase, p_DateStart, p_DateEnd, p_CalType, p_CalendarId)'
+				var v_valid_days    { assign 'IF Count(GetSchedUnitDates(getCurrent(vehicle_schedule), p_SchedSet, p_SchedUnit, p_ProdPhase, scud_date, scud_date, p_CalType, p_CalendarId))=1 THEN v_valid_days + "1" ELSE v_valid_days + "0" '}
+		} # foreach scheduling_unit_date
+
+		xmlelement AvailabilityCondition {
+			xmlattribute id             { value 'md_operatorId + ":AvailabilityCondition:" + v_valid_days + ":" + vsc_int_id' }
+			xmlattribute version        { value 'md_frameVersion' }
+			xmlelement FromDate         { value 'p_DateStart' }
+			xmlelement ToDate           { value 'p_DateEnd' }
+		} # xmlelement AvailabilityCondition
+	} # foreach vehicle_schedule
+} # xmlelement contentValidityConditions

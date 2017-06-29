@@ -1,0 +1,6 @@
+xmlelement OperatorView {
+	xmlelement OperatorRef {
+		xmlattribute ref        { value '"BISON:Operator:" + md_operatorId' }
+		xmlattribute version	{ value '"any"' }
+	} # xmlelement OperatorRef
+} # xmlelement OperatorView

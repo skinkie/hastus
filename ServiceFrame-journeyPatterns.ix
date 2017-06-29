@@ -1,0 +1,113 @@
+xmlelement journeyPatterns {
+	foreach trip_pattern {
+		from 'GetAll(vehicle_schedule).get(trip, md_trp_valid).get(trip_pattern)'
+		sort_by TripSort {
+			criteria tpat_route
+			criteria md_tpat_id
+		} # sort_by TripSort
+		unique_on 'tpat_route, md_tpat_id'
+		condition 'trp_is_in_service'
+		var v_tpat_link_index {assign '0'}
+
+		xmlelement ServiceJourneyPattern {
+			xmlattribute id 			{ value 'md_operatorId + ":ServiceJourneyPattern:" + Trim(tpat_route) + ":" + md_tpat_id' }
+			xmlattribute version 		{ value 'md_frameVersion' }
+
+			# xmlelement Name { value '"Patroon voor lijn " + rte_pub_id' }
+			xmlelement RouteRef {
+				xmlattribute ref		{ value 'md_operatorId + ":Route:" + Trim(tpat_route)' }
+				xmlattribute version 	{ value 'md_frameVersion' }
+			}
+
+			# xmlelement Distance { value 'Trim(Format(tpat_distance,"zzzzz.n"))' }
+			# xmlelement Distance { value 'tpat_distance' }
+
+			xmlelement DestinationDisplayRef {
+				xmlattribute ref		{ value 'md_operatorId + ":DestinationDisplay:" + Object(veh_disp_code, tpat_veh_display).vdc_id' }
+				xmlattribute version 	{ value 'md_frameVersion' }
+			} # xmlelement DestinationDisplayRef
+
+			xmlelement pointsInSequence {
+				foreach trip_pattern_point {
+					condition 'Prev().stp_identifier <> ""'
+					var v_tpat_link_index 		{assign ' v_tpat_link_index + 1 '}
+					xmlelement StopPointInJourneyPattern {
+						xmlattribute id 			{ value 'md_operatorId + ":StopPointInJourneyPattern:" + Trim(tpat_route) + ":" + md_tpat_id + "-" + v_tpat_link_index' }
+						xmlattribute version 		{ value 'md_frameVersion' }
+						xmlattribute order 			{ value 'v_tpat_link_index' }
+						xmlelement ScheduledStopPointRef {
+							condition 'stp_is_public'
+							xmlattribute ref 		{ value 'md_operatorId + ":StopPoint:" + Prev().stp_identifier' }
+							xmlattribute version 	{ value 'md_frameVersion' }
+						} # xmlelement ScheduledStopPointRef
+						xmlelement TimingPointRef {
+							condition 'NOT stp_is_public'
+							xmlattribute ref 		{ value 'md_operatorId + ":TimingPoint:" + Prev().stp_identifier' }
+							xmlattribute version 	{ value 'md_frameVersion' }
+						} # xmlelement TimingPointRef
+						xmlelement OnwardTimingLinkRef {
+							xmlattribute ref 		{ value 'md_operatorId + ":TimingLink:" + Prev().stp_identifier + "-" + stp_identifier' }
+							xmlattribute version 	{ value 'md_frameVersion' }
+						} # xmlelement OnwardTimingLinkRef
+						xmlelement DestinationDisplayRef {
+							xmlattribute ref		{ value 'md_operatorId + ":DestinationDisplay:" + Object(veh_disp_code, tpatpt_veh_display_code).vdc_id' }
+							xmlattribute version 	{ value 'md_frameVersion' }
+						} # xmlelement DestinationDisplayRef
+					} # xmlelement StopPointInJourneyPattern
+				} # foreach trip_pattern_point
+			} # xmlelement pointsInSequence
+		} # xmlelement ServiceJourneyPattern
+	} # foreach trip_pattern
+
+	foreach trip_pattern {
+		from 'GetAll(vehicle_schedule).get(trip, md_trp_valid).get(trip_pattern)'
+		sort_by TripSort {
+			criteria tpat_route
+			criteria md_tpat_id
+		} # sort_by TripSort
+		unique_on 'tpat_route, md_tpat_id'
+		condition 'NOT trp_is_in_service'
+		var v_tpat_link_index {assign '0'}
+
+		xmlelement DeadRunJourneyPattern {
+			xmlattribute id 			{ value 'md_operatorId + ":DeadRunPattern:" + Trim(tpat_route) + ":" + md_tpat_id' }
+			xmlattribute version 		{ value 'md_frameVersion' }
+			
+			xmlelement RouteRef {
+				condition 'Trim(tpat_route) <> ""'
+				xmlattribute ref		{ value 'md_operatorId + ":Route:" + Trim(tpat_route)' }
+				xmlattribute version 	{ value 'md_frameVersion' }
+			}
+			
+			xmlelement pointsInSequence {
+				foreach trip_pattern_point {
+					condition 'Prev().stp_identifier <> ""'
+					var v_tpat_link_index 		{assign ' v_tpat_link_index + 1 '}
+					xmlelement TimingPointInJourneyPattern {
+						xmlattribute id 			{ value 'md_operatorId + ":TimingPointInJourneyPattern:" + Trim(tpat_route) + ":" + md_tpat_id + "-" + v_tpat_link_index' }
+						xmlattribute version 		{ value 'md_frameVersion' }
+						xmlattribute order 			{ value 'v_tpat_link_index' }
+						xmlelement ScheduledStopPointRef {
+							condition 'stp_is_public'
+							xmlattribute ref 		{ value 'md_operatorId + ":ScheduledStopPoint:" + Prev().stp_identifier' }
+							xmlattribute version 	{ value 'md_frameVersion' }
+						} # xmlelement ScheduledStopPointRef
+						xmlelement TimingPointRef {
+							condition 'NOT stp_is_public'
+							xmlattribute ref 		{ value 'md_operatorId + ":TimingPoint:" + Prev().stp_identifier' }
+							xmlattribute version 	{ value 'md_frameVersion' }
+						} # xmlelement TimingPointRef
+						xmlelement OnwardTimingLinkRef {
+							xmlattribute ref 		{ value 'md_operatorId + ":TimingLink:" + Prev().stp_identifier + "-" + stp_identifier' }
+							xmlattribute version 	{ value 'md_frameVersion' }
+						} # xmlelement OnwardTimingLinkRef
+						xmlelement DestinationDisplayRef {
+							xmlattribute ref		{ value 'md_operatorId + ":DestinationDisplay:" + Object(veh_disp_code, tpatpt_veh_display_code).vdc_id' }
+							xmlattribute version 	{ value 'md_frameVersion' }
+						} # xmlelement DestinationDisplayRef
+					} # xmlelement TimingPointInJourneyPattern
+				} # foreach trip_pattern_point
+			} # xmlelement pointsInSequence
+		} # xmlelement DeadRunPattern
+	} # foreach trip_pattern
+} # xmlelement journeyPatterns

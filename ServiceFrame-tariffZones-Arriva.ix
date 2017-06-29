@@ -1,0 +1,20 @@
+# Arriva TariffStops via stp_short_name
+
+foreach stop {
+	from 'GetAll(vehicle_schedule, vsc_is_current).stps_in_vsc'
+	condition 'stp_short_name <> null'
+	unique_on 'stp_short_name'
+
+	xmlelement TariffZone {
+		xmlattribute id             {value '"ARR:TariffZone:" + stp_short_name' }
+		xmlattribute version        {value 'md_frameVersion'}
+		xmlelement Name             {value 'stp_short_name' }
+		xmlelement ShortName        {value 'stp_short_name' }
+		xmlelement types {
+			xmlelement TypeOfZoneRef {
+				xmlattribute ref 	{ value '"ARR:TypeOfZone:TariffStop"' }
+				xmlattribute version { value '"any"' }
+			}
+		}
+	}
+}

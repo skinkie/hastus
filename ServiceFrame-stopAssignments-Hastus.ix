@@ -1,0 +1,29 @@
+xmlelement stopAssignments {
+	foreach stop {
+		from 'GetAll(vehicle_schedule, vsc_is_current).stps_in_vsc'
+		unique_on 'stp_identifier'
+		condition 'stp_is_public'
+		sort_by 'stp_identifier'
+		xmlelement PassengerStopAssignement {
+			xmlattribute id 				{ value 'md_operatorId + ":PassengerStopAssignement:" + stp_identifier' }
+			xmlattribute version 			{ value 'md_frameVersion' }
+
+			xmlelement ScheduledStopPointRef {
+				xmlattribute ref 				{ value 'md_operatorId + ":ScheduledStopPoint:" + stp_identifier' }
+				xmlattribute version 			{ value 'md_frameVersion' }
+			}
+
+			xmlelement StopPlaceRef {
+				xmlattribute ref 				{ value 'md_operatorId + ":StopPlace:" + plc_identifier' }
+				xmlattribute version 			{ value 'md_frameVersion' }
+			}
+
+			# TODO: implement Hastus loader for CHB
+			#
+			# xmlelement QuayRef {
+			#	xmlelement ref { value 'stp_quayref' }
+			#	xmlelement version { value '"any"' }
+			# }
+		}
+	} # foreach stop
+}

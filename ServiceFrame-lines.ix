@@ -1,0 +1,51 @@
+xmlelement lines {
+	foreach trip {
+		from 'GetFirstOfAll(vehicle_schedule, vsc_is_current, 1).Get(trip, md_trp_valid)'
+		condition 'trp_is_public'
+		unique_on 'trp_route'
+		sort_by 'trp_route'
+		xmlelement Line {
+			xmlattribute id 			{ value 'md_operatorId + ":Line:" + Trim(trp_route)' }
+			xmlattribute version 		{ value 'md_frameVersion' }
+			xmlelement keyList {
+				xmlelement KeyValue {
+					xmlelement Key 			{ value '"VeTagLineNumber"' }
+					xmlelement Value 		{ value 'Trim(Object(route,trp_route).rte_pub_id)' }
+				} # xmlelement KeyValue
+				xmlelement KeyValue {
+					xmlelement Key 			{ value '"LinePlanningNumber"' }
+					xmlelement Value 		{ value 'Trim(Object(route,trp_route).rte_identifier)' }
+				} # xmlelement KeyValue
+			} # xmlelement keyList
+			xmlelement Name 				{ value 'Object(route,trp_route).rte_description' }
+			xmlelement TransportMode 		{ value 'md_rte_service_mode' }
+			xmlelement PublicCode 			{ value 'Trim(Object(route,trp_route).rte_pub_id)' }
+
+			foreach trip_stop {
+				unique_on 'tstp_district'
+				xmlelement AuthorityRef	{
+					xmlattribute ref 			{ value '"BISON:Authority:" + tstp_district' }
+					xmlattribute version		{ value '"any"' }
+				} # xmlelement AuthorityRef
+			}
+
+			xmlelement Monitored 			{ value 'IF trp_is_in_service THEN "true" ELSE "false"' }
+
+			# TODO: AccessibilityAssessment per line.
+			#
+			# xmlelement AccessibilityAssessment {
+			#	xmlattribute id 			{ value 'md_operatorId + ":AccessibilityAssessment:" + trp_route' }
+			#	xmlattribute version 		{ value 'md_frameVersion' }
+			#	xmlelement MobilityImpairedAccess { value 'false' }
+			#	xmlelement suitabilities {
+			#		xmlelement Suitability {
+			#			xmlattribute id { value '"BISON:Suitability:WheelchairNotSuitable"' }
+			#			xmlattribute version { value '"any"' }
+			#			xmlelement MobilityNeed { value '"wheelchair"' }
+			#			xmlelement Suitable { value '"notSuitable"' }
+			#		}
+			#	}
+			# } # xmlelement AccessibilityAssessment
+		} # xmlelement Line
+	} # foreach trip
+} # xmlelement lines
