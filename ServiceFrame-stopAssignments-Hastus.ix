@@ -4,7 +4,7 @@ xmlelement stopAssignments {
 		unique_on 'stp_identifier'
 		condition 'stp_is_public'
 		sort_by 'stp_identifier'
-		xmlelement PassengerStopAssignement {
+		xmlelement PassengerStopAssignment {
 			xmlattribute id 				{ value 'md_operatorId + ":PassengerStopAssignement:" + stp_identifier' }
 			xmlattribute version 			{ value 'md_frameVersion' }
 

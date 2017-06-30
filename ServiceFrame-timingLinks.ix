@@ -14,14 +14,13 @@ xmlelement timingLinks {
 			xmlattribute responsibilitySetRef 		{ value '"BISON:ResponsibilitySet:"+md_link_authority' }
 			xmlelement Distance 					{ value 'Trim(Format(tpatpt_distance,"zzzzz.n"))' }
 			xmlelement FromPointRef {
-				condition 'Prev().stp_is_public'
 				xmlattribute ref {
 					condition 'Prev().stp_is_public'
 					value 'md_operatorId + ":ScheduledStopPoint:" + Prev().stp_identifier'
 				}
 				xmlattribute ref {
 					condition 'NOT Prev().stp_is_public'
-					value 'md_operatorId + ":TimingPoint:" + Prev().stp_identifier'				
+					value 'md_operatorId + ":TimingPoint:" + Prev().stp_identifier'
 				}
 				xmlattribute version 				{ value 'md_frameVersion' }
 			} # xmlelement FromPointRef

@@ -2,12 +2,12 @@
 xmlelement ResourceFrame {
 	xmlattribute id { value 'md_operatorId + ":ResourceFrame:1"' }
 	xmlattribute version { value 'md_frameVersion' }
-	
+
 	&include ResourceFrame-dataSources.ix
 
 	# TODO: responsibilitySets
 
-	&include ResourceFrame-organisations.ix
-	
 	&include ResourceFrame-typesOfValue.ix
+
+	&include ResourceFrame-organisations.ix
 }

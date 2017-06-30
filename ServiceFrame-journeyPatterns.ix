@@ -15,7 +15,7 @@ xmlelement journeyPatterns {
 
 			# xmlelement Name { value '"Patroon voor lijn " + rte_pub_id' }
 			xmlelement RouteRef {
-				xmlattribute ref		{ value 'md_operatorId + ":Route:" + Trim(tpat_route)' }
+				xmlattribute ref		{ value 'md_operatorId + ":Route:" + Trim(tpat_route) + ":" + md_tpat_id' }
 				xmlattribute version 	{ value 'md_frameVersion' }
 			}
 
@@ -72,13 +72,13 @@ xmlelement journeyPatterns {
 		xmlelement DeadRunJourneyPattern {
 			xmlattribute id 			{ value 'md_operatorId + ":DeadRunPattern:" + Trim(tpat_route) + ":" + md_tpat_id' }
 			xmlattribute version 		{ value 'md_frameVersion' }
-			
+
 			xmlelement RouteRef {
 				condition 'Trim(tpat_route) <> ""'
 				xmlattribute ref		{ value 'md_operatorId + ":Route:" + Trim(tpat_route)' }
 				xmlattribute version 	{ value 'md_frameVersion' }
 			}
-			
+
 			xmlelement pointsInSequence {
 				foreach trip_pattern_point {
 					condition 'Prev().stp_identifier <> ""'

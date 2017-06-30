@@ -11,8 +11,8 @@ xmlelement vehicleJourneys {
 			} # sort_by TripStopSort
 
 			xmlelement ServiceJourney {
-				xmlattribute id         { value 'md_operatorId + ":ServiceJourney:" + Trim(trp_route) + ":" + trim(trp_number)' }
-				xmlattribute version	{ value '"any"' }
+				xmlattribute id         { value 'md_operatorId + ":ServiceJourney:" + vsc_int_id + ":" vsc_sched_type + ":" + Trim(trp_route) + ":" + trim(trp_number)' }
+				xmlattribute version	{ value 'md_frameVersion' }
 
 				xmlelement validityConditions {
 					xmlelement AvailabilityConditionRef {
@@ -35,7 +35,7 @@ xmlelement vehicleJourneys {
 
 				xmlelement ServiceJourneyPatternRef {
 					xmlattribute ref                { value 'md_operatorId + ":ServiceJourneyPattern:" + Trim(tpat_route) + ":" + md_tpat_id' }
-					xmlattribute version			{ value '"any"' }
+					xmlattribute version			{ value 'md_frameVersion' }
 				} # xmlelement JourneyPatternRef
 
 				xmlelement TimeDemandTypeRef {
@@ -49,7 +49,7 @@ xmlelement vehicleJourneys {
 				} # xmlelement BlockRef
 		} # xmlelement ServiceJourney
 	} # foreach trip
-	
+
 	foreach trip {
 		from 'GetFirstOfAll(vehicle_schedule, vsc_is_current, 1).Get(trip, md_trp_valid)'
 			condition 'md_trp_valid AND trp_is_in_service'
@@ -62,8 +62,8 @@ xmlelement vehicleJourneys {
 			} # sort_by TripStopSort
 
 			xmlelement DeadRun {
-				xmlattribute id        { value 'md_operatorId + ":DeadRun:" + Trim(trp_route) + ":" + trim(trp_number)' }
-				xmlattribute version	{ value '"any"' }
+				xmlattribute id        { value 'md_operatorId + ":DeadRun:" + vsc_int_id + ":" vsc_sched_type + ":" + Trim(trp_route) + ":" + trim(trp_number)' }
+				xmlattribute version	{ value 'md_frameVersion' }
 
 				xmlelement validityConditions {
 					xmlelement AvailabilityConditionRef {
@@ -86,7 +86,7 @@ xmlelement vehicleJourneys {
 
 				xmlelement DeadRunJourneyPatternRef {
 					xmlattribute ref                { value 'md_operatorId + ":DeadRunJourneyPattern:" + Trim(tpat_route) + ":" + DefNull(tpat_external_id, tpat_id)' }
-					xmlattribute version			{ value '"any"' }
+					xmlattribute version			{ value 'md_frameVersion' }
 				} # xmlelement DeadRunJourneyPatternRef
 
 				xmlelement TimeDemandTypeRef {
@@ -99,5 +99,5 @@ xmlelement vehicleJourneys {
 					xmlattribute version			{ value 'md_frameVersion' }
 				} # xmlelement BlockRef
 		} # xmlelement ServiceJourney
-	} # foreach trip							
+	} # foreach trip
 } # xmlelement vehicleJourneys
