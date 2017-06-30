@@ -11,7 +11,7 @@ xmlelement vehicleJourneys {
 			} # sort_by TripStopSort
 
 			xmlelement ServiceJourney {
-				xmlattribute id         { value 'md_operatorId + ":ServiceJourney:" + vsc_int_id + ":" vsc_sched_type + ":" + Trim(trp_route) + ":" + trim(trp_number)' }
+				xmlattribute id         { value 'md_operatorId + ":ServiceJourney:" + vsc_int_id + ":" + vsc_sched_type + ":" + Trim(trp_route) + ":" + trim(trp_number)' }
 				xmlattribute version	{ value 'md_frameVersion' }
 
 				xmlelement validityConditions {
@@ -62,7 +62,7 @@ xmlelement vehicleJourneys {
 			} # sort_by TripStopSort
 
 			xmlelement DeadRun {
-				xmlattribute id        { value 'md_operatorId + ":DeadRun:" + vsc_int_id + ":" vsc_sched_type + ":" + Trim(trp_route) + ":" + trim(trp_number)' }
+				xmlattribute id        { value 'md_operatorId + ":DeadRun:" + vsc_int_id + ":" + vsc_sched_type + ":" + Trim(trp_route) + ":" + trim(trp_number)' }
 				xmlattribute version	{ value 'md_frameVersion' }
 
 				xmlelement validityConditions {
