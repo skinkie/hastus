@@ -11,8 +11,8 @@ xmlelement contentValidityConditions {
 		xmlelement AvailabilityCondition {
 			xmlattribute id             { value 'md_operatorId + ":AvailabilityCondition:" + v_valid_days + ":" + vsc_int_id' }
 			xmlattribute version        { value 'md_frameVersion' }
-			xmlelement FromDate         { value 'p_DateStart + 'T00:00:00Z' }
-			xmlelement ToDate           { value 'p_DateEnd + T00:00:00Z' } # TODO: Controleren hoe dat reageert op een nachtrit
+			xmlelement FromDate         { value 'p_DateStart + "T00:00:00Z"' }
+			xmlelement ToDate           { value 'p_DateEnd + "T00:00:00Z"' } # TODO: Controleren hoe dat reageert op een nachtrit
 		} # xmlelement AvailabilityCondition
 	} # foreach vehicle_schedule
 } # xmlelement contentValidityConditions

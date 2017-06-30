@@ -75,7 +75,7 @@ xmlelement journeyPatterns {
 
 			xmlelement RouteRef {
 				condition 'Trim(tpat_route) <> ""'
-				xmlattribute ref		{ value 'md_operatorId + ":Route:" + Trim(tpat_route)' }
+				xmlattribute ref		{ value 'md_operatorId + ":Route:" + Trim(tpat_route) + ":" + md_tpat_id' }
 				xmlattribute version 	{ value 'md_frameVersion' }
 			}
 
