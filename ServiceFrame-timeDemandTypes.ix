@@ -6,7 +6,7 @@ xmlelement timeDemandTypes {
 			criteria rpat_identifier
 		} # sort_by TripSort
 		unique_on 'rpat_route, rpat_identifier'
-		condition 'trp_is_in_service'
+		# condition 'trp_is_in_service'
 		var v_tpat_link_index {assign '0'}
 		var v_tpat_stop_index {assign '0'}
 

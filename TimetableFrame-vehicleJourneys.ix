@@ -44,7 +44,7 @@ xmlelement vehicleJourneys {
 				} # xmlelement TimeDemandTypeRef
 
 				xmlelement BlockRef {
-					xmlattribute ref				{ value 'md_operatorId + ":Block:" + trim(trp_block) ' }
+					xmlattribute ref				{ value 'md_operatorId + ":Block:" + vsc_int_id + ":" + vsc_sched_type + ":" + trim(trp_block) ' }
 					xmlattribute version			{ value 'md_frameVersion' }
 				} # xmlelement BlockRef
 		} # xmlelement ServiceJourney
@@ -52,7 +52,7 @@ xmlelement vehicleJourneys {
 
 	foreach trip {
 		from 'GetFirstOfAll(vehicle_schedule, vsc_is_current, 1).Get(trip, md_trp_valid)'
-			condition 'md_trp_valid AND trp_is_in_service'
+			condition 'md_trp_valid AND NOT trp_is_in_service'
 			unique_on 'vsc_int_id,vsc_sched_type,trp_route,trp_number'
 			sort_by TripStopSort {
 				criteria vsc_int_id
@@ -85,7 +85,7 @@ xmlelement vehicleJourneys {
 				# TODO: DayTypes
 
 				xmlelement DeadRunJourneyPatternRef {
-					xmlattribute ref                { value 'md_operatorId + ":DeadRunJourneyPattern:" + Trim(tpat_route) + ":" + DefNull(tpat_external_id, tpat_id)' }
+					xmlattribute ref                { value 'md_operatorId + ":DeadRunJourneyPattern:" + Trim(tpat_route) + ":" + md_tpat_id' }
 					xmlattribute version			{ value 'md_frameVersion' }
 				} # xmlelement DeadRunJourneyPatternRef
 
@@ -95,7 +95,7 @@ xmlelement vehicleJourneys {
 				} # xmlelement TimeDemandTypeRef
 
 				xmlelement BlockRef {
-					xmlattribute ref				{ value 'md_operatorId + ":Block:" + trim(trp_block) ' }
+					xmlattribute ref				{ value 'md_operatorId + ":Block:" + vsc_int_id + ":" + vsc_sched_type + ":" + trim(trp_block) ' }
 					xmlattribute version			{ value 'md_frameVersion' }
 				} # xmlelement BlockRef
 		} # xmlelement ServiceJourney

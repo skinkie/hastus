@@ -68,7 +68,7 @@ file serviceframe {
 					
 					&include ServiceFrame.ix
 					
-					# &include TimetableFrame.ix
+					&include TimetableFrame.ix
 					
 					&include VehicleScheduleFrame.ix
 				}
