@@ -17,7 +17,7 @@ xmlelement tariffZones {
 			}
 		}
 	}
-	
+
 	# Arriva TariffStops via stp_short_name
-	# &include ServiceFrame-tariffZones-Arriva.ix
+	# &include tariffZones/tariffStop-Arriva.ix
 }

@@ -2,9 +2,9 @@ xmlelement InfrastructureFrame {
 	xmlattribute id { value 'md_operatorId + ":InfrastructureFrame:1"' }
 	xmlattribute version { value 'md_frameVersion' }
 
-	&include InfrastructureFrame-garages.ix						
+	&include InfrastructureFrame/garages.ix
 
-	&include InfrastructureFrame-vehicleAndCrewPoints.ix
-	
-	&include InfrastructureFrame-vehicleTypes.ix
+	&include InfrastructureFrame/vehicleAndCrewPoints.ix
+
+	&include InfrastructureFrame/vehicleTypes.ix
 }

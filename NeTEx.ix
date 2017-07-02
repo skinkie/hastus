@@ -16,11 +16,11 @@ definitions MainDefinitions {
 		ELSE "rail"
 		}
 	DEFINE md_runtime { Trim(Format(rpst_stp_run_time, "ssss")) }
-	DEFINE md_loadtime { Trim(Format(rpst_stp_load_time, "ssss")) }		
+	DEFINE md_loadtime { Trim(Format(rpst_stp_load_time, "ssss")) }
 	DEFINE md_link_authority { IF Prev().tstp_district <> "" THEN Prev().tstp_district ELSE md_authority }
 	DEFINE md_departureTime { StrReplace(Format(trp_time_start_24h, "0hh\'mm:ss"), ";", ":") }
 	DEFINE md_tpat_id { DefNull(tpat_external_id, tpat_id) }
-	
+
 	end
 }
 
@@ -56,21 +56,21 @@ file serviceframe {
 			xmlelement CompositeFrame {
 				xmlattribute id 			{ value 'md_operatorId + ":CompositeFrame:1"' }
 				xmlattribute version 		{ value 'md_frameVersion' }
-			
-				&include CompositeFrame-FrameDefaults.ix					
+
+				&include CompositeFrame-FrameDefaults.ix
 
 				xmlelement frames {
-					&include ResourceFrame.ix
+					&include CompositeFrame/ResourceFrame.ix
 
-					&include InfrastructureFrame.ix
-					
-					&include SiteFrame.ix
-					
-					&include ServiceFrame.ix
-					
-					&include TimetableFrame.ix
-					
-					&include VehicleScheduleFrame.ix
+					&include CompositeFrame/InfrastructureFrame.ix
+
+					&include CompositeFrame/SiteFrame.ix
+
+					&include CompositeFrame/ServiceFrame.ix
+
+					&include CompositeFrame/TimetableFrame.ix
+
+					&include CompositeFrame/VehicleScheduleFrame.ix
 				}
 			}
 		}
