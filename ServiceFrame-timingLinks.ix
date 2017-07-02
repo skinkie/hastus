@@ -26,7 +26,6 @@ xmlelement timingLinks {
 			} # xmlelement FromPointRef
 
 			xmlelement ToPointRef {
-				condition 'stp_is_public'
 				xmlattribute ref {
 					condition 'stp_is_public'
 					value 'md_operatorId + ":ScheduledStopPoint:" + stp_identifier'

@@ -1,12 +1,14 @@
 xmlelement stopAssignments {
-	foreach stop {
-		from 'GetAll(vehicle_schedule, vsc_is_current).stps_in_vsc'
+	foreach trip_pattern_point {
+		from 'GetAll(vehicle_schedule).get(trip, md_trp_valid).get(trip_pattern).get(trip_pattern_point)'
+		condition 'stp_identifier <> "" AND stp_is_public'
 		unique_on 'stp_identifier'
-		condition 'stp_is_public'
 		sort_by 'stp_identifier'
+
 		xmlelement PassengerStopAssignment {
 			xmlattribute id 				{ value 'md_operatorId + ":PassengerStopAssignement:" + stp_identifier' }
 			xmlattribute version 			{ value 'md_frameVersion' }
+			xmlattribute order				{ value '"1"' }
 
 			xmlelement ScheduledStopPointRef {
 				xmlattribute ref 				{ value 'md_operatorId + ":ScheduledStopPoint:" + stp_identifier' }
@@ -25,5 +27,5 @@ xmlelement stopAssignments {
 			#	xmlelement version { value '"any"' }
 			# }
 		}
-	} # foreach stop
+	} # foreach trip_pattern_point
 }

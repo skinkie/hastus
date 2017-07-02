@@ -1,0 +1,27 @@
+xmlelement routeLinks {
+	foreach trip_pattern_point {
+		from 'GetAll(vehicle_schedule).get(trip, md_trp_valid).get(trip_pattern).get(trip_pattern_point)'
+		condition 'Prev().stp_identifier <> "" AND stp_identifier <> "" AND Prev().stp_identifier <> stp_identifier'
+		unique_on 'Prev().stp_identifier, stp_identifier '
+		sort_by TripPatternStopSort {
+			criteria Prev().stp_identifier
+			criteria stp_identifier
+			criteria tpatpt_distance
+		} # sort_by TripPatternStopSort
+		xmlelement RouteLink {
+			xmlattribute id 						{ value 'md_operatorId + ":RouteLink:" + Prev().stp_identifier + "-" + stp_identifier' }
+			xmlattribute version 					{ value 'md_frameVersion' }
+			xmlattribute responsibilitySetRef 		{ value '"BISON:ResponsibilitySet:"+md_link_authority' }
+			xmlelement Distance 					{ value 'Trim(Format(tpatpt_distance,"zzzzz.n"))' }
+
+			xmlelement "FromPointRef" {
+				xmlattribute ref			{ value 'md_operatorId + ":RoutePoint:" + Prev().stp_identifier' }
+				xmlattribute version 		{ value 'md_frameVersion' }
+			}
+			xmlelement "ToPointRef"	{
+				xmlattribute ref			{ value 'md_operatorId + ":RoutePoint:" + stp_identifier' }
+				xmlattribute version		{ value 'md_frameVersion' }
+			}
+		} # xmlelement RouteLink
+	} # foreach trip_pattern_point
+} # xmlelement routeLinks

@@ -54,6 +54,9 @@ file serviceframe {
 
 		xmlelement dataObjects {
 			xmlelement CompositeFrame {
+				xmlattribute id 			{ value 'md_operatorId + ":CompositeFrame:1"' }
+				xmlattribute version 		{ value 'md_frameVersion' }
+			
 				&include CompositeFrame-FrameDefaults.ix					
 
 				xmlelement frames {
@@ -65,7 +68,9 @@ file serviceframe {
 					
 					&include ServiceFrame.ix
 					
-					&include TimetableFrame.ix
+					# &include TimetableFrame.ix
+					
+					&include VehicleScheduleFrame.ix
 				}
 			}
 		}

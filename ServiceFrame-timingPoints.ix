@@ -17,10 +17,11 @@ xmlelement timingPoints {
 
 			xmlelement Name 			{ value 'stp_description' }
 			xmlelement projections {
-				xmlattribute id 				{ value 'md_operatorId + ":PointProjection:" + stp_identifier' }
-				xmlattribute version 			{ value 'md_frameVersion' }
 
 				xmlelement PointProjection {
+					xmlattribute id 				{ value 'md_operatorId + ":PointProjection:" + stp_identifier' }
+					xmlattribute version 			{ value 'md_frameVersion' }
+
 					xmlelement ProjectToPointRef {
 						xmlattribute nameOfRefClass 		{ value '"RoutePoint"' }
 						xmlattribute ref 					{ value 'md_operatorId + ":RoutePoint:" + stp_identifier' }

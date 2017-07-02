@@ -1,5 +1,8 @@
 xmlelement typesOfValue {
 	xmlelement ValueSet {
+		xmlattribute id { value 'md_operatorId + ":ValueSet:1"' }
+		xmlattribute version { value '"any"' }
+		
 		xmlelement Name { value '"Zone types"'}
 		xmlelement values {
 			xmlelement TypeOfZone {
@@ -8,7 +11,7 @@ xmlelement typesOfValue {
 				xmlelement Name { value '"Nationale Zone"' }
 			}
 			
-			&include ResourceFrame-TypeOfZone-TariffStop.ix
+			# &include ResourceFrame-TypeOfZone-TariffStop.ix
 		}
 	}
 }

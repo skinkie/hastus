@@ -1,52 +1,25 @@
 xmlelement stopPlaces {
-	foreach place {
-		from 'GetAll(vehicle_schedule, vsc_is_current).Get(stop).Get(place)'
-		var part1 {assign 'plc_identifier' }
-		array_var av_plc {assign 'IF av_plc = NULL THEN 1 ELSE av_plc+1'}
+	foreach trip_pattern_point {
+		from 'GetAll(vehicle_schedule).get(trip, md_trp_valid).get(trip_pattern).get(trip_pattern_point)'
+		condition 'stp_identifier <> "" AND plc_identifier <> "" AND stp_is_public'
+		unique_on 'plc_identifier'
+		sort_by 'plc_identifier'
+		
+		xmlelement StopPlace {		
 
-		xmlelement StopPlace {
-			condition 'av_plc=1'
-			xmlattribute id		   {value 'md_operatorId + ":StopPlace:1" + plc_identifier' }
-			xmlelement Name		   {value 'plc_description' }
+			xmlattribute id		   {value 'md_operatorId + ":StopPlace:" + plc_identifier' }
+			xmlelement Name		   {value 'Object(place, plc_identifier).plc_description' }
 			xmlelement ShortName	  {value 'plc_identifier' }
 			xmlattribute version 	  {value 'md_frameVersion' }
 
 			xmlelement Centroid {
 				xmlelement Location {
 					xmlelement gml:pos {
-						xmlattribute srsName			{ value '"EPSG:28992"' }
-						value 'Trim(Format(loca_x_coord, "zzzzzn" )) + " " + Trim(Format(loca_y_coord, "zzzzzn" ))'
+						xmlattribute srsName { value '"EPSG:28992"' }
+						value 'Trim(Format(Object(place, plc_identifier).loca_x_coord, "zzzzzn" )) + " " + Trim(Format(Object(place, plc_identifier).loca_y_coord, "zzzzzn" ))'
 					} # xmlelement gml:pos
 				}
 			}
-
-			# ReferencePointRef
-			# xmlattribute "referencePlaceId" {value 'IF plc_ud_refplace <>NULL THEN plc_ud_refplace ELSE plc_reference_place' }
 		}
-
-		# var part1   {assign 'Object(place,plc_reference_place).plc_identifier' }
-		# array_var av_plc {assign 'IF av_plc = NULL THEN 1 ELSE av_plc+1'}
-
-		# xmlelement Place {
-		#	condition 'av_plc=1'
-
-		#	xmlattribute id		   {value 'md_operatorId + ":Place:1" + Object(place,plc_reference_place).plc_identifier' }
-		#	xmlelement Name		   {value 'Object(place,plc_reference_place).plc_description' }
-		#	xmlelement ShortName	  {value 'Object(place,plc_reference_place).plc_identifier' }
-		#	xmlattribute version 	  {value 'md_frameVersion' }
-
-		#	xmlelement Centroid {
-		#		xmlelement Location {
-		#			xmlelement gml:pos {
-		#				xmlattribute srsName { value '"EPSG:28992"' }
-		#				value 'Trim(Format(plc_reference_place.loca_x_coord, "zzzzzn" )) + " " + Trim(Format(plc_reference_place.loca_y_coord, "zzzzzn" ))'
-		#			} # xmlelement gml:pos
-		#		}
-		#	}
-
-			# ReferencePointRef
-			# xmlattribute "referencePlaceId" {value 'IF Object(place,plc_reference_place).plc_ud_refplace <>NULL THEN Object(place,plc_reference_place).plc_ud_refplace ELSE Object(place,plc_reference_place).plc_reference_place' }
-
-		# }
-	} # foreach place
+	} # foreach trip_pattern_point
 }

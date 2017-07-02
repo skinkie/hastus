@@ -1,0 +1,33 @@
+xmlelement blocks {
+	foreach block {
+		from 'GetAll(vehicle_schedule, vsc_is_current).Get(block)'
+		sort_by BlockSort {
+			criteria vsc_int_id
+			criteria blk_number			
+		}		
+		unique_on 'vsc_int_id, blk_number'
+		
+		xmlelement Block {
+			xmlattribute id         { value 'md_operatorId + ":Block:" + vsc_int_id + ":" + vsc_sched_type + ":" + Trim(blk_number)' }
+			xmlattribute version	{ value 'md_frameVersion' }
+				
+			xmlelement Description	{ value 'Trim(blk_number)' }
+				
+			# TODO: dayTypes
+				
+			# TODO: VehicleServicePartRef
+							
+			xmlelement VehicleTypeRef { 
+				xmlattribute ref { value 'md_operatorId + ":VehicleType:" + blk_vehicle_group' }
+				xmlattribute version { value '"any"' }
+			}
+				
+			# TODO: StartPointRef blk_stop_first.md_PointRefNumber
+				
+			# TODO: EndPointRef blk_stop_last.md_PointRefNumber
+				
+			# TODO: courseOfJourneys				
+				
+		} # xmlelement Block
+	}
+} # xmlelement blocks
