@@ -30,6 +30,8 @@ var v_tpat_link_index 					{ type 'integer' assign '0' }
 var v_tpat_stop_index 					{ type 'integer' assign '0' }
 var v_valid_days { type 'string' }
 
+
+
 array_var av_printed_itn {
 	key_part 'itn_stop_start'
 	key_part 'itn_stop_end'
@@ -69,6 +71,8 @@ file serviceframe {
 					&include CompositeFrame/ServiceFrame.ix
 
 					&include CompositeFrame/TimetableFrame.ix
+					
+					&include CompositeFrame/ServiceCalendarFrame.ix
 
 					&include CompositeFrame/VehicleScheduleFrame.ix
 				}
