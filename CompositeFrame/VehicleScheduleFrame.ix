@@ -6,5 +6,5 @@ xmlelement VehicleScheduleFrame {
 
 	&include VehicleScheduleFrame/blocks.ix
 
-	# &include VehicleScheduleFrame/vehicleServices.ix
+	&include VehicleScheduleFrame/vehicleServices.ix
 }

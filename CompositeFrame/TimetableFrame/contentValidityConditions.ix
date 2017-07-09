@@ -13,6 +13,13 @@ xmlelement contentValidityConditions {
 			xmlattribute version        { value 'md_frameVersion' }
 			xmlelement FromDate         { value 'p_DateStart + "T00:00:00Z"' }
 			xmlelement ToDate           { value 'p_DateEnd + "T00:00:00Z"' } # TODO: Controleren hoe dat reageert op een nachtrit
+			
+			xmlelement dayTypes {
+				xmlelement DayTypeRef {
+					xmlattribute ref { value 'md_operatorId + ":DayType:" + vsc_oper_day_digits' }
+					xmlattribute version { value 'md_frameVersion' }
+				}
+			}
 		} # xmlelement AvailabilityCondition
 	} # foreach vehicle_schedule
 } # xmlelement contentValidityConditions

@@ -1,0 +1,29 @@
+xmlelement dayTypeAssignments {
+	foreach scheduling_unit_date {
+		from 'GetSchedUnitDates(vehicle_schedule, p_SchedSet, p_SchedUnit, p_ProdPhase, p_DateStart, p_DateEnd, p_CalType, p_CalendarId)'
+		
+		
+		# TODO: hier een set maken van blk_oper_days_12 + vta_oper_days_12
+		
+		foreach vehicle_schedule {
+			
+			foreach block {
+				unique_on 'vsc_int_id,scud_date,blk_oper_days_12'
+				
+				# TODO: hoe moet dit met alleen scud_date,blk_oper_days_12 ?
+							
+				xmlelement DayTypeAssignment {
+					xmlattribute id { value 'md_operatorId + ":DayTypeAssignment:" + vsc_int_id + ":" + scud_date + ":" + blk_oper_days_12' }
+					xmlattribute version { value 'md_frameVersion' }
+					xmlattribute order { value '"1"' }
+					
+					xmlelement Date { value 'scud_date' }
+					xmlelement DayTypeRef {
+						xmlattribute ref { value 'md_operatorId + ":DayType:" + blk_oper_days_12' }
+						xmlattribute version { value 'md_frameVersion' }
+					}
+				}
+			}
+		}
+	}
+} # xmlelement dayTypeAssignments

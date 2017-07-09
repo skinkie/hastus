@@ -1,0 +1,38 @@
+xmlelement vehicleServices {
+	foreach vehicle_task {	
+		sort_by VtaSort {						
+			criteria vta_number
+		}
+		xmlelement VehicleService {
+			xmlattribute id         { value 'md_operatorId + ":VehicleService:" + vsc_int_id + ":" + vsc_sched_type + ":" + Trim(vta_number)' }
+			xmlattribute version	{ value 'md_frameVersion' }		
+			
+			xmlelement validityConditions {
+				xmlelement AvailabilityConditionRef {			
+					xmlattribute ref        { value 'md_operatorId + ":ValidityCondition:" + vsc_int_id' }
+				} # xmlelement AvailabilityConditionRef
+			} # xmlelement validityConditions
+				
+			xmlelement Name	{ value 'Trim(vta_number)' }
+
+			xmlelement vehicleServiceParts {
+				foreach block {
+					sort_by BlockTimeSort {						
+						criteria blk_time_start
+					}
+					xmlelement VehicleServicePart {
+						xmlattribute id { value 'md_operatorId + ":VehicleServicePart:" + vsc_booking + ":" + vsc_int_id + ":" + Trim(vta_number) + ":" + blk_time_start' }
+						xmlattribute version { value 'md_frameVersion' }
+						
+						xmlelement StartPointRef {
+							xmlattribute ref { value 'IF blk_gar_plc_strt <> "" THEN md_operatorId + ":GaragePoint:" + blk_gar_plc_strt ELSE IF Object(stop, blk_stop_first).stp_is_public THEN md_operatorId + ":ScheduledStopPoint:" + blk_stop_first ELSE md_operatorId + ":TimingPoint:" + blk_stop_first' }			
+						}
+						xmlelement EndPointRef {
+							xmlattribute ref { value 'IF blk_gar_plc_end <> "" THEN md_operatorId + ":GaragePoint:" + blk_gar_plc_end ELSE IF Object(stop, blk_stop_last).stp_is_public THEN md_operatorId + ":ScheduledStopPoint:" + blk_stop_last ELSE md_operatorId + ":TimingPoint:" + blk_stop_last' }
+						}
+					}
+				}
+			}
+		} # xmlelement VehicleService
+	} # vehicle_task
+} # xmlelement vehicleServices

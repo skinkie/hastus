@@ -14,13 +14,17 @@ xmlelement blocks {
 			xmlelement Description	{ value 'Trim(blk_number)' }
 				
 			xmlelement dayTypes {
+				condition 'vta_oper_days_12 <> blk_oper_days_12'
 				xmlelement DayTypeRef {
 					xmlattribute ref { value 'md_operatorId + ":DayType:" + blk_oper_days_12' }
 					xmlattribute version { value 'md_frameVersion' }
-				}				
+				}
 			}
 				
-			# TODO: VehicleServicePartRef
+			xmlelement VehicleServicePartRef {
+				xmlattribute ref { value 'md_operatorId + ":VehicleServicePart:" + vsc_booking + ":" + vsc_int_id + ":" + Trim(vta_number) + ":" + blk_time_start' }
+				xmlattribute version { value 'md_frameVersion' }
+			}
 							
 			xmlelement VehicleTypeRef { 
 				xmlattribute ref { value 'md_operatorId + ":VehicleType:" + blk_vehicle_group' }
