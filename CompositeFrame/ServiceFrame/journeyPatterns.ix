@@ -16,10 +16,10 @@ xmlelement journeyPatterns {
 
 			# xmlelement Name { value '"Patroon voor lijn " + rte_pub_id' }
 			xmlelement ShortName { value 'md_tpat_id' }
-			
+
 			xmlelement Distance { value 'Trim(Format(tpat_distance,"zzzzz.n"))' }
 			# xmlelement Distance { value 'tpat_distance' }
-			
+
 			xmlelement RouteRef {
 				xmlattribute ref		{ value 'md_operatorId + ":Route:" + Trim(tpat_route) + ":" + md_tpat_id' }
 				xmlattribute version 	{ value 'md_frameVersion' }
@@ -29,7 +29,7 @@ xmlelement journeyPatterns {
 				xmlattribute ref 		{ value 'md_operatorId + ":Direction:" + tpat_direction' }
 				xmlattribute version	{ value '"any"' }
 			}
-			
+
 			xmlelement DestinationDisplayRef {
 				condition 'tpat_veh_display <> ""'
 				xmlattribute ref		{ value 'md_operatorId + ":DestinationDisplay:" + Object(veh_disp_code, tpat_veh_display).vdc_id' }
@@ -40,16 +40,16 @@ xmlelement journeyPatterns {
 				foreach trip_pattern_point {
 					# from 'Get(trip_pattern, tpat_route 				 = THIS trip_pattern[2].tpat_route AND
 					#						md_tpat_id         		 = THIS trip_pattern[2].md_tpat_id    AND
-					#						tpat_direction           = THIS trip_pattern[2].tpat_direction).Get(trip_pattern_point)'								
+					#						tpat_direction           = THIS trip_pattern[2].tpat_direction).Get(trip_pattern_point)'
 					# condition ' stp_identifier <> Next().stp_identifier '
-					unique_on ' tpatpt_position, stp_identifier, Next().stp_identifier '	
-			
+					unique_on ' tpatpt_position, stp_identifier, Next().stp_identifier '
+
 					xmlelement StopPointInJourneyPattern {
 						condition 'stp_is_public'
 						xmlattribute id 			{ value 'md_operatorId + ":StopPointInJourneyPattern:" + Trim(tpat_route) + ":" + md_tpat_id + "-" + tpatpt_position' }
 						xmlattribute version 		{ value 'md_frameVersion' }
 						xmlattribute order 			{ value 'tpatpt_position' }
-						xmlelement ScheduledStopPointRef {						
+						xmlelement ScheduledStopPointRef {
 							xmlattribute ref 		{ value 'md_operatorId + ":ScheduledStopPoint:" + stp_identifier' }
 							xmlattribute version 	{ value 'md_frameVersion' }
 						} # xmlelement ScheduledStopPointRef
@@ -59,6 +59,8 @@ xmlelement journeyPatterns {
 							xmlattribute version 	{ value 'md_frameVersion' }
 						} # xmlelement OnwardTimingLinkRef
 						xmlelement IsWaitPoint {
+							# Hastus 2016
+							# condition 'tpatpt_position = 2 OR tpatpt_istimingpoint'
 							condition 'tpatpt_position = 2 OR stp_regulation_point'
 							value '"true"'
 						} # IsWaitPoint
@@ -73,7 +75,7 @@ xmlelement journeyPatterns {
 						xmlattribute id 			{ value 'md_operatorId + ":TimingPointInJourneyPattern:" + Trim(tpat_route) + ":" + md_tpat_id + "-" + tpatpt_position' }
 						xmlattribute version 		{ value 'md_frameVersion' }
 						xmlattribute order 			{ value 'tpatpt_position' }
-						xmlelement TimingPointRef {							
+						xmlelement TimingPointRef {
 							xmlattribute ref 		{ value 'md_operatorId + ":TimingPoint:" + stp_identifier' }
 							xmlattribute version 	{ value 'md_frameVersion' }
 						} # xmlelement TimingPointRef
@@ -82,7 +84,7 @@ xmlelement journeyPatterns {
 							xmlattribute ref 		{ value 'md_operatorId + ":TimingLink:" + stp_identifier + "-" + Next().stp_identifier' }
 							xmlattribute version 	{ value 'md_frameVersion' }
 						} # xmlelement OnwardTimingLinkRef
-					} # xmlelement TimingPointInJourneyPattern					
+					} # xmlelement TimingPointInJourneyPattern
 				} # foreach trip_pattern_point
 			} # xmlelement pointsInSequence
 		} # xmlelement ServiceJourneyPattern
@@ -103,35 +105,35 @@ xmlelement journeyPatterns {
 
 			# xmlelement Name { value '"Deadrunpatroon voor lijn " + rte_pub_id' }
 			xmlelement ShortName { value 'md_tpat_id' }
-			
+
 			xmlelement Distance { value 'Trim(Format(tpat_distance,"zzzzz.n"))' }
-			
+
 			xmlelement RouteRef {
 				condition 'Trim(tpat_route) <> ""'
 				xmlattribute ref		{ value 'md_operatorId + ":Route:" + Trim(tpat_route) + ":" + md_tpat_id' }
 				xmlattribute version 	{ value 'md_frameVersion' }
 			}
-			
+
 			xmlelement DirectionRef {
 				xmlattribute ref 		{ value 'md_operatorId + ":Direction:" + tpat_direction' }
 				xmlattribute version	{ value '"any"' }
 			}
-			
+
 			xmlelement pointsInSequence {
 				foreach trip_pattern_point {
 					# from 'Get(trip_pattern, tpat_route 				 = THIS trip_pattern[2].tpat_route AND
 					# 						md_tpat_id         		 = THIS trip_pattern[2].md_tpat_id    AND
-					# 						tpat_direction           = THIS trip_pattern[2].tpat_direction).Get(trip_pattern_point)'								
+					# 						tpat_direction           = THIS trip_pattern[2].tpat_direction).Get(trip_pattern_point)'
 					# condition ' stp_identifier <> Next().stp_identifier '
-					unique_on ' tpatpt_position, stp_identifier, Next().stp_identifier '	
-			
+					unique_on ' tpatpt_position, stp_identifier, Next().stp_identifier '
+
 					var v_tpat_link_index 		{assign ' v_tpat_link_index + 1 '}
 					xmlelement StopPointInJourneyPattern {
 						condition 'stp_is_public'
 						xmlattribute id 			{ value 'md_operatorId + ":StopPointInJourneyPattern:" + Trim(tpat_route) + ":" + md_tpat_id + "-" + tpatpt_position' }
 						xmlattribute version 		{ value 'md_frameVersion' }
 						xmlattribute order 			{ value 'tpatpt_position' }
-						xmlelement ScheduledStopPointRef {						
+						xmlelement ScheduledStopPointRef {
 							xmlattribute ref 		{ value 'md_operatorId + ":ScheduledStopPoint:" + stp_identifier' }
 							xmlattribute version 	{ value 'md_frameVersion' }
 						} # xmlelement ScheduledStopPointRef
@@ -140,13 +142,13 @@ xmlelement journeyPatterns {
 							xmlattribute ref 		{ value 'md_operatorId + ":TimingLink:" + stp_identifier + "-" + Next().stp_identifier' }
 							xmlattribute version 	{ value 'md_frameVersion' }
 						} # xmlelement OnwardTimingLinkRef
-					} # xmlelement StopPointInJourneyPattern					
+					} # xmlelement StopPointInJourneyPattern
 					xmlelement TimingPointInJourneyPattern {
 						condition 'NOT stp_is_public'
 						xmlattribute id 			{ value 'md_operatorId + ":TimingPointInJourneyPattern:" + Trim(tpat_route) + ":" + md_tpat_id + "-" + tpatpt_position' }
 						xmlattribute version 		{ value 'md_frameVersion' }
 						xmlattribute order 			{ value 'tpatpt_position' }
-						xmlelement TimingPointRef {							
+						xmlelement TimingPointRef {
 							xmlattribute ref 		{ value 'md_operatorId + ":TimingPoint:" + stp_identifier' }
 							xmlattribute version 	{ value 'md_frameVersion' }
 						} # xmlelement TimingPointRef
