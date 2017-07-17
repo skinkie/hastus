@@ -51,7 +51,7 @@ file serviceframe {
 		xmlattribute xmlns:gml { value '"http://www.opengis.net/gml/3.2"' }
 		xmlattribute version { value '"1.0"' }
 
-		xmlelement PublicationTimestamp { value 'DateToday() + "T00:00:00Z"' }
+		xmlelement PublicationTimestamp { value 'Format(DateToday(), "!yyyymmdd|xxxx-xx-xx") + "T00:00:00Z"' }
 		xmlelement ParticipantRef { value '"NDOV"' }
 
 		xmlelement dataObjects {
@@ -71,7 +71,7 @@ file serviceframe {
 					&include CompositeFrame/ServiceFrame.ix
 
 					&include CompositeFrame/TimetableFrame.ix
-					
+
 					&include CompositeFrame/ServiceCalendarFrame.ix
 
 					&include CompositeFrame/VehicleScheduleFrame.ix
