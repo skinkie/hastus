@@ -22,6 +22,7 @@ xmlelement organisations {
 			xmlattribute id { value '"BISON:Authority:" + tstp_district' }
 			xmlattribute version { value '"any"' }
 			xmlelement Name { value 'DefNull(tstp_district.dst_description,tstp_district)' }
+			xmlelement ShortName { value 'tstp_district' }
 		}
 	}
 }

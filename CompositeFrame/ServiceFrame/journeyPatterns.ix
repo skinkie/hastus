@@ -15,14 +15,21 @@ xmlelement journeyPatterns {
 			xmlattribute version 		{ value 'md_frameVersion' }
 
 			# xmlelement Name { value '"Patroon voor lijn " + rte_pub_id' }
+			xmlelement ShortName { value 'md_tpat_id' }
+			
+			xmlelement Distance { value 'Trim(Format(tpat_distance,"zzzzz.n"))' }
+			# xmlelement Distance { value 'tpat_distance' }
+			
 			xmlelement RouteRef {
 				xmlattribute ref		{ value 'md_operatorId + ":Route:" + Trim(tpat_route) + ":" + md_tpat_id' }
 				xmlattribute version 	{ value 'md_frameVersion' }
 			}
 
-			# xmlelement Distance { value 'Trim(Format(tpat_distance,"zzzzz.n"))' }
-			# xmlelement Distance { value 'tpat_distance' }
-
+			xmlelement DirectionRef {
+				xmlattribute ref 		{ value 'md_operatorId + ":Direction:" + tpat_direction' }
+				xmlattribute version	{ value '"any"' }
+			}
+			
 			xmlelement DestinationDisplayRef {
 				condition 'tpat_veh_display <> ""'
 				xmlattribute ref		{ value 'md_operatorId + ":DestinationDisplay:" + Object(veh_disp_code, tpat_veh_display).vdc_id' }
@@ -94,10 +101,20 @@ xmlelement journeyPatterns {
 			xmlattribute id 			{ value 'md_operatorId + ":DeadRunJourneyPattern:" + Trim(tpat_route) + ":" + md_tpat_id' }
 			xmlattribute version 		{ value 'md_frameVersion' }
 
+			# xmlelement Name { value '"Deadrunpatroon voor lijn " + rte_pub_id' }
+			xmlelement ShortName { value 'md_tpat_id' }
+			
+			xmlelement Distance { value 'Trim(Format(tpat_distance,"zzzzz.n"))' }
+			
 			xmlelement RouteRef {
 				condition 'Trim(tpat_route) <> ""'
 				xmlattribute ref		{ value 'md_operatorId + ":Route:" + Trim(tpat_route) + ":" + md_tpat_id' }
 				xmlattribute version 	{ value 'md_frameVersion' }
+			}
+			
+			xmlelement DirectionRef {
+				xmlattribute ref 		{ value 'md_operatorId + ":Direction:" + tpat_direction' }
+				xmlattribute version	{ value '"any"' }
 			}
 			
 			xmlelement pointsInSequence {

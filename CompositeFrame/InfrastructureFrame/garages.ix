@@ -47,7 +47,7 @@ xmlelement garages {
 				value 'md_operatorId + ":ResponsibilitySet:" + gar_depot_id'
 			}
 			xmlelement Name { value 'gar_description' }
-			# xmlelement ShortName { value 'gar_id' }
+			xmlelement ShortName { value 'gar_id' }
 			xmlelement members {
 				xmlelement GaragePointRef {
 					xmlattribute ref { value 'md_operatorId + ":GaragePoint:" + gar_pull_in_stop' }

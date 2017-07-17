@@ -30,8 +30,13 @@ xmlelement vehicleJourneys {
 
 				xmlelement DepartureTime { value 'md_departureTime' }
 				xmlelement DepartureDayOffset { value 'IF trp_time_start >= 24:00 THEN 1 ELSE IF trp_time_start < 0:00 THEN -1 ELSE 0' }
-
-				# TODO: DayTypes
+	
+				xmlelement dayTypes {
+					xmlelement DayTypeRef {
+						xmlattribute ref { value 'md_operatorId + ":DayType:" + trp_oper_days_12' }
+						xmlattribute version { value 'md_frameVersion' }
+					}
+				}
 
 				xmlelement ServiceJourneyPatternRef {
 					xmlattribute ref                { value 'md_operatorId + ":ServiceJourneyPattern:" + Trim(tpat_route) + ":" + md_tpat_id' }
@@ -82,7 +87,12 @@ xmlelement vehicleJourneys {
 				xmlelement DepartureTime { value 'md_departureTime' }
 				xmlelement DepartureDayOffset { value 'IF trp_time_start >= 24:00 THEN 1 ELSE IF trp_time_start < 0:00 THEN -1 ELSE 0' }
 
-				# TODO: DayTypes
+				xmlelement dayTypes {
+					xmlelement DayTypeRef {
+						xmlattribute ref { value 'md_operatorId + ":DayType:" + trp_oper_days_12' }
+						xmlattribute version { value 'md_frameVersion' }
+					}
+				}
 
 				xmlelement DeadRunJourneyPatternRef {
 					xmlattribute ref                { value 'md_operatorId + ":DeadRunJourneyPattern:" + Trim(tpat_route) + ":" + md_tpat_id' }
@@ -98,6 +108,10 @@ xmlelement vehicleJourneys {
 					xmlattribute ref				{ value 'md_operatorId + ":Block:" + vsc_int_id + ":" + vsc_sched_type + ":" + trim(trp_block) ' }
 					xmlattribute version			{ value 'md_frameVersion' }
 				} # xmlelement BlockRef
+				
+				xmlelement DeadRunType {
+					value 'IF trp_type=1 THEN "garageRunOut" ELSE IF trp_type=2 THEN "garageRunIn" ELSE "other"'
+				}
 		} # xmlelement ServiceJourney
 	} # foreach trip
 } # xmlelement vehicleJourneys

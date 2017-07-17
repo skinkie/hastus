@@ -1,6 +1,6 @@
 xmlelement dayTypes {
 	foreach block {
-		# TODO: hoe hier de blk_oper_days_12, vta_oper_days_12 en vsc_oper_day_digits krijgen?
+		# TODO: hoe hier de trp_oper_days_12, blk_oper_days_12, vta_oper_days_12 en vsc_oper_day_digits krijgen?
 	
 		from 'GetAll(vehicle_schedule, vsc_is_current).Get(block)'
 		unique_on 'blk_oper_days_12'
