@@ -7,5 +7,7 @@ xmlelement TimetableFrame {
 	&include TimetableFrame/OperatorView.ix
 
 	&include TimetableFrame/vehicleJourneys.ix
+	
+	&include TimetableFrame/journeyInterchanges.ix
 
 } # xmlelement TimetableFrame
