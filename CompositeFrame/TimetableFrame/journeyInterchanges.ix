@@ -1,0 +1,54 @@
+xmlelement journeyInterchanges {
+	# TODO: Ook itereren over Blocks zodat we de variant StaySeated ook kunnen vullen
+
+	foreach trip_meet {			
+		condition 'meet_valid AND meet_is_feasible'
+		
+		xmlelement ServiceJourneyInterchange {
+		
+			xmlelement keyList {
+				xmlelement KeyValue {
+					xmlelement Key 			{ value '"QIFactor"' }
+					xmlelement Value 		{ value 'meet_qi_factor' }
+				} # xmlelement KeyValue
+			} # xmlelement keyList
+			
+			xmlelement StaySeated { value '"false"' }
+			
+			xmlelement Planned { value '"true"' }
+			
+			xmlelement Guaranteed { value 'meet_public' }
+			
+			xmlelement Advertised { value 'meet_driver' }
+			
+			xmlelement StandardWaitTime { value 'Trim(Format(meet_min_time, "ssss"))' }
+			
+			xmlelement MaximumWaitTime { value 'Trim(Format(meet_max_time, "ssss"))' }
+			
+			foreach trip_stop {
+				condition 'meet_ontrp_trpnumber = trp_number AND meet_ontrp_rte = trp_route'
+				xmlelement FromPointRef {
+					xmlattribute ref { value 'tstp_stop_id' }
+					xmlattribute version { value 'md_frameVersion' }
+				}
+			}
+			foreach trip_stop {
+				condition 'meet_reltrp_trpnumber = trp_number AND meet_reltrp_rte = trp_route'
+				xmlelement ToPointRef {
+					xmlattribute ref { value 'tstp_stop_id' }
+					xmlattribute version { value 'md_frameVersion' }
+				}
+			}
+			
+			xmlelement FromJourneyRef {
+				xmlattribute ref { value 'md_operatorId + ":ServiceJourney:" + vsc_int_id + ":" + vsc_sched_type + ":" + Trim(meet_ontrp_rte) + ":" + trim(meet_ontrp_trpnumber)' }
+				xmlattribute version { value 'md_frameVersion' }
+			}
+			
+			xmlelement ToJourneyRef {
+				xmlattribute ref { value 'md_operatorId + ":ServiceJourney:" + vsc_int_id + ":" + vsc_sched_type + ":" + Trim(meet_reltrp_rte) + ":" + trim(meet_reltrp_trpnumber)' }
+				xmlattribute version { value 'md_frameVersion' }
+			}
+		}
+	} # foreach trip_meet
+} # xmlelement journeyInterchanges
