@@ -4,7 +4,10 @@ xmlelement blocks {
 		sort_by BlockSort {
 			criteria vsc_int_id
 			criteria blk_number			
-		}		
+		}
+		
+		# HTM: geen aflosautos
+		condition 'blk_vehicle_group <> "AFau"'
 		unique_on 'vsc_int_id, blk_number'
 		
 		xmlelement Block {
