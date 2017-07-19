@@ -20,9 +20,14 @@ definitions MainDefinitions {
 	DEFINE md_link_authority { IF Prev().tstp_district <> "" THEN Prev().tstp_district ELSE md_authority }
 	DEFINE md_departureTime { StrReplace(Format(trp_time_start_24h, "0hh\'mm:ss"), ";", ":") }
 	DEFINE md_tpat_id { DefNull(tpat_external_id, tpat_id) }
+	DEFINE md_block_vehicle_transfer_time { 360 }	
+	DEFINE md_timingpoint { tpatpt_position = 2 OR stp_regulation_point }
 
 	end
 }
+
+# Arriva
+# DEFINE md_timingpoint { tpatpt_position = 2 OR tpatpt_is_timing_point }
 
 var part1 {type 'string'}
 var v_source { type 'string' assign 'IF p_CalendarId<>NULL THEN p_CalendarId ELSE IF p_SchedUnit<>NULL THEN p_SchedUnit '}

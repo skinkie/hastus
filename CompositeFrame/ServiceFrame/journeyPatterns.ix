@@ -58,11 +58,9 @@ xmlelement journeyPatterns {
 							xmlattribute ref 		{ value 'md_operatorId + ":TimingLink:" + stp_identifier + "-" + Next().stp_identifier' }
 							xmlattribute version 	{ value 'md_frameVersion' }
 						} # xmlelement OnwardTimingLinkRef
-						xmlelement IsWaitPoint {
-							# Hastus 2016
-							# condition 'tpatpt_position = 2 OR tpatpt_is_timing_point'
-							condition 'tpatpt_position = 2 OR stp_regulation_point'
-							value '"true"'
+						xmlelement IsWaitPoint {							
+							condition 'md_timingpoint'
+							value 'true'
 						} # IsWaitPoint
 						xmlelement DestinationDisplayRef {
 							condition 'tpatpt_veh_display_code <> "" AND tpatpt_veh_display_code <> tpat_veh_display'
