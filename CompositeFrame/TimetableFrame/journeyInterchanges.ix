@@ -1,6 +1,4 @@
 xmlelement journeyInterchanges {
-	# TODO: Ook itereren over Blocks zodat we de variant StaySeated ook kunnen vullen
-
 	foreach trip_meet {			
 		condition 'meet_valid AND meet_is_feasible'
 		
@@ -13,17 +11,17 @@ xmlelement journeyInterchanges {
 				} # xmlelement KeyValue
 			} # xmlelement keyList
 			
-			xmlelement StaySeated { value '"false"' }
+			xmlelement StaySeated { value 'false' }
 			
-			xmlelement Planned { value '"true"' }
+			xmlelement Planned { value 'true' }
 			
 			xmlelement Guaranteed { value 'meet_public' }
 			
 			xmlelement Advertised { value 'meet_driver' }
 			
-			xmlelement StandardWaitTime { value 'Trim(Format(meet_min_time, "ssss"))' }
+			xmlelement StandardWaitTime { value '"PT" + Trim(Format(meet_min_time, "ssss")) + "S"' }
 			
-			xmlelement MaximumWaitTime { value 'Trim(Format(meet_max_time, "ssss"))' }
+			xmlelement MaximumWaitTime { value '"PT" + Trim(Format(meet_max_time, "ssss")) + "S"' }
 			
 			foreach trip_stop {
 				condition 'meet_ontrp_trpnumber = trp_number AND meet_ontrp_rte = trp_route'
@@ -51,4 +49,57 @@ xmlelement journeyInterchanges {
 			}
 		}
 	} # foreach trip_meet
+
+	foreach block {	
+		# HTM: geen aflosautos
+		condition 'blk_vehicle_group <> "AFau"'
+	
+		foreach block_activity {
+			sort_by 'blkact_start_time'
+			condition 'blkact_prev_trip.trp_is_in_service AND blkact_trip.trp_is_in_service AND StrToLng(Format(trp_time_start - blkact_prev_trip.trp_time_end, "ssss")) < md_block_vehicle_transfer_time'
+						
+			xmlelement ServiceJourneyInterchange {
+			
+				xmlelement keyList {
+					xmlelement KeyValue {
+						xmlelement Key 			{ value '"QIFactor"' }
+						xmlelement Value 		{ value '1' }
+					} # xmlelement KeyValue
+				} # xmlelement keyList
+							
+				xmlelement StaySeated { value 'true' }
+				
+				xmlelement Planned { value 'true' }
+				
+				xmlelement Guaranteed { value 'false' }
+				
+				xmlelement Advertised { value 'false' }
+				
+				xmlelement StandardWaitTime { value '"PT" + Trim(Format(trp_time_start - blkact_prev_trip.trp_time_end, "ssss")) + "S"' }
+			
+				xmlelement MaximumWaitTime { value '"PT" + Trim(Format(trp_time_start - blkact_prev_trip.trp_time_end, "ssss")) + "S"' }
+											
+				xmlelement FromPointRef {
+					xmlattribute ref { value 'md_operatorId + ":ScheduledStopPoint:" + blkact_prev_trip.tpat_last_public_stop' }
+					xmlattribute version { value 'md_frameVersion' }
+				}
+				
+				xmlelement ToPointRef {
+					xmlattribute ref { value 'md_operatorId + ":ScheduledStopPoint:" + blkact_trip.tpat_first_public_stop' }
+					xmlattribute version { value 'md_frameVersion' }
+				}
+				
+				xmlelement FromJourneyRef {
+					xmlattribute ref { value 'md_operatorId + ":ServiceJourney:" + vsc_int_id + ":" + vsc_sched_type + ":" + Trim(blkact_prev_trip.trp_route) + ":" + trim(blkact_prev_trip.trp_number)' }
+					xmlattribute version { value 'md_frameVersion' }
+				}
+				
+				xmlelement ToJourneyRef {
+					xmlattribute ref { value 'md_operatorId + ":ServiceJourney:" + vsc_int_id + ":" + vsc_sched_type + ":" + Trim(trp_route) + ":" + trim(trp_number)' }
+					xmlattribute version { value 'md_frameVersion' }
+				}
+			}
+		}
+	} # foreach block
+
 } # xmlelement journeyInterchanges
