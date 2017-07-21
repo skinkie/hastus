@@ -2,7 +2,6 @@ xmlelement contentValidityConditions {
 	foreach vehicle_schedule {
 		condition 'vsc_is_multiple'
 		var v_valid_days        { assign '""' }
-
 		
 		foreach scheduling_unit_date {
 			sort_by 'scud_date'
