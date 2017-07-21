@@ -6,8 +6,7 @@ xmlelement blocks {
 			criteria blk_number			
 		}
 		
-		# HTM: geen aflosautos
-		condition 'blk_vehicle_group <> "AFau"'
+		condition 'md_block_sel'
 		unique_on 'vsc_int_id, blk_number'
 		
 		xmlelement Block {

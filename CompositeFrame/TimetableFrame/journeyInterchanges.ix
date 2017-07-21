@@ -3,6 +3,8 @@ xmlelement journeyInterchanges {
 		condition 'meet_valid AND meet_is_feasible'
 		
 		xmlelement ServiceJourneyInterchange {
+			xmlattribute id { value 'md_operatorId + ":ServiceJourneyInterchange:" + vsc_int_id + ":" + vsc_sched_type + ":" + Trim(meet_ontrp_rte) + ":" + trim(meet_ontrp_trpnumber) + ":" + Trim(meet_reltrp_rte) + ":" + trim(meet_reltrp_trpnumber)' }
+			xmlattribute version { value 'md_frameVersion' }
 		
 			xmlelement keyList {
 				xmlelement KeyValue {
@@ -50,15 +52,16 @@ xmlelement journeyInterchanges {
 		}
 	} # foreach trip_meet
 
-	foreach block {	
-		# HTM: geen aflosautos
-		condition 'blk_vehicle_group <> "AFau"'
+	foreach block {
+		condition 'md_block_sel'
 	
 		foreach block_activity {
 			sort_by 'blkact_start_time'
 			condition 'blkact_prev_trip.trp_is_in_service AND blkact_trip.trp_is_in_service AND StrToLng(Format(trp_time_start - blkact_prev_trip.trp_time_end, "ssss")) < md_block_vehicle_transfer_time'
 						
 			xmlelement ServiceJourneyInterchange {
+				xmlattribute id { value 'md_operatorId + ":ServiceJourneyInterchange:" + vsc_int_id + ":" + vsc_sched_type + ":" + Trim(blkact_prev_trip.trp_route) + ":" + trim(blkact_prev_trip.trp_number) + ":" + Trim(trp_route) + ":" + trim(trp_number)' }
+				xmlattribute version { value 'md_frameVersion' }
 			
 				xmlelement keyList {
 					xmlelement KeyValue {
