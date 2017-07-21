@@ -17,6 +17,8 @@ xmlelement vehicleServices {
 
 			xmlelement vehicleServiceParts {
 				foreach block {
+					condition 'md_block_sel'
+				
 					sort_by BlockTimeSort {						
 						criteria blk_time_start
 					}

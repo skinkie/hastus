@@ -22,7 +22,10 @@ definitions MainDefinitions {
 	DEFINE md_tpat_id { DefNull(tpat_external_id, tpat_id) }
 	DEFINE md_block_vehicle_transfer_time { 360 }	
 	DEFINE md_timingpoint { tpatpt_position = 2 OR stp_regulation_point }
-
+	DEFINE md_block_sel { blk_vehicle_group <> "AFau" }		
+	DEFINE md_trp_sel CLASS trip { NOT md_trp_is_car_taxi AND NOT trp_is_free AND trp_is_for_blk AND blk_vehicle_group <> "AFau" AND trp_duration > 0h00 }		
+	DEFINE md_trp_is_car_taxi CLASS trip { Trim(trp_route_statistic) = Trim(DefNull(IniQueryStr("RTE","RTE_CAR"), "CAR")) OR Trim(trp_route_statistic) = Trim(DefNull(IniQueryStr("RTE","RTE_TAXI"), "TAXI" )) }	
+	
 	end
 }
 
