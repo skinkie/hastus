@@ -3,10 +3,12 @@ xmlelement contentValidityConditions {
 		condition 'vsc_is_multiple'
 		var v_valid_days        { assign '""' }
 
+		
 		foreach scheduling_unit_date {
 			sort_by 'scud_date'
 			unique_on 'scud_date'
 			
+			# REVIEW: Eventueel OperatesOnDate gebruiken?
 			from 'GetSchedUnitDates(vehicle_schedule, p_SchedSet, p_SchedUnit, p_ProdPhase, p_DateStart, p_DateEnd, p_CalType, p_CalendarId)'
 			var v_valid_days    { assign 'IF Count(GetSchedUnitDates(getCurrent(vehicle_schedule), p_SchedSet, p_SchedUnit, p_ProdPhase, scud_date, scud_date, p_CalType, p_CalendarId))=1 THEN v_valid_days + "1" ELSE v_valid_days + "0" '}
 		} # foreach scheduling_unit_date
