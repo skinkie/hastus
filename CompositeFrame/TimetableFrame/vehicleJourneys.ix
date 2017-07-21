@@ -1,7 +1,7 @@
 xmlelement vehicleJourneys {
 	foreach trip {
-		from 'GetFirstOfAll(vehicle_schedule, vsc_is_current, 1).Get(trip, md_trp_valid)'
-			condition 'md_trp_valid AND trp_is_in_service'
+		from 'GetFirstOfAll(vehicle_schedule, vsc_is_current, 1).Get(trip, md_trp_sel)'
+			condition 'trp_is_in_service'
 			unique_on 'vsc_int_id,vsc_sched_type,trp_route,trp_number'
 			sort_by TripStopSort {
 				criteria vsc_int_id
@@ -56,8 +56,8 @@ xmlelement vehicleJourneys {
 	} # foreach trip
 
 	foreach trip {
-		from 'GetFirstOfAll(vehicle_schedule, vsc_is_current, 1).Get(trip, md_trp_valid)'
-			condition 'md_trp_valid AND NOT trp_is_in_service'
+		from 'GetFirstOfAll(vehicle_schedule, vsc_is_current, 1).Get(trip, md_trp_sel)'
+			condition 'NOT trp_is_in_service'
 			unique_on 'vsc_int_id,vsc_sched_type,trp_route,trp_number'
 			sort_by TripStopSort {
 				criteria vsc_int_id
