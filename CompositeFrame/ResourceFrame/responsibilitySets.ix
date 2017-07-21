@@ -4,8 +4,7 @@ xmlelement responsibilitySets {
 		xmlelement ResponsibilitySet {	
 			xmlattribute id { value '"BISON:ResponsibilitySet:" + dst_id' }
 			xmlattribute version { value '"any"' }
-			xmlelement Name { value 'dst_id' }
-			xmlelement Description { value 'dst_description' }
+			xmlelement Name { value 'dst_description' }			
 		}
 	}
 }

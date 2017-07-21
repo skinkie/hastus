@@ -24,6 +24,8 @@ file serviceframe {
 
 				&include CompositeFrame/FrameDefaults.ix
 
+				&include CompositeFrame/Versions.ix
+				
 				xmlelement frames {
 					&include CompositeFrame/ResourceFrame.ix
 

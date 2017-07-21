@@ -5,6 +5,7 @@ xmlelement vehicleTypes {
 
 	# This segment selects the vehicleTypes actually in use.
 	foreach block {
+		sort_by 'vehg_identifier'
 		unique_on 'vehg_identifier'
 		foreach vehicle_group {
 			from 'Object(vehg_identifier)'
@@ -14,6 +15,7 @@ xmlelement vehicleTypes {
 
 	foreach vehicle_group {
 		from 'GetAll(vehicle_group, av_used_vehicle_group)'
+		sort_by 'vehg_identifier'
 		unique_on 'vehg_identifier'
 
 		xmlelement VehicleType {

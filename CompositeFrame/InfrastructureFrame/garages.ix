@@ -3,6 +3,8 @@ xmlelement garages {
 	# This segment selects the garages actually in use.
 	foreach block {
 		unique_on 'blk_gar_plc_strt, blk_gar_plc_end'
+		sort_by 'blk_gar_plc_strt, blk_gar_plc_end'
+		
 		foreach garage {
 			from 'Object(blk_gar_plc_strt)'
 			array_var av_used_gar		{ assign 'true' }
@@ -38,6 +40,7 @@ xmlelement garages {
 	foreach garage {
 		from 'GetAll(garage, av_used_gar)'
 		unique_on 'gar_id'
+		sort_by 'gar_id'
 
 		xmlelement Garage {
 			xmlattribute id { value 'md_operatorId + ":Garage:" + gar_id' }
