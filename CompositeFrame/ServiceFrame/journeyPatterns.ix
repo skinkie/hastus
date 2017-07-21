@@ -26,6 +26,7 @@ xmlelement journeyPatterns {
 			}
 
 			xmlelement DirectionRef {
+				condition 'tpat_direction <> ""'
 				xmlattribute ref 		{ value 'md_operatorId + ":Direction:" + tpat_direction' }
 				xmlattribute version	{ value '"any"' }
 			}
