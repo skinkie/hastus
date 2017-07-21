@@ -28,15 +28,13 @@ xmlelement timeDemandTypes {
 					} # xmlelement JourneyRunTime
 				} # foreach run_time_pattern_stop
 			} # xmlelement runTimes;
-			
-			
+						
 			xmlelement waitTimes {
 				condition 'Count(Get(run_time_pattern_stp, md_loadtime > 0)) > 0'
 			
 				foreach run_time_pattern_stp {
-					# TODO: ideally we would not export waitTimes if all waitTimes are 0
-					# We would like to export the v_tpat_stop_index to be 'aligned' with the actual index
-					# 
+					# TODO: We would like to export the v_tpat_stop_index to be 'aligned' with the actual index
+					
 					var v_tpat_stop_index 		{assign ' v_tpat_stop_index + 1 '}
 					xmlelement JourneyWaitTime {
 						condition 'md_loadtime > 0'
