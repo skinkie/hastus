@@ -17,8 +17,11 @@ xmlelement journeyPatterns {
 			# xmlelement Name { value '"Patroon voor lijn " + rte_pub_id' }
 			xmlelement ShortName { value 'md_tpat_id' }
 
-			xmlelement Distance { value 'Trim(Format(tpat_distance,"zzzzz.n"))' }
-			# xmlelement Distance { value 'tpat_distance' }
+			# xmlelement Distance { value 'Trim(Format(tpat_distance,"zzzzz.n"))' }
+			xmlelement Distance { 
+				condition 'tpat_distance <> NULL'
+				value 'tpat_distance * 100'
+			}
 
 			xmlelement RouteRef {
 				xmlattribute ref		{ value 'md_operatorId + ":Route:" + Trim(tpat_route) + ":" + md_tpat_id' }
@@ -105,8 +108,12 @@ xmlelement journeyPatterns {
 			# xmlelement Name { value '"Deadrunpatroon voor lijn " + rte_pub_id' }
 			xmlelement ShortName { value 'md_tpat_id' }
 
-			xmlelement Distance { value 'Trim(Format(tpat_distance,"zzzzz.n"))' }
-
+			# xmlelement Distance { value 'Trim(Format(tpat_distance,"zzzzz.n"))' }
+			xmlelement Distance { 
+				condition 'tpat_distance <> NULL'
+				value 'tpat_distance * 100'
+			}
+			
 			xmlelement RouteRef {
 				condition 'Trim(tpat_route) <> ""'
 				xmlattribute ref		{ value 'md_operatorId + ":Route:" + Trim(tpat_route) + ":" + md_tpat_id' }

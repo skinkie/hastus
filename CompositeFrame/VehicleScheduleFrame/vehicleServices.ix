@@ -1,5 +1,6 @@
 xmlelement vehicleServices {
-	foreach vehicle_task {	
+	foreach vehicle_task {
+		condition 'md_vta_sel'
 		sort_by VtaSort {						
 			criteria vta_number
 		}

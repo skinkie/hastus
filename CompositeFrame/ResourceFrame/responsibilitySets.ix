@@ -1,0 +1,11 @@
+xmlelement responsibilitySets {
+	foreach district {
+		unique_on 'dst_id'
+		xmlelement ResponsibilitySet {	
+			xmlattribute id { value '"BISON:ResponsibilitySet:" + dst_id' }
+			xmlattribute version { value '"any"' }
+			xmlelement ShortName { value 'dst_id' }
+			xmlelement Description { value 'dst_description' }
+		}
+	}
+}

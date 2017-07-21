@@ -4,6 +4,7 @@ xmlelement lines {
 		condition 'trp_is_public'
 		unique_on 'trp_route'
 		sort_by 'trp_route'
+		
 		xmlelement Line {
 			xmlattribute id 			{ value 'md_operatorId + ":Line:" + Trim(trp_route)' }
 			xmlattribute version 		{ value 'md_frameVersion' }
@@ -18,6 +19,7 @@ xmlelement lines {
 				} # xmlelement KeyValue
 			} # xmlelement keyList
 			xmlelement Name 				{ value 'Object(route,trp_route).rte_description' }
+			xmlelement ShortName 			{ value 'Trim(Object(route,trp_route).rte_identifier)' }
 			xmlelement TransportMode 		{ value 'md_rte_service_mode' }
 			xmlelement PublicCode 			{ value 'Trim(Object(route,trp_route).rte_pub_id)' }
 

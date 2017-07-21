@@ -1,0 +1,13 @@
+basetype time { mask "0hh'mm" }
+basetype date { mask "!yyyymmdd|xxxx-xx-xx" }
+
+definitions Mappings {
+	code
+		DEFINE md_rte_service_mode CLASS route {
+			IF rte_service_mode = 0 /* BUS */ THEN "bus"
+			ELSE IF rte_service_mode = 1 /* TRAMWAY */ THEN "tram"
+			ELSE IF rte_service_mode = 2 /* METRO */ THEN "metro"
+			ELSE "rail"
+		}
+	end
+}

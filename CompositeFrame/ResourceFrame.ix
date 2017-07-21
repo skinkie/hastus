@@ -5,7 +5,7 @@ xmlelement ResourceFrame {
 
 	&include ResourceFrame/dataSources.ix
 
-	# TODO: responsibilitySets
+	&include ResourceFrame/responsibilitySets.ix
 
 	&include ResourceFrame/typesOfValue.ix
 

@@ -24,10 +24,11 @@ xmlelement vehicleJourneys {
 				xmlelement keyList {
 					xmlelement KeyValue {
 						xmlelement Key              { value '"JourneyNumber"' }
-						xmlelement Value            { value 'trim(trp_number)' }
+						xmlelement Value            { value 'Trim(trp_number)' }
 					} # xmlelement keyList
 				}
 
+				xmlelement ShortName { value 'trim(trp_number)' }
 				xmlelement DepartureTime { value 'md_departureTime' }
 				xmlelement DepartureDayOffset { value 'IF trp_time_start >= 24:00 THEN 1 ELSE IF trp_time_start < 0:00 THEN -1 ELSE 0' }
 	
@@ -84,6 +85,7 @@ xmlelement vehicleJourneys {
 					} # xmlelement keyList
 				}
 
+				xmlelement ShortName { value 'Trim(trp_number)' }
 				xmlelement DepartureTime { value 'md_departureTime' }
 				xmlelement DepartureDayOffset { value 'IF trp_time_start >= 24:00 THEN 1 ELSE IF trp_time_start < 0:00 THEN -1 ELSE 0' }
 

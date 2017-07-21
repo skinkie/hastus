@@ -1,0 +1,17 @@
+var part1 {type 'string'}
+var v_source { type 'string' assign 'IF p_CalendarId<>NULL THEN p_CalendarId ELSE IF p_SchedUnit<>NULL THEN p_SchedUnit '}
+var v_tpat_link_index 					{ type 'integer' assign '0' }
+var v_tpat_stop_index 					{ type 'integer' assign '0' }
+var v_valid_days { type 'string' }
+var v_location { type 'string' }
+
+array_var av_printed_itn {
+	key_part 'itn_stop_start'
+	key_part 'itn_stop_end'
+	type 'boolean' assign 'FALSE'
+}
+
+array_var av_plc { key_part 'part1' type 'integer' }
+array_var av_used_gar			{ key_part 'gar_id' type 'boolean' assign 'false' }
+array_var av_used_gar_stop		{ key_part 'stp_identifier' type 'boolean' assign 'false' }
+array_var av_used_vehicle_group	{ key_part 'vehg_identifier' type 'boolean' assign 'false' }

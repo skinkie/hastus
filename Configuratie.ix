@@ -1,0 +1,14 @@
+att omit_null_values
+
+definitions Configuratie {
+	code
+	DEFINE md_operatorId { "HTM" }
+	DEFINE md_operatorName { "HTM" }
+	DEFINE md_authority { "MRDH" }
+	DEFINE md_block_vehicle_transfer_time { 360 }	
+	/* DEFINE md_timingpoint { tpatpt_position = 2 OR tpatpt_is_timing_point } Arriva */
+	DEFINE md_timingpoint { tpatpt_position = 2 OR stp_regulation_point }
+	DEFINE md_block_sel { blk_vehicle_group <> "AFau" }
+	DEFINE md_vta_sel { vta_vehicle_group <> "AFau" }
+	end
+}

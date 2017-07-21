@@ -1,5 +1,7 @@
 xmlelement destinationDisplays {
 	foreach veh_disp_code {
+		sort_by 'vdc_id'
+	
 		from 'GetAll(vehicle_schedule, vsc_is_current).Get(trip_pattern).Get(veh_disp_code)'
 		unique_on 'vdc_id'
 		xmlelement DestinationDisplay {
