@@ -10,4 +10,6 @@ xmlelement ResourceFrame {
 	&include ResourceFrame/typesOfValue.ix
 
 	&include ResourceFrame/organisations.ix
+	
+	&include ResourceFrame/operationalContexts.ix
 }
