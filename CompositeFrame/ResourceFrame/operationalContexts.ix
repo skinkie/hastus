@@ -1,0 +1,12 @@
+xmlelement operationalContexts {
+	foreach route {
+		from 'GetAll(vehicle_schedule).Get(trip, md_trp_valid).Get(route)'
+		unique_on 'rte_service_mode'
+		xmlelement OperationalContext {
+			xmlattribute id 						{ value '"BISON:OperationalContext:" + rte_service_mode' }
+			xmlattribute version 					{ value '"any"' }
+			xmlelement Name							{ value 'md_rte_service_mode' }
+			xmlelement VehicleMode 					{ value 'md_rte_service_mode' }
+		} # xmlelement OperationalContext
+	} # foreach route
+}
