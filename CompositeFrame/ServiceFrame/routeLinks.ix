@@ -1,7 +1,8 @@
 # TODO: werkt nog niet bij HTM
 xmlelement routeLinks {
+
 	foreach itinerary {
-		from 'GetAll(vehicle_schedule, vsc_is_current).Get(block).Get(trip).Get(route).Get(trip_pattern).Get(itinerary)'
+		from 'GetAll(vehicle_schedule, vsc_is_current).Get(Route).Get(trip).Get(trip_pattern).Get(itinerary)'
 		condition 'not av_printed_itn AND itn_stop_start <> itn_stop_end'
 		sort_by rteVersion
 		{
