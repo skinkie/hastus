@@ -22,8 +22,9 @@ xmlelement stopAssignments {
 
 			# TODO: implement Hastus loader for CHB
 			#
+			# Arriva version
 			# xmlelement QuayRef {
-			#	xmlelement ref { value 'stp_quayref' }
+			#	xmlelement ref { value '"NL:Q:" + stp_chb_id' }
 			#	xmlelement version { value '"any"' }
 			# }
 		}
