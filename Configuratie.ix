@@ -5,7 +5,7 @@ definitions Configuratie {
 	DEFINE md_operatorId { "HTM" }
 	DEFINE md_operatorName { "HTM" }
 	DEFINE md_authority { "MRDH" }
-	DEFINE md_block_vehicle_transfer_time { 360 }	
+	DEFINE md_block_vehicle_transfer_time { 360 }
 	/* DEFINE md_timingpoint { tpatpt_position = 2 OR tpatpt_is_timing_point } Arriva */
 	DEFINE md_timingpoint { tpatpt_position = 2 OR stp_regulation_point }
 	DEFINE md_block_sel { blk_vehicle_group <> "AFau" }

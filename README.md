@@ -15,3 +15,16 @@ RPAT_USE_OFFSRV = TRUE
 ```
 
 This script uses runtime patterns, you must generate them for the export to work.
+
+Configuration
+-------------
+
+Due to the nature of OIG processing not all configuration appears in Configuratie.ix because every conditional branch in OIG processing seem to be computed.
+Therefore some intensive scripts must be switch on/off manually:
+
+	CompositeFrame/ResourceFrame/typesOfValue.ix (Arriva tariffStop)
+	CompositeFrame/ServiceFrame/tariffZones.ix (Arriva tariffStop)
+
+	CompositeFrame/ServiceFrame.ix (Hastus 2014/2016 routePoints, Route/Itinerary based routeLinks)
+
+

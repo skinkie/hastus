@@ -11,7 +11,8 @@ xmlelement typesOfValue {
 				xmlelement Name { value '"Nationale Zone"' }
 			}
 
-			# &include ResourceFrame/typesOfValue/TypeOfZone-TariffStop.ix
+			# Arriva TariffStop
+			# &include typesOfValue/TypeOfZone-TariffStop.ix
 		}
 	}
 }
