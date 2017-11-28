@@ -17,6 +17,7 @@ xmlelement vehicleJourneys {
 				xmlelement validityConditions {
 					xmlelement AvailabilityConditionRef {
 						# TODO: uitzoeken wat de relatie trip naar scheduling_unit is
+						# TODO: this assumes that the trip doesn't have his own changes
 						xmlattribute ref        { value 'md_operatorId + ":ValidityCondition:" + vsc_int_id ' }
 					} # xmlelement AvailabilityConditionRef
 				} # xmlelement validityConditions

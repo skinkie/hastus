@@ -3,10 +3,16 @@ definitions MainDefinitions {
 	DEFINE md_frameVersion { v_source + "_" + Format(datetoday(),"!yyyymmdd|xxxx-xx-xx") }
 	DEFINE md_trp_valid CLASS trip { trp_duration > 0h00 }
 	
-	DEFINE md_runtime { Trim(Format(rpst_stp_run_time, "ssss")) }
-	DEFINE md_loadtime { Trim(Format(rpst_stp_load_time, "ssss")) }
+	DEFINE md_runtime { Trim(Format(rpst_stp_run_time, "sssss")) }
+	DEFINE md_loadtime { Trim(Format(rpst_stp_load_time, "sssss")) }
+	DEFINE md_dty_act_duration { "PT" + Trim(Format(dty_act_duration, "sssss")) + "S" }
+	DEFINE md_durationCalc { "PT" + Trim(Format(trp_tim_end_pce - trp_tim_strt_pce, "sssss")) + "S" }
 	DEFINE md_link_authority { IF Prev().tstp_district <> "" THEN Prev().tstp_district ELSE md_authority }
 	DEFINE md_departureTime { StrReplace(Format(trp_time_start_24h, "0hh\'mm:ss"), ";", ":") }
+	DEFINE md_startTime { StrReplace(Format(dty_act_start_time, "0hh\'mm:ss"), ";", ":") }	
+	DEFINE md_endTime { StrReplace(Format(dty_act_end_time, "0hh\'mm:ss"), ";", ":") }
+	DEFINE md_startTimeCalc { StrReplace(Format(trp_tim_strt_pce, "0hh\'mm:ss"), ";", ":") }
+	DEFINE md_endTimeCalc { StrReplace(Format(trp_tim_end_pce, "0hh\'mm:ss"), ";", ":") }
 	DEFINE md_tpat_id { DefNull(tpat_external_id, tpat_id) }
 	DEFINE md_trp_is_car_taxi CLASS trip { Trim(trp_route_statistic) = Trim(DefNull(IniQueryStr("RTE","RTE_CAR"), "CAR")) OR Trim(trp_route_statistic) = Trim(DefNull(IniQueryStr("RTE","RTE_TAXI"), "TAXI" )) }	
 	DEFINE md_trp_sel CLASS trip { NOT md_trp_is_car_taxi AND NOT trp_is_free AND trp_is_for_blk AND md_block_sel AND trp_duration > 0h00 }				

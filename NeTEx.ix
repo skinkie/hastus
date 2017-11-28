@@ -40,6 +40,8 @@ file serviceframe {
 					&include CompositeFrame/ServiceCalendarFrame.ix
 
 					&include CompositeFrame/VehicleScheduleFrame.ix
+					
+					&include CompositeFrame/DriverScheduleFrame.ix
 				}
 			}
 		}
