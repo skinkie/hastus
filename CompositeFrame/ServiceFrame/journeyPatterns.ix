@@ -2,7 +2,7 @@
 
 xmlelement journeyPatterns {
 	foreach trip_pattern {
-		from 'GetAll(vehicle_schedule, vsc_is_current).Get(trip, md_trp_valid).Get(trip_pattern)'
+		from 'GetAll(vehicle_schedule, vsc_is_current).Get(trip, md_trp_sel).Get(trip_pattern)'
 		sort_by TripSort {
 			criteria tpat_route
 			criteria md_tpat_id
@@ -119,8 +119,9 @@ xmlelement journeyPatterns {
 				xmlattribute ref		{ value 'md_operatorId + ":Route:" + Trim(tpat_route) + ":" + md_tpat_id' }
 				xmlattribute version 	{ value 'md_frameVersion' }
 			}
-
+			
 			xmlelement DirectionRef {
+				condition 'tpat_direction <> ""'
 				xmlattribute ref 		{ value 'md_operatorId + ":Direction:" + tpat_direction' }
 				xmlattribute version	{ value '"any"' }
 			}
