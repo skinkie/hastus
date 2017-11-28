@@ -19,7 +19,7 @@ xmlelement dayTypeAssignments {
 					
 					xmlelement Date { value 'scud_date' }
 					xmlelement DayTypeRef {
-						xmlattribute ref { value 'md_operatorId + ":DayType:" + blk_oper_days_12' }
+						xmlattribute ref { value 'md_operatorId + ":DayType:B" + blk_oper_days_12' }
 						xmlattribute version { value 'md_frameVersion' }
 					}
 				}

@@ -1,12 +1,33 @@
 xmlelement dayTypes {
-	foreach block {
+	foreach trip {
 		# TODO: hoe hier de trp_oper_days_12, blk_oper_days_12, vta_oper_days_12 en vsc_oper_day_digits krijgen?
 	
+		from 'GetFirstOfAll(vehicle_schedule, vsc_is_current, 1).Get(trip, md_trp_sel)'
+		unique_on 'trp_oper_days_12'
+		
+		xmlelement DayType {
+			xmlattribute id         { value 'md_operatorId + ":DayType:" + trp_oper_days_12' }
+			xmlattribute version	{ value 'md_frameVersion' }
+				
+			xmlelement Name			{ value 'vsc_sched_type' }
+			xmlelement ShortName	{ value 'trp_oper_days_12' }
+				
+			xmlelement properties {
+				xmlelement PropertyOfDay {
+					xmlelement DaysOfWeek {
+						value 'Trim((IF trp_operates_mon THEN "Monday") + (IF trp_operates_tue THEN " Tuesday") + (IF trp_operates_wed THEN " Wednesday") + (IF trp_operates_thu THEN " Thursday") + (IF trp_operates_fri THEN " Friday") + (IF trp_operates_sat THEN " Saturday") + (IF trp_operates_sun THEN " Sunday"))'
+					}
+				}				
+			}
+		}
+	}
+	
+	foreach block {	
 		from 'GetAll(vehicle_schedule, vsc_is_current).Get(block)'
 		unique_on 'blk_oper_days_12'
 		
 		xmlelement DayType {
-			xmlattribute id         { value 'md_operatorId + ":DayType:" + blk_oper_days_12' }
+			xmlattribute id         { value 'md_operatorId + ":DayType:B" + blk_oper_days_12' }
 			xmlattribute version	{ value 'md_frameVersion' }
 				
 			xmlelement Name			{ value 'vsc_sched_type' }
