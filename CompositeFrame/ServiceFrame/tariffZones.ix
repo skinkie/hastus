@@ -1,7 +1,7 @@
 xmlelement tariffZones {
-	foreach stop {
-		from 'GetAll(vehicle_schedule, vsc_is_current).stps_in_vsc'
-		condition 'stp_zone <> null'
+	foreach trip_pattern_point {
+		from 'GetAll(vehicle_schedule).get(trip, md_trp_valid).get(trip_pattern).get(trip_pattern_point)'
+		condition 'stp_identifier <> "" AND stp_is_public AND stp_zone <> null'
 		unique_on 'stp_zone'
 
 		xmlelement TariffZone {
