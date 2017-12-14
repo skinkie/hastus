@@ -1,7 +1,6 @@
 xmlelement routes {
 	foreach trip_pattern {
-		from 'GetAll(vehicle_schedule, vsc_is_current).Get(trip, md_trp_valid).Get(trip_pattern)'
-		# from 'GetAll(vehicle_schedule, vsc_is_current).Get(route).Get(trip, md_trp_sel).Get(trip_pattern)'		
+		from 'GetAll(vehicle_schedule, vsc_is_current).Get(trip, md_trp_sel).Get(trip_pattern)'
 		sort_by TripSort {			
 			criteria tpat_route
 			criteria md_tpat_id
@@ -18,7 +17,7 @@ xmlelement routes {
 			} # xmlelement LineRef
 
 			xmlelement pointsInSequence {
-				foreach trip_pattern_point {			
+				foreach trip_pattern_point {
 					xmlelement PointOnRoute {
 						xmlattribute id 			{ value 'md_operatorId + ":PointOnRoute:" + Trim(tpat_route) + ":" + md_tpat_id + ":" + tpatpt_position' }
 						xmlattribute version 		{ value 'md_frameVersion' }
@@ -29,7 +28,7 @@ xmlelement routes {
 						} # xmlelement RoutePointRef
 						xmlelement OnwardRouteLinkRef {
 							condition 'Next().stp_identifier <> ""'
-							xmlattribute ref 		{ value 'md_operatorId + ":RouteLink:" + stp_identifier + "-" + Next().stp_identifier + "-" + rte_service_mode' }
+							xmlattribute ref 		{ value 'md_operatorId + ":RouteLink:" + stp_identifier + "-" + Next().stp_identifier + "-" + trp_route_statistic.rte_service_mode' }
 							xmlattribute version 	{ value 'md_frameVersion' }
 						} # xmlelement OnwardRouteLinkRef
 					} # xmlelement PointOnRoute

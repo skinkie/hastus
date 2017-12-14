@@ -3,6 +3,7 @@ xmlelement routeLinks {
 
 	foreach itinerary {
 		from 'GetAll(vehicle_schedule, vsc_is_current).Get(Route).Get(trip).Get(trip_pattern).Get(itinerary)'
+
 		condition 'not av_printed_itn AND itn_stop_start <> itn_stop_end'
 		sort_by rteVersion
 		{
@@ -14,6 +15,8 @@ xmlelement routeLinks {
 
 		xmlelement RouteLink
 		{
+			# Indien rte_service_mode leeg blijft, trp_route_statistic.rte_service_mode hier gebruiken en Get(route) weghalen
+
 			xmlattribute "id"				{ value 'md_operatorId + ":RouteLink:" + itn_stop_start + "-" + itn_stop_end + "-" + rte_service_mode' }
 			xmlattribute version 			{ value 'md_frameVersion' }
 			xmlelement "Name"				{ value 'itn_stop_start + "-" + itn_stop_end' }
