@@ -31,6 +31,14 @@ xmlelement scheduledStopPoints {
 					}
 				}
 			} # xmlelement projections
+			
+			xmlelement stopAreas {
+				xmlelement StopAreaRef {
+					xmlattribute ref 				{ value 'md_operatorId + ":StopArea:" + plc_identifier' }
+					xmlattribute version 			{ value 'md_frameVersion' }
+				}
+			}
+			
 			xmlelement tariffZones {
 				xmlelement TariffZoneRef {
 					xmlattribute ref { value '"NL:TariffZone:" + stp_zone' }
@@ -43,7 +51,7 @@ xmlelement scheduledStopPoints {
 				#	xmlattribute version { value 'md_frameVersion' }
 				# }
 			}
-
+			
 			# Arriva
 			# xmlelement ShortName			{ value 'stp_short_desc' }
 			# xmlelement ShortStopCode		{ value 'stp_short_name' }

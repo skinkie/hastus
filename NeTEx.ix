@@ -31,7 +31,7 @@ file serviceframe {
 
 					&include CompositeFrame/InfrastructureFrame.ix
 
-					&include CompositeFrame/SiteFrame.ix
+					# &include CompositeFrame/SiteFrame.ix
 
 					&include CompositeFrame/ServiceFrame.ix
 

@@ -19,10 +19,12 @@ xmlelement ServiceFrame {
 	&include ServiceFrame/destinationDisplays.ix
 
 	&include ServiceFrame/scheduledStopPoints.ix
+	
+	&include ServiceFrame/stopAreas.ix
 
 	&include ServiceFrame/tariffZones.ix
 
-	&include ServiceFrame/stopAssignments-Hastus.ix
+	# &include ServiceFrame/stopAssignments-Hastus.ix # Deze gebruiken we niet totdat CHB klaar is.
 
 	&include ServiceFrame/timingPoints.ix
 

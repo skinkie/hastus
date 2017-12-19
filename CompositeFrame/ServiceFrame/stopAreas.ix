@@ -1,13 +1,13 @@
-xmlelement stopPlaces {
+xmlelement stopAreas {
 	foreach trip_pattern_point {
 		from 'GetAll(vehicle_schedule).get(trip, md_trp_valid).get(trip_pattern).get(trip_pattern_point)'
 		condition 'stp_identifier <> "" AND plc_identifier <> "" AND stp_is_public'
 		unique_on 'plc_identifier'
 		sort_by 'plc_identifier'
 		
-		xmlelement StopPlace {		
+		xmlelement StopArea {
 
-			xmlattribute id		   {value 'md_operatorId + ":StopPlace:" + plc_identifier' }
+			xmlattribute id		   {value 'md_operatorId + ":StopArea:" + plc_identifier' }
 			xmlelement Name		   {value 'Object(place, plc_identifier).plc_description' }
 			xmlelement ShortName	  {value 'plc_identifier' }
 			xmlattribute version 	  {value 'md_frameVersion' }
