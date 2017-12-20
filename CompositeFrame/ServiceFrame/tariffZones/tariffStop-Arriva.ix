@@ -1,9 +1,10 @@
 # Arriva TariffStops via stp_short_name
 
-foreach stop {
-	from 'GetAll(vehicle_schedule, vsc_is_current).stps_in_vsc'
-	condition 'stp_short_name <> null'
+foreach trip_pattern_point {
+	from 'GetAll(vehicle_schedule).get(trip, md_trp_valid).get(trip_pattern).get(trip_pattern_point)'
+	condition 'stp_identifier <> "" AND stp_is_public AND stp_short_name <> null'
 	unique_on 'stp_short_name'
+	sort_by 'stp_short_name'
 
 	xmlelement TariffZone {
 		xmlattribute id             {value '"ARR:TariffZone:" + stp_short_name' }

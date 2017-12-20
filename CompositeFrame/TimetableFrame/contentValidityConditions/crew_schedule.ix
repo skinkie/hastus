@@ -1,0 +1,29 @@
+foreach crew_schedule {
+	var v_valid_days        { assign '""' }
+	
+	foreach scheduling_unit_date {
+		sort_by 'scud_date'
+		unique_on 'scud_date'
+		
+		# REVIEW: Eventueel OperatesOnDate gebruiken?
+		from 'GetSchedUnitDates(crew_schedule, p_SchedSet, p_SchedUnit, p_ProdPhase, p_DateStart, p_DateEnd, p_CalType, p_CalendarId)'
+		var v_valid_days    { assign 'IF Count(GetSchedUnitDates(getCurrent(crew_schedule), p_SchedSet, p_SchedUnit, p_ProdPhase, scud_date, scud_date, p_CalType, p_CalendarId))=1 THEN v_valid_days + "1" ELSE v_valid_days + "0" '}
+	} # foreach scheduling_unit_date
+
+	xmlelement AvailabilityCondition {	
+		xmlattribute id             { value 'md_operatorId + ":AvailabilityCondition:Crew:" + csc_int_no' }
+		xmlattribute version        { value 'md_frameVersion' }
+		xmlelement FromDate         { value 'Format(p_DateStart, "!yyyymmdd|xxxx-xx-xx") + "T00:00:00Z"' }
+		xmlelement ToDate           { value 'Format(p_DateEnd, "!yyyymmdd|xxxx-xx-xx") + "T00:00:00Z"' }
+		
+		# Pas terugzetten als vsc_oper_day_digits werkt
+		# xmlelement dayTypes {				
+		#	xmlelement DayTypeRef {
+		#		xmlattribute ref { value 'md_operatorId + ":DayType:" + csc_sched_type' }
+		#		xmlattribute version { value 'md_frameVersion' }
+		#	}
+		# }
+		
+		xmlelement ValidDayBits		{ value 'v_valid_days' }
+	} # xmlelement AvailabilityCondition
+} # foreach vehicle_schedule

@@ -1,0 +1,49 @@
+&include Configuratie.ix
+
+&include Definitions/MainDefinitions.ix
+
+&include Definitions/Mappings.ix
+
+&include Definitions/Variables.ix
+
+file PublicationDelivery {
+	name '"NeTEx_" + md_operatorId + "_" + md_frameVersion + ".xml"'
+
+	xmlelement PublicationDelivery {
+		xmlattribute xmlns { value '"http://www.netex.org.uk/netex"' }
+		xmlattribute xmlns:gml { value '"http://www.opengis.net/gml/3.2"' }
+		xmlattribute version { value '"1.0"' }
+
+		xmlelement PublicationTimestamp { value 'Format(DateToday(), "!yyyymmdd|xxxx-xx-xx") + "T00:00:00Z"' }
+		xmlelement ParticipantRef { value '"NDOV"' }
+
+		xmlelement dataObjects {
+			xmlelement CompositeFrame {
+				xmlattribute id 			{ value 'md_operatorId + ":CompositeFrame:1"' }
+				xmlattribute version 		{ value 'md_frameVersion' }
+
+				&include CompositeFrame/FrameDefaults.ix
+
+				&include CompositeFrame/Versions.ix
+				
+				xmlelement frames {
+					&include CompositeFrame/ResourceFrame.ix
+
+					&include CompositeFrame/InfrastructureFrame.ix
+
+					# &include CompositeFrame/SiteFrame.ix
+
+					&include CompositeFrame/ServiceFrame-2017.ix
+
+					&include CompositeFrame/TimetableFrame-2017.ix
+
+					&include CompositeFrame/ServiceCalendarFrame.ix
+
+					&include CompositeFrame/VehicleScheduleFrame.ix
+					
+					&include CompositeFrame/DriverScheduleFrame.ix
+				}
+			}
+		}
+	}
+}

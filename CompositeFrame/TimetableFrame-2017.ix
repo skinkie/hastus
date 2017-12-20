@@ -1,0 +1,13 @@
+xmlelement TimetableFrame {
+	xmlattribute id { value 'md_operatorId + ":TimetableFrame:1"' }
+	xmlattribute version { value 'md_frameVersion' }
+
+	&include TimetableFrame/contentValidityConditions.ix
+
+	&include TimetableFrame/OperatorView.ix
+
+	&include TimetableFrame/vehicleJourneys.ix
+	
+	&include TimetableFrame/journeyInterchanges-2016.ix
+
+} # xmlelement TimetableFrame

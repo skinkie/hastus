@@ -4,7 +4,7 @@ xmlelement ServiceFrame {
 
 	&include ServiceFrame/directions.ix
 
-	&include ServiceFrame/routePoints-Hastus-2014.ix
+	&include ServiceFrame/routePoints-Hastus-2016.ix
 
 	&include ServiceFrame/routeLinks-nogeo.ix
 
@@ -21,8 +21,6 @@ xmlelement ServiceFrame {
 	&include ServiceFrame/stopAreas.ix
 
 	&include ServiceFrame/tariffZones.ix
-
-	# &include ServiceFrame/stopAssignments-Hastus.ix # Deze gebruiken we niet totdat CHB klaar is.
 
 	&include ServiceFrame/timingPoints.ix
 

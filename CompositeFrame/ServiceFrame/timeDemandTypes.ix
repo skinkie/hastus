@@ -11,6 +11,7 @@ xmlelement timeDemandTypes {
 		var v_tpat_stop_index {assign '0'}
 
 		xmlelement TimeDemandType {
+			condition 'trp_pattern <> ""' 	# Arriva "hack"
 			xmlattribute id 			{ value 'md_operatorId + ":TimeDemandType:" + Trim(rpat_route) + ":" + rpat_identifier' }
 			xmlattribute version 		{ value 'md_frameVersion' }
 			xmlelement runTimes {

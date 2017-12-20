@@ -22,7 +22,7 @@ xmlelement routeLinks {
 			xmlelement "Name"				{ value 'itn_stop_start + "-" + itn_stop_end' }
 			xmlelement "Distance"			{ value 'itn_calc_distance' } # TODO: controleren
 			xmlelement gml:LineString {
-				xmlattribute id 			{ value 'md_operatorId + "_LineString_" + itn_stop_start + "-" + itn_stop_end' }
+				xmlattribute gml:id			{ value 'md_operatorId + "_LineString_" + itn_stop_start + "-" + itn_stop_end' }
 				xmlattribute srsName		{ value '"EPSG:28992"' }
 				xmlelement gml:posList 		{ value 'Concat(Trim(Format(itn_coord,"nnnnnn")), " ")' }
 			}

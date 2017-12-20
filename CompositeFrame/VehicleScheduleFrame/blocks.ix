@@ -63,7 +63,7 @@ xmlelement blocks {
 							
 							xmlelement DeadRunRef {
 								condition 'NOT trp_is_in_service'
-								xmlattribute ref { value 'md_operatorId + ":DeadRun:" + vsc_int_id + ":" + vsc_sched_type + ":" + Trim(trp_route) + ":" + trim(trp_number)' }
+								xmlattribute ref { value 'md_operatorId + ":DeadRun:" + vsc_int_id + ":" + vsc_sched_type + ":" + Trim(blkact_effective_route) + ":" + trim(trp_number)' }
 								xmlattribute version { value 'md_frameVersion' }								
 							}
 						}
