@@ -1,25 +1,22 @@
 xmlelement timeDemandTypes {
 	foreach run_time_pattern {
-		from 'GetAll(vehicle_schedule).get(trip, md_trp_valid).get(run_time_pattern)'
+		from 'GetAll(vehicle_schedule, vsc_is_current).get(trip, md_trp_sel).get(run_time_pattern)'
 		sort_by TripSort {
+			criteria vsc_int_id
 			criteria rpat_route
 			criteria rpat_identifier
 		} # sort_by TripSort
-		unique_on 'rpat_route, rpat_identifier'
-		# condition 'trp_is_in_service'
-		var v_tpat_link_index {assign '0'}
-		var v_tpat_stop_index {assign '0'}
+		unique_on 'vsc_int_id, rpat_route, rpat_identifier'
 
 		xmlelement TimeDemandType {
-			condition 'trp_pattern <> ""' 	# Arriva "hack"
-			xmlattribute id 			{ value 'md_operatorId + ":TimeDemandType:" + Trim(rpat_route) + ":" + rpat_identifier' }
+			# condition 'trp_pattern <> ""' 	# Arriva "hack"
+			xmlattribute id 			{ value 'md_operatorId + ":TimeDemandType:" + vsc_int_id + ":" + Trim(rpat_route) + ":" + rpat_identifier' }
 			xmlattribute version 		{ value 'md_frameVersion' }
 			xmlelement runTimes {
 				foreach run_time_pattern_stp {
 					condition 'Prev().stp_identifier <> ""'
-					var v_tpat_link_index 		{assign ' v_tpat_link_index + 1 '}
 					xmlelement JourneyRunTime {
-						xmlattribute id 			{ value 'md_operatorId + ":JourneyRunTime:" + Trim(rpat_route) + ":" + rpat_identifier + ":" + v_tpat_link_index' }
+						xmlattribute id 			{ value 'md_operatorId + ":JourneyRunTime:" + vsc_int_id + ":" + Trim(rpat_route) + ":" + rpat_identifier + ":" + rpst_stp_pos' }
 						xmlattribute version 		{ value 'md_frameVersion' }
 						xmlelement TimingLinkRef {
 							xmlattribute ref 		{ value 'md_operatorId + ":TimingLink:" + Prev().stp_identifier + "-" + stp_identifier' }
@@ -28,18 +25,15 @@ xmlelement timeDemandTypes {
 						xmlelement RunTime { value '"PT" + md_runtime + "S"' }
 					} # xmlelement JourneyRunTime
 				} # foreach run_time_pattern_stop
-			} # xmlelement runTimes;
-						
+			} # xmlelement runTimes
+
 			xmlelement waitTimes {
 				condition 'Count(Get(run_time_pattern_stp, md_loadtime > 0)) > 0'
-			
+
 				foreach run_time_pattern_stp {
-					# TODO: We would like to export the v_tpat_stop_index to be 'aligned' with the actual index
-					
-					var v_tpat_stop_index 		{assign ' v_tpat_stop_index + 1 '}
 					xmlelement JourneyWaitTime {
 						condition 'md_loadtime > 0'
-						xmlattribute id 			{ value 'md_operatorId + ":JourneyWaitTime:" + Trim(tpat_route) + ":" + rpat_identifier + ":" + v_tpat_stop_index' }
+						xmlattribute id 			{ value 'md_operatorId + ":JourneyWaitTime:" + vsc_int_id + ":" + Trim(tpat_route) + ":" + rpat_identifier + ":" + rpst_stp_pos' }
 						xmlattribute version 		{ value 'md_frameVersion' }
 						
 						xmlelement ScheduledStopPointRef {
@@ -53,11 +47,11 @@ xmlelement timeDemandTypes {
 							xmlattribute ref 		{ value 'md_operatorId + ":TimingPoint:" + stp_identifier' }
 							xmlattribute version 	{ value 'md_frameVersion' }
 						} # xmlelement TimingPointRef
-						
+
 						xmlelement WaitTime { value '"PT" + md_loadtime + "S"' }
 					} # xmlelement JourneyWaitTime
 				} # foreach run_time_pattern_stop
 			} # xmlelement waitTimes
 		} # xmlelement TimeDemandType
 	} # foreach run_time_pattern
-}
+} # xmlelement timeDemandTypes
