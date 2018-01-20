@@ -1,6 +1,6 @@
 xmlelement timingLinks {
 	foreach trip_pattern_point {
-		from 'GetAll(vehicle_schedule).get(trip, md_trp_valid).get(trip_pattern).get(trip_pattern_point)'
+		from 'GetAll(vehicle_schedule, vsc_is_current).get(trip, md_trp_sel).get(trip_pattern).get(trip_pattern_point)'
 		condition 'Prev().stp_identifier <> "" AND stp_identifier <> "" AND Prev().stp_identifier <> stp_identifier'
 		unique_on 'Prev().stp_identifier, stp_identifier'
 		sort_by TripPatternStopSort {
@@ -8,35 +8,54 @@ xmlelement timingLinks {
 			criteria stp_identifier
 			criteria tpatpt_distance
 		} # sort_by TripPatternStopSort
+
+		array_var av_used_timinglinks { assign 'true' }
+
 		xmlelement TimingLink {
 			xmlattribute id 						{ value 'md_operatorId + ":TimingLink:" + Prev().stp_identifier + "-" + stp_identifier' }
 			xmlattribute version 					{ value 'md_frameVersion' }
 			xmlattribute responsibilitySetRef 		{ value '"BISON:ResponsibilitySet:"+md_link_authority' }
 			xmlelement Distance 					{ value 'Trim(Format(tpatpt_distance,"zzzzz.n"))' }
 			xmlelement FromPointRef {
-				xmlattribute ref {
-					condition 'Prev().stp_is_public'
-					value 'md_operatorId + ":ScheduledStopPoint:" + Prev().stp_identifier'
-				}
-				xmlattribute ref {
-					condition 'NOT Prev().stp_is_public'
-					value 'md_operatorId + ":TimingPoint:" + Prev().stp_identifier'
-				}
+				xmlattribute ref					{ value 'md_from_point_ref' }
 				xmlattribute version 				{ value 'md_frameVersion' }
 			} # xmlelement FromPointRef
 
 			xmlelement ToPointRef {
-				xmlattribute ref {
-					condition 'stp_is_public'
-					value 'md_operatorId + ":ScheduledStopPoint:" + stp_identifier'
-				}
-				xmlattribute ref {
-					condition 'NOT stp_is_public'
-					value 'md_operatorId + ":TimingPoint:" + stp_identifier'
-				}
+				xmlattribute ref					{ value 'md_to_point_ref' }
 				xmlattribute version 				{ value 'md_frameVersion' }
 			} # xmlelement ToPointRef
 
 		} # xmlelement TimingLink
 	} # foreach trip_pattern_point
+
+	# Bij DeadRuns ontbreken de haltes waarvoor nooit een JourneyPattern door Hastus is aangemaakt. We faciliteren hier dat de TimingLinks worden gemaakt.
+	foreach run_time_pattern_stp {
+		from 'GetAll(vehicle_schedule, vsc_is_current).Get(trip, md_trp_sel).Get(run_time_pattern).Get(run_time_pattern_stp)'
+		condition 'Prev().stp_identifier <> "" AND stp_identifier <> "" AND Prev().stp_identifier <> stp_identifier AND NOT trp_is_in_service AND tpat_id = "" AND NOT DefNull(av_used_timinglinks, false)'
+		unique_on 'Prev().stp_identifier, stp_identifier'
+		sort_by TripPatternStopSort {
+			criteria Prev().stp_identifier
+			criteria stp_identifier
+		} # sort_by TripPatternStopSort
+
+		array_var av_used_timinglinks { assign 'true' }
+
+		xmlelement TimingLink {
+			xmlattribute id 						{ value 'md_operatorId + ":TimingLink:" + Prev().stp_identifier + "-" + stp_identifier' }
+			xmlattribute version 					{ value 'md_frameVersion' }
+			xmlattribute responsibilitySetRef 		{ value '"BISON:ResponsibilitySet:"+md_operatorId' }
+			xmlelement Distance						{ condition 'false' value '"0"' }
+			xmlelement FromPointRef {
+				xmlattribute ref					{ value 'md_from_point_ref' }
+				xmlattribute version 				{ value 'md_frameVersion' }
+			} # xmlelement FromPointRef
+
+			xmlelement ToPointRef {
+				xmlattribute ref					{ value 'md_to_point_ref' }
+				xmlattribute version 				{ value 'md_frameVersion' }
+			} # xmlelement ToPointRef
+
+		} # xmlelement TimingLink
+	} # foreach run_time_pattern_stp
 } # xmlelement timingLinks
