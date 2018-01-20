@@ -44,7 +44,7 @@ xmlelement garages {
 
 		xmlelement Garage {
 			xmlattribute id { value 'md_operatorId + ":Garage:" + gar_id' }
-			xmlattribute version { value '"any"' }
+			xmlattribute version { value 'md_frameVersion' }
 			xmlattribute responsibilitySetRef {
 				condition 'gar_depot_id <> ""'
 				value 'md_operatorId + ":ResponsibilitySet:" + gar_depot_id'
@@ -54,14 +54,13 @@ xmlelement garages {
 			xmlelement members {
 				xmlelement GaragePointRef {
 					xmlattribute ref { value 'md_operatorId + ":GaragePoint:" + gar_pull_in_stop' }
-					xmlattribute version { value '"any"' }
+					xmlattribute version { value 'md_frameVersion' }
 				}
 
 				xmlelement GaragePointRef {
 					condition 'gar_pull_in_stop <> gar_pull_out_stop'
 					xmlattribute ref { value 'md_operatorId + ":GaragePoint:" + gar_pull_out_stop' }
-					xmlattribute version { value '"any"' }
-
+					xmlattribute version { value 'md_frameVersion' }
 				}
 			}
 		}
