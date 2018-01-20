@@ -35,7 +35,7 @@ xmlelement journeyInterchanges {
 			foreach trip_stop {
 				condition 'meet_related_trip = trp_number AND meet_reltrp_rte = trp_route'
 				xmlelement ToPointRef {
-					 xmlattribute ref { value 'md_operatorId + ":ScheduledStopPoint:" + tstp_stop_id' }
+					xmlattribute ref { value 'md_operatorId + ":ScheduledStopPoint:" + tstp_stop_id' }
 					xmlattribute version { value 'md_frameVersion' }
 				}
 			}
@@ -57,7 +57,7 @@ xmlelement journeyInterchanges {
 	
 		foreach block_activity {
 			sort_by 'blkact_start_time'
-			condition 'blkact_prev_trip.trp_is_in_service AND blkact_trip.trp_is_in_service AND StrToLng(Format(trp_time_start - blkact_prev_trip.trp_time_end, "ssss")) < md_block_vehicle_transfer_time AND blkact_prev_trip.tpat_last_tp <> NULL AND blkact_trip.tpat_first_tp <> NULL'
+			condition 'blkact_prev_trip.trp_is_in_service AND blkact_trip.trp_is_in_service AND StrToLng(Format(trp_time_start - blkact_prev_trip.trp_time_end, "ssss")) < md_block_vehicle_transfer_time AND blkact_prev_trip.tpat_last_public_stop <> NULL AND blkact_trip.tpat_first_public_stop <> NULL'
 
 			xmlelement ServiceJourneyInterchange {
 				xmlattribute id { value 'md_operatorId + ":ServiceJourneyInterchange:" + vsc_int_id + ":" + Trim(blkact_prev_trip.trp_route) + ":" + trim(blkact_prev_trip.trp_number) + ":" + Trim(trp_route) + ":" + trim(trp_number)' }
