@@ -1,24 +1,29 @@
 xmlelement vehicleJourneys {
 	foreach trip {
-		from 'GetFirstOfAll(vehicle_schedule, vsc_is_current, 1).Get(trip, md_trp_sel)'
+		from 'GetAll(vehicle_schedule, vsc_is_current).Get(trip, md_trp_sel)'
 			condition 'trp_is_in_service'
-			unique_on 'vsc_int_id,vsc_sched_type,trp_route,trp_number'
+			unique_on 'vsc_int_id, trp_route, trp_number'
 			sort_by TripStopSort {
 				criteria vsc_int_id
-				criteria vsc_sched_type
 				criteria trp_route
 				criteria trp_number
 			} # sort_by TripStopSort
 
 			xmlelement ServiceJourney {
-				xmlattribute id         { value 'md_operatorId + ":ServiceJourney:" + vsc_int_id + ":" + vsc_sched_type + ":" + Trim(trp_route) + ":" + trim(trp_number)' }
+				xmlattribute id         { value 'md_operatorId + ":ServiceJourney:" + vsc_int_id + ":" + Trim(trp_route) + ":" + trim(trp_number)' }
 				xmlattribute version	{ value 'md_frameVersion' }
+
+				xmlattribute dataSourceRef {
+					condition 'NOT md_dataownerisoperator'
+					value '"BISON:DataSource:UNKNOWN"'
+				}
 
 				xmlelement validityConditions {
 					xmlelement AvailabilityConditionRef {
 						# TODO: uitzoeken wat de relatie trip naar scheduling_unit is
 						# TODO: this assumes that the trip doesn't have his own changes
-						xmlattribute ref        { value 'md_operatorId + ":ValidityCondition:" + vsc_int_id ' }
+						xmlattribute ref        { value 'md_operatorId + ":AvailabilityCondition:" + vsc_int_id ' }
+						xmlattribute version	{ value 'md_frameVersion' }
 					} # xmlelement AvailabilityConditionRef
 				} # xmlelement validityConditions
 
@@ -26,6 +31,12 @@ xmlelement vehicleJourneys {
 					xmlelement KeyValue {
 						xmlelement Key              { value '"JourneyNumber"' }
 						xmlelement Value            { value 'Trim(trp_number)' }
+					} # xmlelement keyList
+
+					xmlelement KeyValue {
+						condition 'NOT md_dataownerisoperator'
+							xmlelement Key              { value '"DataOwnerIsOperator"' }
+							xmlelement Value            { value '"false"' }
 					} # xmlelement keyList
 				}
 
@@ -41,41 +52,41 @@ xmlelement vehicleJourneys {
 				}
 
 				xmlelement ServiceJourneyPatternRef {
-					xmlattribute ref                { value 'md_operatorId + ":ServiceJourneyPattern:" + Trim(tpat_route) + ":" + md_tpat_id' }
+					xmlattribute ref                { value 'md_operatorId + ":ServiceJourneyPattern:" + vsc_int_id + ":" + Trim(tpat_route) + ":" + tpat_id' }
 					xmlattribute version			{ value 'md_frameVersion' }
 				} # xmlelement JourneyPatternRef
 
 				xmlelement TimeDemandTypeRef {
-					xmlattribute ref                { value 'md_operatorId + ":TimeDemandType:" + Trim(tpat_route) + ":" + trp_run_time_pattern' }
+					xmlattribute ref                { value 'md_operatorId + ":TimeDemandType:" + vsc_int_id + ":" + Trim(tpat_route) + ":" + trp_run_time_pattern' }
 					xmlattribute version            { value 'md_frameVersion' }
 				} # xmlelement TimeDemandTypeRef
 
 				xmlelement BlockRef {
-					xmlattribute ref				{ value 'md_operatorId + ":Block:" + vsc_int_id + ":" + vsc_sched_type + ":" + trim(trp_block) ' }
+					xmlattribute ref				{ value 'md_operatorId + ":Block:" + vsc_int_id + ":" + trim(trp_block) ' }
 					xmlattribute version			{ value 'md_frameVersion' }
 				} # xmlelement BlockRef
 		} # xmlelement ServiceJourney
 	} # foreach trip
 
 	foreach trip {
-		from 'GetFirstOfAll(vehicle_schedule, vsc_is_current, 1).Get(trip, md_trp_sel)'
+		from 'GetAll(vehicle_schedule, vsc_is_current).Get(trip, md_trp_sel)'
 			condition 'NOT trp_is_in_service'
-			unique_on 'vsc_int_id,vsc_sched_type,trp_route_statistic,trp_number'
+			unique_on 'vsc_int_id, trp_route_statistic, trp_number'
 			sort_by TripStopSort {
 				criteria vsc_int_id
-				criteria vsc_sched_type
 				criteria trp_route_statistic
 				criteria trp_number
 			} # sort_by TripStopSort
 
 			xmlelement DeadRun {
-				xmlattribute id        { value 'md_operatorId + ":DeadRun:" + vsc_int_id + ":" + vsc_sched_type + ":" + Trim(trp_route_statistic) + ":" + trim(trp_number)' }
+				xmlattribute id			{ value 'md_operatorId + ":DeadRun:" + vsc_int_id + ":" + Trim(trp_route_statistic) + ":" + trim(trp_number)' }
 				xmlattribute version	{ value 'md_frameVersion' }
 
 				xmlelement validityConditions {
 					xmlelement AvailabilityConditionRef {
 						# TODO: uitzoeken wat de relatie trip naar scheduling_unit is
-						xmlattribute ref        { value 'md_operatorId + ":ValidityCondition:" + vsc_int_id ' }
+						xmlattribute ref        { value 'md_operatorId + ":AvailabilityCondition:" + vsc_int_id ' }
+						xmlattribute version	{ value 'md_frameVersion' }
 					} # xmlelement AvailabilityConditionRef
 				} # xmlelement validityConditions
 
@@ -98,22 +109,22 @@ xmlelement vehicleJourneys {
 				}
 
 				xmlelement DeadRunJourneyPatternRef {
-					condition 'md_tpat_id <> ""'    # Arriva "hack"
-					xmlattribute ref                { value 'md_operatorId + ":DeadRunJourneyPattern:" + Trim(trp_route_statistic) + ":" + md_tpat_id' }
+					condition 'trp_run_time_pattern <> ""'
+					xmlattribute ref 				{ value 'md_operatorId + ":DeadRunJourneyPattern:" + vsc_int_id + ":" + Trim(trp_route_statistic) + ":" + trp_run_time_pattern' }
 					xmlattribute version			{ value 'md_frameVersion' }
 				} # xmlelement DeadRunJourneyPatternRef
 
 				xmlelement TimeDemandTypeRef {
-					condition 'md_tpat_id <> ""'    # Arriva "hack"
-					xmlattribute ref                { value 'md_operatorId + ":TimeDemandType:" + Trim(trp_route_statistic) + ":" + trp_run_time_pattern' }
+					condition 'trp_run_time_pattern <> ""'
+					xmlattribute ref                { value 'md_operatorId + ":TimeDemandType:" + vsc_int_id + ":" + Trim(trp_route_statistic) + ":" + trp_run_time_pattern' }
 					xmlattribute version            { value 'md_frameVersion' }
 				} # xmlelement TimeDemandTypeRef
 
 				xmlelement BlockRef {
-					xmlattribute ref				{ value 'md_operatorId + ":Block:" + vsc_int_id + ":" + vsc_sched_type + ":" + trim(trp_block) ' }
+					xmlattribute ref				{ value 'md_operatorId + ":Block:" + vsc_int_id + ":" + trim(trp_block) ' }
 					xmlattribute version			{ value 'md_frameVersion' }
 				} # xmlelement BlockRef
-				
+
 				xmlelement DeadRunType {
 					value 'IF trp_type=1 THEN "garageRunOut" ELSE IF trp_type=2 THEN "garageRunIn" ELSE "other"'
 				}
