@@ -1,10 +1,11 @@
 definitions MainDefinitions {
 	code
-	/* These four should already exist in your installation */
+	/* These four should already exist in your installation
 	DEFINE m_trp_pce_end CLASS trip { DefNull(GetCurrent(piece), Get(piece, 1)) }	
 	DEFINE trp_tim_end_pce { If (m_trp_pce_end.pce_time_end = NULL) THEN NULL ELSE Min(trp_time_end, m_trp_pce_end.pce_time_end) } 
 	DEFINE m_trp_pce_start CLASS trip { DefNull(GetCurrent(piece), Get(piece, "*")) }
-	DEFINE trp_tim_start_pce { Max(trp_time_start, m_trp_pce_start.pce_time_start) }	
+	DEFINE trp_tim_strt_pce { Max(trp_time_start, m_trp_pce_start.pce_time_start) }	
+	*/
 	
 	DEFINE md_frameVersion { v_source + "_" + Format(datetoday(),"!yyyymmdd|xxxx-xx-xx") }
 	DEFINE md_trp_valid CLASS trip { trp_duration > 0h00 }
@@ -20,8 +21,9 @@ definitions MainDefinitions {
 	DEFINE md_endTime { StrReplace(Format(dty_act_end_time, "0hh\'mm:ss"), ";", ":") }
 	DEFINE md_startTimeCalc { StrReplace(Format(trp_tim_strt_pce, "0hh\'mm:ss"), ";", ":") }
 	DEFINE md_endTimeCalc { StrReplace(Format(trp_tim_end_pce, "0hh\'mm:ss"), ";", ":") }
-	DEFINE md_tpat_id { DefNull(tpat_external_id, tpat_id) }
 	DEFINE md_trp_is_car_taxi CLASS trip { Trim(trp_route_statistic) = Trim(DefNull(IniQueryStr("RTE","RTE_CAR"), "CAR")) OR Trim(trp_route_statistic) = Trim(DefNull(IniQueryStr("RTE","RTE_TAXI"), "TAXI" )) }	
 	DEFINE md_trp_sel CLASS trip { NOT md_trp_is_car_taxi AND NOT trp_is_free AND trp_is_for_blk AND md_block_sel AND trp_duration > 0h00 } 
+	DEFINE md_from_point_ref { md_operatorId + (IF Prev().stp_is_public = True THEN ":ScheduledStopPoint:" ELSE ":TimingPoint:") + Prev().stp_identifier }
+	DEFINE md_to_point_ref { md_operatorId + (IF stp_is_public = True THEN ":ScheduledStopPoint:" ELSE ":TimingPoint:") + stp_identifier }
 	end
 }
