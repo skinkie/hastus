@@ -6,11 +6,11 @@ xmlelement blocks {
 			criteria blk_number			
 		}
 		
-		condition 'md_block_sel'
+		condition 'md_block_sel AND Count(Get(block_activity, md_trp_valid AND md_trp_sel)) > 0'
 		unique_on 'vsc_int_id, blk_number'
 		
 		xmlelement Block {
-			xmlattribute id         { value 'md_operatorId + ":Block:" + vsc_int_id + ":" + vsc_sched_type + ":" + Trim(blk_number)' }
+			xmlattribute id         { value 'md_operatorId + ":Block:" + vsc_int_id + ":" + Trim(blk_number)' }
 			xmlattribute version	{ value 'md_frameVersion' }
 				
 			xmlelement Description	{ value 'Trim(blk_number)' }
@@ -23,7 +23,7 @@ xmlelement blocks {
 			}
 
 			xmlelement VehicleServicePartRef {
-				xmlattribute ref { value 'md_operatorId + ":VehicleServicePart:" + vsc_booking + ":" + vsc_int_id + ":" + Trim(vta_number) + ":" + blk_time_start' }
+				xmlattribute ref { value 'md_operatorId + ":VehicleServicePart:" + vsc_int_id + ":" + Trim(vta_number) + ":" + blk_time_start' }
 				xmlattribute version { value 'md_frameVersion' }
 			}
 							
@@ -33,37 +33,39 @@ xmlelement blocks {
 			}
 			
 			xmlelement StartPointRef {
-				xmlattribute ref { value 'IF blk_gar_plc_strt <> "" THEN md_operatorId + ":GaragePoint:" + blk_gar_plc_strt ELSE IF Object(stop, blk_stop_first).stp_is_public THEN md_operatorId + ":ScheduledStopPoint:" + blk_stop_first ELSE md_operatorId + ":TimingPoint:" + blk_stop_first' }			
+				xmlattribute ref { value 'IF blk_gar_plc_strt <> "" THEN md_operatorId + ":GaragePoint:" + Object(garage, blk_gar_plc_strt).gar_pull_out_stop ELSE IF Object(stop, blk_stop_first).stp_is_public THEN md_operatorId + ":ScheduledStopPoint:" + blk_stop_first ELSE md_operatorId + ":TimingPoint:" + blk_stop_first' }
+				xmlattribute version { value 'md_frameVersion' }
 			}
 								
 			xmlelement EndPointRef {
-				xmlattribute ref { value 'IF blk_gar_plc_end <> "" THEN md_operatorId + ":GaragePoint:" + blk_gar_plc_end ELSE IF Object(stop, blk_stop_last).stp_is_public THEN md_operatorId + ":ScheduledStopPoint:" + blk_stop_last ELSE md_operatorId + ":TimingPoint:" + blk_stop_last' }
+				xmlattribute ref { value 'IF blk_gar_plc_end <> "" THEN md_operatorId + ":GaragePoint:" + Object(garage, blk_gar_plc_end).gar_pull_in_stop ELSE IF Object(stop, blk_stop_last).stp_is_public THEN md_operatorId + ":ScheduledStopPoint:" + blk_stop_last ELSE md_operatorId + ":TimingPoint:" + blk_stop_last' }
+				xmlattribute version { value 'md_frameVersion' }
 			}
 			
 			xmlelement coursesOfJourneys {
 				xmlelement CourseOfJourneys {
-					xmlattribute id { value 'md_operatorId + ":CourseOfJourneys:" + vsc_int_id + ":" + vsc_sched_type + ":" + Trim(blk_number)' }
+					xmlattribute id { value 'md_operatorId + ":CourseOfJourneys:" + vsc_int_id + ":" + Trim(blk_number)' }
 					xmlattribute version { value 'md_frameVersion' }				
 				
 					xmlelement BlockRef {
-						xmlattribute ref { value 'md_operatorId + ":Block:" + vsc_int_id + ":" + vsc_sched_type + ":" + Trim(blk_number)' }
+						xmlattribute ref { value 'md_operatorId + ":Block:" + vsc_int_id + ":" + Trim(blk_number)' }
 						xmlattribute version { value 'md_frameVersion' }						
 					}
 					
 					xmlelement journeys {										
 						foreach block_activity {
 							sort_by 'blkact_start_time'
-							condition 'md_trp_valid'
+							condition 'md_trp_valid AND md_trp_sel'
 							
 							xmlelement ServiceJourneyRef {
 								condition 'trp_is_in_service'
-								xmlattribute ref { value 'md_operatorId + ":ServiceJourney:" + vsc_int_id + ":" + vsc_sched_type + ":" + Trim(trp_route) + ":" + trim(trp_number)' }
+								xmlattribute ref { value 'md_operatorId + ":ServiceJourney:" + vsc_int_id + ":" + Trim(trp_route) + ":" + trim(trp_number)' }
 								xmlattribute version { value 'md_frameVersion' }								
 							}
 							
 							xmlelement DeadRunRef {
 								condition 'NOT trp_is_in_service'
-								xmlattribute ref { value 'md_operatorId + ":DeadRun:" + vsc_int_id + ":" + vsc_sched_type + ":" + Trim(blkact_effective_route) + ":" + trim(trp_number)' }
+								xmlattribute ref { value 'md_operatorId + ":DeadRun:" + vsc_int_id + ":" + Trim(trp_route_statistic) + ":" + trim(trp_number)' }
 								xmlattribute version { value 'md_frameVersion' }								
 							}
 						}

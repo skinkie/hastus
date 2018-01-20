@@ -5,12 +5,13 @@ xmlelement vehicleServices {
 			criteria vta_number
 		}
 		xmlelement VehicleService {
-			xmlattribute id         { value 'md_operatorId + ":VehicleService:" + vsc_int_id + ":" + vsc_sched_type + ":" + Trim(vta_number)' }
+			xmlattribute id         { value 'md_operatorId + ":VehicleService:" + vsc_int_id + ":" + Trim(vta_number) + ":" + vta_time_start' } # TODO, kan in Hastus maar niet gewenst
 			xmlattribute version	{ value 'md_frameVersion' }		
 			
 			xmlelement validityConditions {
 				xmlelement AvailabilityConditionRef {			
-					xmlattribute ref        { value 'md_operatorId + ":ValidityCondition:" + vsc_int_id' }
+					xmlattribute ref        { value 'md_operatorId + ":AvailabilityCondition:" + vsc_int_id' }
+					xmlattribute version { value 'md_frameVersion' }
 				} # xmlelement AvailabilityConditionRef
 			} # xmlelement validityConditions
 				
@@ -24,14 +25,17 @@ xmlelement vehicleServices {
 						criteria blk_time_start
 					}
 					xmlelement VehicleServicePart {
-						xmlattribute id { value 'md_operatorId + ":VehicleServicePart:" + vsc_booking + ":" + vsc_int_id + ":" + Trim(vta_number) + ":" + blk_time_start' }
+						xmlattribute id { value 'md_operatorId + ":VehicleServicePart:" + vsc_int_id + ":" + Trim(vta_number) + ":" + blk_time_start' }
 						xmlattribute version { value 'md_frameVersion' }
 						
 						xmlelement StartPointRef {
-							xmlattribute ref { value 'IF blk_gar_plc_strt <> "" THEN md_operatorId + ":GaragePoint:" + blk_gar_plc_strt ELSE IF Object(stop, blk_stop_first).stp_is_public THEN md_operatorId + ":ScheduledStopPoint:" + blk_stop_first ELSE md_operatorId + ":TimingPoint:" + blk_stop_first' }			
+							xmlattribute ref { value 'IF blk_gar_plc_strt <> "" THEN md_operatorId + ":GaragePoint:" + Object(garage, blk_gar_plc_strt).gar_pull_out_stop ELSE IF Object(stop, blk_stop_first).stp_is_public THEN md_operatorId + ":ScheduledStopPoint:" + blk_stop_first ELSE md_operatorId + ":TimingPoint:" + blk_stop_first' }
+							xmlattribute version { value 'md_frameVersion' }
 						}
+
 						xmlelement EndPointRef {
-							xmlattribute ref { value 'IF blk_gar_plc_end <> "" THEN md_operatorId + ":GaragePoint:" + blk_gar_plc_end ELSE IF Object(stop, blk_stop_last).stp_is_public THEN md_operatorId + ":ScheduledStopPoint:" + blk_stop_last ELSE md_operatorId + ":TimingPoint:" + blk_stop_last' }
+							xmlattribute ref { value 'IF blk_gar_plc_end <> "" THEN md_operatorId + ":GaragePoint:" + Object(garage, blk_gar_plc_end).gar_pull_in_stop ELSE IF Object(stop, blk_stop_last).stp_is_public THEN md_operatorId + ":ScheduledStopPoint:" + blk_stop_last ELSE md_operatorId + ":TimingPoint:" + blk_stop_last' }
+							xmlattribute version { value 'md_frameVersion' }
 						}
 					}
 				}
