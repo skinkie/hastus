@@ -2,11 +2,11 @@ xmlelement lines {
 	foreach trip {
 		from 'GetFirstOfAll(vehicle_schedule, vsc_is_current, 1).Get(trip, md_trp_valid)'
 		condition 'trp_is_public'
-		unique_on 'trp_route'
-		sort_by 'trp_route'
+		unique_on 'md_line_id_trp'
+		sort_by 'md_line_id_trp'
 		
 		xmlelement Line {
-			xmlattribute id 			{ value 'md_operatorId + ":Line:" + Trim(trp_route)' }
+			xmlattribute id 			{ value 'md_operatorId + ":Line:" + md_line_id_trp' }
 			xmlattribute version 		{ value 'md_frameVersion' }
 			xmlelement keyList {
 				xmlelement KeyValue {
@@ -15,7 +15,7 @@ xmlelement lines {
 				} # xmlelement KeyValue
 				xmlelement KeyValue {
 					xmlelement Key 			{ value '"LinePlanningNumber"' }
-					xmlelement Value 		{ value 'Trim(Object(route,trp_route).rte_identifier)' }
+					xmlelement Value 		{ value 'md_line_id_trp' }
 				} # xmlelement KeyValue
 			} # xmlelement keyList
 			xmlelement Name 				{ value 'Object(route,trp_route).rte_description' }
