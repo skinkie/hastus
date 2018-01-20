@@ -16,3 +16,5 @@ array_var av_plc { key_part 'part1' type 'integer' }
 array_var av_used_gar			{ key_part 'gar_id' type 'boolean' assign 'false' }
 array_var av_used_gar_stop		{ key_part 'stp_identifier' type 'boolean' assign 'false' }
 array_var av_used_vehicle_group	{ key_part 'vehg_identifier' type 'boolean' assign 'false' }
+array_var av_used_timingpoint     { key_part id { value 'stp_identifier' } type 'boolean' assign 'false' }
+array_var av_used_timinglinks      { key_part FromPointRef { value 'Prev().stp_identifier' } key_part ToPointRef { value 'stp_identifier' } type 'boolean' assign 'false' }
