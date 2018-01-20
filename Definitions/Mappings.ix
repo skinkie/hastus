@@ -9,5 +9,22 @@ definitions Mappings {
 			ELSE IF rte_service_mode = 2 /* METRO */ THEN "metro"
 			ELSE "rail"
 		}
+
+		/* Arriva Mappings
+		DEFINE md_garage_datasource {
+			IF StrLocateStr(blk_gar_plc_strt, "Cxx", "Bre", "Herm") <> NULL THEN "CXX"
+			ELSE IF StrLocateStr(blk_gar_plc_strt, "Syn", "Twe") <> NULL THEN "SYNTUS"
+			ELSE blk_gar_plc_strt
+		}
+
+		DEFINE md_garage_operator {
+			IF StrLocateStr(blk_gar_plc_strt, "Cxx") <> NULL THEN "CXX"
+			ELSE IF StrLocateStr(blk_gar_plc_strt, "Bre") <> NULL THEN "BRENG"
+			ELSE IF StrLocateStr(blk_gar_plc_strt, "Herm") <> NULL THEN "HERMES"
+			ELSE IF StrLocateStr(blk_gar_plc_strt, "Syn") <> NULL THEN "SYNTUS"
+			ELSE IF StrLocateStr(blk_gar_plc_strt, "Twe") <> NULL THEN "TWENTS"
+			ELSE blk_gar_plc_strt
+		}
+		*/
 	end
 }
