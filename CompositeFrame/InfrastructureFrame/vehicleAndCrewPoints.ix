@@ -6,7 +6,7 @@ xmlelement vehicleAndCrewPoints {
 
 		xmlelement GaragePoint {
 			xmlattribute id { value 'md_operatorId + ":GaragePoint:" + stp_identifier' }
-			xmlattribute version { value 'md_frameVersion' }
+			xmlattribute version { value 'md_any' }
 			xmlelement Name { value 'stp_description' }
 			# xmlelement ShortName { value 'stp_identifier' }
 		}

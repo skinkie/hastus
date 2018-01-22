@@ -10,7 +10,7 @@ xmlelement stopAreas {
 			xmlattribute id		   {value 'md_operatorId + ":StopArea:" + plc_identifier' }
 			xmlelement Name		   {value 'Object(place, plc_identifier).plc_description' }
 			xmlelement ShortName	  {value 'plc_identifier' }
-			xmlattribute version 	  {value 'md_frameVersion' }
+			xmlattribute version 	  {value 'md_any' }
 
 			xmlelement Centroid {
 				xmlelement Location {

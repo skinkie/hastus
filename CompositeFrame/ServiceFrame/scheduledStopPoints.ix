@@ -7,7 +7,7 @@ xmlelement scheduledStopPoints {
 		
 		xmlelement ScheduledStopPoint {
 			xmlattribute id 				{ value 'md_operatorId + ":ScheduledStopPoint:" + stp_identifier' }
-			xmlattribute version 			{ value 'md_frameVersion' }
+			xmlattribute version 			{ value 'md_any' }
 			xmlelement keyList {
 				xmlelement KeyValue {
 					xmlelement Key 			{ value '"UserStopCode"' }
@@ -32,7 +32,7 @@ xmlelement scheduledStopPoints {
 				condition 'plc_identifier <> ""'
 				xmlelement StopAreaRef {
 					xmlattribute ref 				{ value 'md_operatorId + ":StopArea:" + plc_identifier' }
-					xmlattribute version 			{ value 'md_frameVersion' }
+					xmlattribute version 			{ value 'md_any' }
 				}
 			}
 			

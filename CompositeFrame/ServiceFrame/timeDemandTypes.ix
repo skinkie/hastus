@@ -39,7 +39,7 @@ xmlelement timeDemandTypes {
 						xmlelement ScheduledStopPointRef {
 							condition 'stp_is_public'
 							xmlattribute ref 		{ value 'md_operatorId + ":ScheduledStopPoint:" + stp_identifier' }
-							xmlattribute version 	{ value 'md_frameVersion' }
+							xmlattribute version 	{ value 'md_any' }
 						} # xmlelement ScheduledStopPointRef
 						
 						xmlelement TimingPointRef {

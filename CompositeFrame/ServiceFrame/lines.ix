@@ -7,7 +7,7 @@ xmlelement lines {
 		
 		xmlelement Line {
 			xmlattribute id 			{ value 'md_operatorId + ":Line:" + md_line_id_trp' }
-			xmlattribute version 		{ value 'md_frameVersion' }
+			xmlattribute version 		{ value 'md_any' }
 			xmlelement keyList {
 				xmlelement KeyValue {
 					xmlelement Key 			{ value '"VeTagLineNumber"' }

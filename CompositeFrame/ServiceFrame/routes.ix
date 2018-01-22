@@ -14,7 +14,7 @@ xmlelement routes {
 			
 			xmlelement LineRef {
 				xmlattribute ref 			{ value 'md_operatorId + ":Line:" + md_line_id_tpat' }
-				xmlattribute version 		{ value 'md_frameVersion' }
+				xmlattribute version 		{ value 'md_any' }
 			} # xmlelement LineRef
 
 			xmlelement pointsInSequence {
