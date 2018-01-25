@@ -76,7 +76,7 @@ xmlelement journeyPatterns {
 						xmlattribute order 			{ value 'tpatpt_position' }
 						xmlelement TimingPointRef {
 							xmlattribute ref 		{ value 'md_operatorId + ":TimingPoint:" + stp_identifier' }
-							xmlattribute version 	{ value 'md_frameVersion' }
+							xmlattribute version 	{ value 'md_any' }
 						} # xmlelement TimingPointRef
 						xmlelement OnwardTimingLinkRef {
 							condition 'Next().stp_identifier <> ""'
@@ -144,7 +144,7 @@ xmlelement journeyPatterns {
 						xmlattribute order 			{ value '(rpst_stp_pos + 1)' }
 						xmlelement TimingPointRef {
 							xmlattribute ref 		{ value 'md_operatorId + ":TimingPoint:" + stp_identifier' }
-							xmlattribute version 	{ value 'md_frameVersion' }
+							xmlattribute version 	{ value 'md_any' }
 						} # xmlelement TimingPointRef
 						xmlelement OnwardTimingLinkRef {
 							condition 'Next().stp_identifier <> ""'

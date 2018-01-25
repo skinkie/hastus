@@ -18,12 +18,12 @@ xmlelement timingLinks {
 			xmlelement Distance 					{ value 'Trim(Format(tpatpt_distance,"zzzzz.n"))' }
 			xmlelement FromPointRef {
 				xmlattribute ref					{ value 'md_from_point_ref' }
-				xmlattribute version 				{ value 'md_frameVersion' }
+				xmlattribute version 				{ value 'md_any' }
 			} # xmlelement FromPointRef
 
 			xmlelement ToPointRef {
 				xmlattribute ref					{ value 'md_to_point_ref' }
-				xmlattribute version 				{ value 'md_frameVersion' }
+				xmlattribute version 				{ value 'md_any' }
 			} # xmlelement ToPointRef
 
 		} # xmlelement TimingLink
@@ -48,12 +48,12 @@ xmlelement timingLinks {
 			xmlelement Distance						{ condition 'false' value '"0"' }
 			xmlelement FromPointRef {
 				xmlattribute ref					{ value 'md_from_point_ref' }
-				xmlattribute version 				{ value 'md_frameVersion' }
+				xmlattribute version 				{ value 'md_any' }
 			} # xmlelement FromPointRef
 
 			xmlelement ToPointRef {
 				xmlattribute ref					{ value 'md_to_point_ref' }
-				xmlattribute version 				{ value 'md_frameVersion' }
+				xmlattribute version 				{ value 'md_any' }
 			} # xmlelement ToPointRef
 
 		} # xmlelement TimingLink

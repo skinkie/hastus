@@ -29,14 +29,14 @@ xmlelement journeyInterchanges {
 				condition 'meet_on_trip = trp_number AND meet_ontrp_rte = trp_route'
 				xmlelement FromPointRef {
 					xmlattribute ref { value 'md_operatorId + ":ScheduledStopPoint:" + tstp_stop_id' }
-					xmlattribute version { value 'md_frameVersion' }
+					xmlattribute version { value 'md_any' }
 				}
 			}
 			foreach trip_stop {
 				condition 'meet_related_trip = trp_number AND meet_reltrp_rte = trp_route'
 				xmlelement ToPointRef {
 					xmlattribute ref { value 'md_operatorId + ":ScheduledStopPoint:" + tstp_stop_id' }
-					xmlattribute version { value 'md_frameVersion' }
+					xmlattribute version { value 'md_any' }
 				}
 			}
 			
@@ -84,12 +84,12 @@ xmlelement journeyInterchanges {
 											
 				xmlelement FromPointRef {
 					xmlattribute ref { value 'md_operatorId + ":ScheduledStopPoint:" + blkact_prev_trip.tpat_last_public_stop' }
-					xmlattribute version { value 'md_frameVersion' }
+					xmlattribute version { value 'md_any' }
 				}
 				
 				xmlelement ToPointRef {
 					xmlattribute ref { value 'md_operatorId + ":ScheduledStopPoint:" + blkact_trip.tpat_first_public_stop' }
-					xmlattribute version { value 'md_frameVersion' }
+					xmlattribute version { value 'md_any' }
 				}
 				
 				xmlelement FromJourneyRef {
