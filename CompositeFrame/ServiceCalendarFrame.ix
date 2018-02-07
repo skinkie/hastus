@@ -1,5 +1,5 @@
 xmlelement ServiceCalendarFrame {
-	xmlattribute id { value 'md_operatorId + ":ServiceCalendarFrame:1"' }
+	xmlattribute id { value 'md_operatorId + ":ServiceCalendarFrame:" + md_frameIdentifier' }
 	xmlattribute version { value 'md_frameVersion' }
 
 	&include ServiceCalendarFrame/dayTypes.ix

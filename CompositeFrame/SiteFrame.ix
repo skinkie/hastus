@@ -2,7 +2,7 @@
 # We might want to map Hastus Places to StopArea's instead.
 
 xmlelement SiteFrame {
-	xmlattribute id { value 'md_operatorId + ":SiteFrame:1"' }
+	xmlattribute id { value 'md_operatorId + ":SiteFrame:" + md_frameIdentifier' }
 	xmlattribute version { value 'md_frameVersion' }
 
 	&include SiteFrame/stopPlaces.ix

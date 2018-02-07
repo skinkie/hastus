@@ -1,5 +1,5 @@
 xmlelement VehicleScheduleFrame {
-	xmlattribute id { value 'md_operatorId + ":VehicleScheduleFrame:1"' }
+	xmlattribute id { value 'md_operatorId + ":VehicleScheduleFrame:" + md_frameIdentifier' }
 	xmlattribute version { value 'md_frameVersion' }
 
 	# &include VehicleScheduleFrame/contentAvailabilityConditions.ix

@@ -1,5 +1,5 @@
 xmlelement InfrastructureFrame {
-	xmlattribute id { value 'md_operatorId + ":InfrastructureFrame:1"' }
+	xmlattribute id { value 'md_operatorId + ":InfrastructureFrame:" + md_frameIdentifier' }
 	xmlattribute version { value 'md_frameVersion' }
 
 	&include InfrastructureFrame/garages.ix

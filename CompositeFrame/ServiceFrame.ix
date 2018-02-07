@@ -1,5 +1,5 @@
 xmlelement ServiceFrame {
-	xmlattribute id { value 'md_operatorId + ":ServiceFrame:1"' }
+	xmlattribute id { value 'md_operatorId + ":ServiceFrame:" + md_frameIdentifier' }
 	xmlattribute version { value 'md_frameVersion' }
 
 	&include ServiceFrame/directions.ix

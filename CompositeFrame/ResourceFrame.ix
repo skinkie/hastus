@@ -1,6 +1,6 @@
 
 xmlelement ResourceFrame {
-	xmlattribute id { value 'md_operatorId + ":ResourceFrame:1"' }
+	xmlattribute id { value 'md_operatorId + ":ResourceFrame:" + md_frameIdentifier' }
 	xmlattribute version { value 'md_frameVersion' }
 
 	&include ResourceFrame/dataSources.ix

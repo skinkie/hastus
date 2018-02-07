@@ -19,7 +19,7 @@ file PublicationDelivery {
 
 		xmlelement dataObjects {
 			xmlelement CompositeFrame {
-				xmlattribute id 			{ value 'md_operatorId + ":CompositeFrame:1"' }
+				xmlattribute id 			{ value 'md_operatorId + ":CompositeFrame:" + md_frameIdentifier' }
 				xmlattribute version 		{ value 'md_frameVersion' }
 
 				&include CompositeFrame/FrameDefaults.ix
