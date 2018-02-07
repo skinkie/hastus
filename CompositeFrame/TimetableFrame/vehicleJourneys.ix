@@ -57,10 +57,24 @@ xmlelement vehicleJourneys {
 				} # xmlelement JourneyPatternRef
 
 				xmlelement TimeDemandTypeRef {
+					condition 'trp_run_time_pattern <> ""' # Hack
 					xmlattribute ref                { value 'md_operatorId + ":TimeDemandType:" + vsc_int_id + ":" + Trim(tpat_route) + ":" + trp_run_time_pattern' }
 					xmlattribute version            { value 'md_frameVersion' }
 				} # xmlelement TimeDemandTypeRef
-
+				
+				# Als blockinformatie niet wordt geexporteerd, zou hier de VehicleType ook duidelijk worden
+				# xmlelement VehicleTypeRef {
+				#	xmlattribute ref                { value 'md_operatorId + ":TimeDemandType:" + vsc_int_id + ":" + Trim(tpat_route) + ":" + trp_run_time_pattern' }
+				#	xmlattribute version            { value 'md_frameVersion' }
+				# }
+				
+				# Hier nog wat doen met Branch informatie?
+				# xmlelement OperationalContextRef {
+				#	condition 'vsc_sched_unit <> ""'
+				#	xmlattribute ref				{ value 'md_operatorId + ":OperationalContext:" + vsc_sched_unit' }
+				#	xmlattribute version 			{ value '"any"' }
+				# } # OperationalContextRef
+				
 				xmlelement BlockRef {
 					xmlattribute ref				{ value 'md_operatorId + ":Block:" + vsc_int_id + ":" + trim(trp_block) ' }
 					xmlattribute version			{ value 'md_frameVersion' }
