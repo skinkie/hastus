@@ -33,11 +33,13 @@ xmlelement blocks {
 			}
 			
 			xmlelement StartPointRef {
+				condition 'blk_gar_plc_strt <> "" OR blk_stop_first <> ""' # Hack
 				xmlattribute ref { value 'IF blk_gar_plc_strt <> "" THEN md_operatorId + ":GaragePoint:" + Object(garage, blk_gar_plc_strt).gar_pull_out_stop ELSE IF Object(stop, blk_stop_first).stp_is_public THEN md_operatorId + ":ScheduledStopPoint:" + blk_stop_first ELSE md_operatorId + ":TimingPoint:" + blk_stop_first' }
 				xmlattribute version { value 'md_any' }
 			}
 								
 			xmlelement EndPointRef {
+				condition 'blk_gar_plc_end <> "" OR blk_stop_last <> ""' # Hack
 				xmlattribute ref { value 'IF blk_gar_plc_end <> "" THEN md_operatorId + ":GaragePoint:" + Object(garage, blk_gar_plc_end).gar_pull_in_stop ELSE IF Object(stop, blk_stop_last).stp_is_public THEN md_operatorId + ":ScheduledStopPoint:" + blk_stop_last ELSE md_operatorId + ":TimingPoint:" + blk_stop_last' }
 				xmlattribute version { value 'md_any' }
 			}
