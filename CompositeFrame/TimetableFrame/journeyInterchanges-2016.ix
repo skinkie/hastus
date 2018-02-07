@@ -1,4 +1,6 @@
 xmlelement journeyInterchanges {
+	condition 'GetAll(vehicle_schedule, vsc_is_current).Get(trip_meet, 1) <> NULL'
+	
 	foreach trip_meet {			
 		condition 'meet_is_feasible'
 		
