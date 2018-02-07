@@ -5,8 +5,11 @@ definitions MainDefinitions {
 	DEFINE trp_tim_end_pce { If (m_trp_pce_end.pce_time_end = NULL) THEN NULL ELSE Min(trp_time_end, m_trp_pce_end.pce_time_end) } 
 	DEFINE m_trp_pce_start CLASS trip { DefNull(GetCurrent(piece), Get(piece, "*")) }
 	DEFINE trp_tim_strt_pce { Max(trp_time_start, m_trp_pce_start.pce_time_start) }	
+	DEFINE tpat_first_public_stop { Get(trip_pattern_point, stp_is_public, 1).tpatpt_stop_id }
+	DEFINE tpat_last_public_stop  { Get(trip_pattern_point, stp_is_public, "*").tpatpt_stop_id }
 	*/
 	
+	DEFINE md_frameIdentifier { v_source }
 	DEFINE md_frameVersion { v_source + "_" + Format(datetoday(),"!yyyymmdd|xxxx-xx-xx") }
 	DEFINE md_trp_valid CLASS trip { trp_duration > 0h00 }
 	DEFINE md_runtime { Trim(Format(rpst_stp_run_time, "sssss")) }
