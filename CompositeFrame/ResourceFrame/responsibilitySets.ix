@@ -1,10 +1,32 @@
 xmlelement responsibilitySets {
-	foreach district {
-		unique_on 'dst_id'
+	foreach trip_stop {
+		from 'GetAll(vehicle_schedule, vsc_is_current).Get(block).Get(trip).Get(trip_stop)'
+		condition 'trp_duration > 0h00 AND trp_is_in_service'
+		unique_on 'tstp_district'
+
 		xmlelement ResponsibilitySet {	
-			xmlattribute id { value '"BISON:ResponsibilitySet:" + dst_id' }
+			xmlattribute id { value '"BISON:ResponsibilitySet:" + tstp_district' }
 			xmlattribute version { value '"any"' }
-			xmlelement Name { value 'dst_description' }			
+			xmlelement Name { value 'DefNull(tstp_district.dst_description,tstp_district)' }
 		}
 	}
+	
+	foreach garage {
+		from 'GetAll(garage, av_used_gar)'
+		unique_on 'gar_depot_id'
+		sort_by 'gar_depot_id'
+
+		xmlelement ResponsibilitySet {
+			xmlattribute id { value 'md_operatorId + ":ResponsibilitySet:" + gar_depot_id' }
+			xmlattribute version { value 'md_any' }
+			xmlelement Name { value 'DefNull(Object(division, gar_depot_id).div_description, gar_depot_id)' }
+		}
+	}
+	
+	xmlelement ResponsibilitySet {	
+		xmlattribute id { value '"BISON:ResponsibilitySet:" + md_authority' }
+		xmlattribute version { value '"any"' }
+		xmlelement Name { value 'md_authority' }
+	}
 }
+

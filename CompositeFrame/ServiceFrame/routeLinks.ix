@@ -19,6 +19,8 @@ xmlelement routeLinks {
 
 			xmlattribute "id"				{ value 'md_operatorId + ":RouteLink:" + itn_stop_start + "-" + itn_stop_end + "-" + rte_service_mode' }
 			xmlattribute version 			{ value 'md_frameVersion' }
+			xmlattribute responsibilitySetRef 		{ value '"BISON:ResponsibilitySet:" + md_link_authority' }
+
 			xmlelement "Name"				{ value 'itn_stop_start + "-" + itn_stop_end' }
 			xmlelement "Distance"			{ value 'itn_calc_distance' } # TODO: controleren
 			xmlelement gml:LineString {
