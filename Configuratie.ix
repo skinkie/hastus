@@ -3,23 +3,23 @@ att omit_null_values
 definitions Configuratie {
 	code
 	DEFINE md_any { "any" }
-	DEFINE md_operatorId { "ARR" }
-	DEFINE md_operatorName { "ARR" }
-	DEFINE md_authority { "ARR" }
-	DEFINE md_block_vehicle_transfer_time { 360 }
-	
-	
+	DEFINE md_block_vehicle_transfer_time { 360 }	
 	DEFINE md_block_sel { blk_vehicle_group <> "AFau" AND blk_vehicle_group <> "Car" }
 	DEFINE md_vta_sel { vta_vehicle_group <> "AFau" AND vta_vehicle_group <> "Car" }
 
 	/* HTM */
+	DEFINE md_operatorId { "HTM" }
+	DEFINE md_operatorName { "HTM" }
+	DEFINE md_authority { "MRDH" }
 	DEFINE md_line_id_trp { Trim(trp_route) }
 	DEFINE md_timingpoint { tpatpt_position = 2 OR stp_regulation_point }
 	DEFINE md_line_id_tpat { Trim(tpat_route) }
 	DEFINE md_dataownerisoperator { NOT (trp_vehicle_group_1.vehg_identifier = "EXT") }
-	
-	
+
 	/* Arriva
+	DEFINE md_operatorId { "ARR" }
+	DEFINE md_operatorName { "ARR" }
+	DEFINE md_authority { "ARR" }
 	DEFINE md_line_id_trp { trp_route_regio_alb }
 	DEFINE md_line_id_tpat { trp_route_regio_alb }
 	DEFINE md_timingpoint { tpatpt_position = 2 OR tpatpt_is_timing_point }	
