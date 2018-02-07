@@ -1,6 +1,6 @@
 xmlelement stopAreas {
-	foreach trip_pattern_point {
-		from 'GetAll(vehicle_schedule).get(trip, md_trp_sel).get(trip_pattern).get(trip_pattern_point)'
+	foreach stop {
+		from 'GetAll(vehicle_schedule, vsc_is_current).Get(stop, av_used_scheduledstoppoints)'
 		condition 'plc_identifier <> "" AND stp_is_public'
 		unique_on 'plc_identifier'
 		sort_by 'plc_identifier'
@@ -21,5 +21,5 @@ xmlelement stopAreas {
 				}
 			}
 		}
-	} # foreach trip_pattern_point
+	} # foreach stop
 }
