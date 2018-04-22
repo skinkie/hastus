@@ -38,6 +38,11 @@ xmlelement routeLinks {
 				xmlattribute ref			{ value 'md_operatorId + ":RoutePoint:" + itn_stop_end' }
 				xmlattribute version		{ value 'md_frameVersion' }
 			}
+			
+			xmlelement "OperationalContextRef" {
+				xmlattribute ref			{ value '"BISON:OperationalContext:" + trp_route_statistic.rte_service_mode' }
+				xmlattribute version		{ value '"any"' }
+			}
 		}
 		array_var av_printed_itn {assign 'TRUE'}
 

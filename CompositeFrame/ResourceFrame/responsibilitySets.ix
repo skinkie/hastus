@@ -17,6 +17,7 @@ xmlelement responsibilitySets {
 		sort_by 'gar_depot_id'
 
 		xmlelement ResponsibilitySet {
+			condition 'gar_depot_id <> ""'
 			xmlattribute id { value 'md_operatorId + ":ResponsibilitySet:" + gar_depot_id' }
 			xmlattribute version { value 'md_any' }
 			xmlelement Name { value 'DefNull(Object(division, gar_depot_id).div_description, gar_depot_id)' }

@@ -15,6 +15,7 @@ definitions Configuratie {
 	DEFINE md_timingpoint { tpatpt_position = 2 OR stp_regulation_point }
 	DEFINE md_line_id_tpat { Trim(tpat_route) }
 	DEFINE md_dataownerisoperator { NOT (trp_vehicle_group_1.vehg_identifier = "EXT") }
+	DEFINE md_quay_id { stp_number_ndov_export }
 
 	/* Arriva
 	DEFINE md_operatorId { "ARR" }
@@ -24,6 +25,7 @@ definitions Configuratie {
 	DEFINE md_line_id_tpat { trp_route_regio_alb }
 	DEFINE md_timingpoint { tpatpt_position = 2 OR tpatpt_is_timing_point }	
 	DEFINE md_dataownerisoperator { NOT (trp_vehicle_group_1.vehg_identifier = "EXT" AND StrLocateStr(blk_gar_plc_strt, "Cxx", "Bre", "Syn", "Twe") <> NULL) }	
+	DEFINE md_quay_id { stp_chb_id }
 	*/
 	end
 }

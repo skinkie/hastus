@@ -1,5 +1,5 @@
 foreach run_time_pattern_stp {
-	from 'GetAll(vehicle_schedule, vsc_is_current).Get(trip).Get(run_time_pattern).Get(run_time_pattern_stp)'
+	from 'GetAll(vehicle_schedule, vsc_is_current).Get(trip, md_trp_sel).Get(run_time_pattern).Get(run_time_pattern_stp)'
 	condition 'stp_identifier <> "" AND stp_is_public AND tpat_id = ""'
 	unique_on 'stp_identifier'
 	array_var av_used_scheduledstoppoints { assign 'true' }

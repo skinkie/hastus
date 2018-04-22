@@ -21,6 +21,8 @@ xmlelement ServiceFrame {
 	&include ServiceFrame/stopAreas.ix
 
 	&include ServiceFrame/tariffZones.ix
+	
+	&include ServiceFrame/stopAssignments-Hastus.ix
 
 	&include ServiceFrame/timingPoints.ix
 

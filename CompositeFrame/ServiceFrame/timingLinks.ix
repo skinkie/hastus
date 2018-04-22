@@ -25,14 +25,15 @@ xmlelement timingLinks {
 				xmlattribute ref					{ value 'md_to_point_ref' }
 				xmlattribute version 				{ value 'md_any' }
 			} # xmlelement ToPointRef
-
+			
+			xmlelement VehicleMode	 				{ value 'md_rte_service_mode' }
 		} # xmlelement TimingLink
 	} # foreach trip_pattern_point
 
 	# Bij DeadRuns ontbreken de haltes waarvoor nooit een JourneyPattern door Hastus is aangemaakt. We faciliteren hier dat de TimingLinks worden gemaakt.
 	foreach run_time_pattern_stp {
-		from 'GetAll(vehicle_schedule, vsc_is_current).Get(trip, md_trp_sel).Get(run_time_pattern).Get(run_time_pattern_stp)'
-		condition 'Prev().stp_identifier <> "" AND stp_identifier <> "" AND Prev().stp_identifier <> stp_identifier AND NOT trp_is_in_service AND tpat_id = "" AND NOT DefNull(av_used_timinglinks, false)'
+		from 'GetAll(vehicle_schedule, vsc_is_current).Get(trip, md_trp_sel).Get(run_time_pattern).Get(run_time_pattern_stp)'		
+		condition 'Prev().stp_identifier <> "" AND stp_identifier <> "" AND Prev().stp_identifier <> stp_identifier AND NOT trp_is_in_service AND tpat_id = "" AND NOT DefNull(av_used_timinglinks, false)'		
 		unique_on 'Prev().stp_identifier, stp_identifier'
 		sort_by TripPatternStopSort {
 			criteria Prev().stp_identifier
@@ -56,6 +57,7 @@ xmlelement timingLinks {
 				xmlattribute version 				{ value 'md_any' }
 			} # xmlelement ToPointRef
 
+			xmlelement VehicleMode	 				{ value 'md_rte_service_mode' }
 		} # xmlelement TimingLink
 	} # foreach run_time_pattern_stp
 } # xmlelement timingLinks

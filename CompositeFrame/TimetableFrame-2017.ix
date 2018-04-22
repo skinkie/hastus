@@ -8,6 +8,6 @@ xmlelement TimetableFrame {
 
 	&include TimetableFrame/vehicleJourneys.ix
 	
-	&include TimetableFrame/journeyInterchanges-2016.ix
+	# &include TimetableFrame/journeyInterchanges-2016.ix
 
 } # xmlelement TimetableFrame

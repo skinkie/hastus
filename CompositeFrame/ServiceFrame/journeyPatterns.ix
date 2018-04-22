@@ -1,5 +1,7 @@
 # TODO: Can't this be done far more easy?
 
+# TODO: vsc_int_id is not required for uniqueness, but for Arriva we do need a booking.
+
 xmlelement journeyPatterns {
 	foreach trip_pattern {
 		from 'GetAll(vehicle_schedule, vsc_is_current).Get(trip, md_trp_sel).Get(trip_pattern)'
@@ -36,7 +38,7 @@ xmlelement journeyPatterns {
 			}
 
 			xmlelement DestinationDisplayRef {
-				condition 'tpat_veh_display <> ""'
+				condition 'tpat_veh_display <> NULL'
 				xmlattribute ref		{ value 'md_operatorId + ":DestinationDisplay:" + Object(veh_disp_code, tpat_veh_display).vdc_id' }
 				xmlattribute version 	{ value 'md_frameVersion' }
 			} # xmlelement DestinationDisplayRef
@@ -64,8 +66,8 @@ xmlelement journeyPatterns {
 							value 'true'
 						} # IsWaitPoint
 						xmlelement DestinationDisplayRef {
-							condition 'tpatpt_veh_display_code <> "" AND tpatpt_veh_display_code <> tpat_veh_display'
-							xmlattribute ref		{ value 'md_operatorId + ":DestinationDisplay:" + Object(veh_disp_code, tpatpt_veh_display_code).vdc_id' }
+							condition 'tpatpt_veh_display_code <> NULL AND tpatpt_veh_display_code <> tpat_veh_display'
+							xmlattribute ref		{ value 'md_operatorId + ":DestinationDisplay:" + tpatpt_veh_display_code' }
 							xmlattribute version 	{ value 'md_frameVersion' }
 						} # xmlelement DestinationDisplayRef
 					} # xmlelement StopPointInJourneyPattern
