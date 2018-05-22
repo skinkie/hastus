@@ -19,7 +19,8 @@ xmlelement duties {
 					xmlelement AvailabilityConditionRef {
 						# TODO: uitzoeken wat de relatie trip naar scheduling_unit is
 						# TODO: this assumes that the trip doesn't have his own changes
-						xmlattribute ref        { value 'md_operatorId + ":ValidityCondition:Crew:" + csc_int_no ' }
+						xmlattribute ref        { value 'md_operatorId + ":AvailabilityCondition:Crew:" + csc_int_no ' }
+						xmlattribute version { value 'md_frameVersion' }
 					} # xmlelement AvailabilityConditionRef
 				} # xmlelement validityConditions
 				
@@ -60,6 +61,11 @@ xmlelement duties {
 							
 							# OIG-Hack :)
 							foreach trip {
+								xmlelement BlockRef {
+									xmlattribute id         { value 'md_operatorId + ":Block:" + vsc_int_id + ":" + Trim(blk_number)' }
+									xmlattribute version	{ value 'md_frameVersion' }
+								}
+
 								xmlelement ServiceJourneyRef {
 									condition 'trp_is_in_service'
 									xmlattribute ref { value 'md_operatorId + ":ServiceJourney:" + vsc_int_id + ":" + vsc_sched_type + ":" + Trim(trp_route) + ":" + trim(trp_number)' }
@@ -100,7 +106,12 @@ xmlelement duties {
 								xmlattribute version { value 'md_frameVersion' }
 							}
 
-							foreach trip {								
+							foreach trip {	
+								xmlelement BlockRef {
+									xmlattribute id         { value 'md_operatorId + ":Block:" + vsc_int_id + ":" + Trim(blk_number)' }
+									xmlattribute version	{ value 'md_frameVersion' }
+								}								
+							
 								xmlelement ServiceJourneyRef {
 									condition 'trp_is_in_service'
 									xmlattribute ref { value 'md_operatorId + ":ServiceJourney:" + vsc_int_id + ":" + vsc_sched_type + ":" + Trim(trp_route) + ":" + trim(trp_number)' }
@@ -148,7 +159,12 @@ xmlelement duties {
 								sort_by tripSort {
 									criteria trp_time_start { value 'trp_time_start' }
 								}
-								condition 'trp_duration > 0h00'								
+								condition 'trp_duration > 0h00'
+								
+								xmlelement BlockRef {
+									xmlattribute id         { value 'md_operatorId + ":Block:" + vsc_int_id + ":" + Trim(blk_number)' }
+									xmlattribute version	{ value 'md_frameVersion' }
+								}								
 							
 							 	xmlelement ServiceJourneyRef {
 										condition 'trp_is_in_service'
@@ -206,6 +222,11 @@ xmlelement duties {
 									}
 
 									# RFC:
+									xmlelement BlockRef {
+										xmlattribute id         { value 'md_operatorId + ":Block:" + vsc_int_id + ":" + Trim(blk_number)' }
+										xmlattribute version	{ value 'md_frameVersion' }
+									}
+									
 									xmlelement ServiceJourneyRef {
 										condition 'trp_is_in_service'
 										xmlattribute ref { value 'md_operatorId + ":ServiceJourney:" + vsc_int_id + ":" + vsc_sched_type + ":" + Trim(trp_route) + ":" + trim(trp_number)' }
