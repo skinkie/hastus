@@ -58,7 +58,7 @@ xmlelement journeyPatterns {
 						} # xmlelement ScheduledStopPointRef
 						xmlelement OnwardTimingLinkRef {
 							condition 'Next().stp_identifier <> ""'
-							xmlattribute ref 		{ value 'md_operatorId + ":TimingLink:" + stp_identifier + "-" + Next().stp_identifier' }
+							xmlattribute ref 		{ value 'md_operatorId + ":TimingLink:" + stp_identifier + "-" + Next().stp_identifier + "-" + THIS trip[1].rte_service_mode' }
 							xmlattribute version 	{ value 'md_frameVersion' }
 						} # xmlelement OnwardTimingLinkRef
 						xmlelement IsWaitPoint {							
@@ -82,7 +82,7 @@ xmlelement journeyPatterns {
 						} # xmlelement TimingPointRef
 						xmlelement OnwardTimingLinkRef {
 							condition 'Next().stp_identifier <> ""'
-							xmlattribute ref 		{ value 'md_operatorId + ":TimingLink:" + stp_identifier + "-" + Next().stp_identifier' }
+							xmlattribute ref 		{ value 'md_operatorId + ":TimingLink:" + stp_identifier + "-" + Next().stp_identifier + "-" + THIS trip[1].rte_service_mode' }
 							xmlattribute version 	{ value 'md_frameVersion' }
 						} # xmlelement OnwardTimingLinkRef
 					} # xmlelement TimingPointInJourneyPattern
@@ -135,7 +135,7 @@ xmlelement journeyPatterns {
 						} # xmlelement ScheduledStopPointRef
 						xmlelement OnwardTimingLinkRef {
 							condition 'Next().stp_identifier <> ""'
-							xmlattribute ref 		{ value 'md_operatorId + ":TimingLink:" + stp_identifier + "-" + Next().stp_identifier' }
+							xmlattribute ref 		{ value 'md_operatorId + ":TimingLink:" + stp_identifier + "-" + Next().stp_identifier + "-" + THIS trip[1].rte_service_mode' }
 							xmlattribute version 	{ value 'md_frameVersion' }
 						} # xmlelement OnwardTimingLinkRef
 					} # xmlelement StopPointInJourneyPattern
@@ -150,7 +150,7 @@ xmlelement journeyPatterns {
 						} # xmlelement TimingPointRef
 						xmlelement OnwardTimingLinkRef {
 							condition 'Next().stp_identifier <> ""'
-							xmlattribute ref 		{ value 'md_operatorId + ":TimingLink:" + stp_identifier + "-" + Next().stp_identifier' }
+							xmlattribute ref 		{ value 'md_operatorId + ":TimingLink:" + stp_identifier + "-" + Next().stp_identifier + "-" + THIS trip[1].rte_service_mode' }
 							xmlattribute version 	{ value 'md_frameVersion' }
 						} # xmlelement OnwardTimingLinkRef
 					} # xmlelement TimingPointInJourneyPattern

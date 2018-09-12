@@ -2,7 +2,7 @@ xmlelement timingLinks {
 	foreach trip_pattern_point {
 		from 'GetAll(vehicle_schedule, vsc_is_current).get(trip, md_trp_sel).get(trip_pattern).get(trip_pattern_point)'
 		condition 'Prev().stp_identifier <> "" AND stp_identifier <> "" AND Prev().stp_identifier <> stp_identifier'
-		unique_on 'Prev().stp_identifier, stp_identifier'
+		unique_on 'Prev().stp_identifier, stp_identifier, THIS trip[1].rte_service_mode'
 		sort_by TripPatternStopSort {
 			criteria Prev().stp_identifier
 			criteria stp_identifier
@@ -12,7 +12,7 @@ xmlelement timingLinks {
 		array_var av_used_timinglinks { assign 'true' }
 
 		xmlelement TimingLink {
-			xmlattribute id 						{ value 'md_operatorId + ":TimingLink:" + Prev().stp_identifier + "-" + stp_identifier' }
+			xmlattribute id 						{ value 'md_operatorId + ":TimingLink:" + Prev().stp_identifier + "-" + stp_identifier + "-" + THIS trip[1].rte_service_mode' }
 			xmlattribute version 					{ value 'md_frameVersion' }
 			xmlattribute responsibilitySetRef 		{ value '"BISON:ResponsibilitySet:"+md_link_authority' }
 			xmlelement Distance 					{ value 'Trim(Format(tpatpt_distance,"zzzzz.n"))' }
@@ -25,8 +25,13 @@ xmlelement timingLinks {
 				xmlattribute ref					{ value 'md_to_point_ref' }
 				xmlattribute version 				{ value 'md_any' }
 			} # xmlelement ToPointRef
+
+			xmlelement "OperationalContextRef" {
+				xmlattribute ref					{ value '"BISON:OperationalContext:" + THIS trip[1].rte_service_mode' }
+				xmlattribute version				{ value '"any"' }
+			}
 			
-			xmlelement VehicleMode	 				{ value 'md_rte_service_mode' }
+			# xmlelement "Route" { value 'THIS trip[1].trp_route' }			
 		} # xmlelement TimingLink
 	} # foreach trip_pattern_point
 
@@ -34,7 +39,7 @@ xmlelement timingLinks {
 	foreach run_time_pattern_stp {
 		from 'GetAll(vehicle_schedule, vsc_is_current).Get(trip, md_trp_sel).Get(run_time_pattern).Get(run_time_pattern_stp)'		
 		condition 'Prev().stp_identifier <> "" AND stp_identifier <> "" AND Prev().stp_identifier <> stp_identifier AND NOT trp_is_in_service AND tpat_id = "" AND NOT DefNull(av_used_timinglinks, false)'		
-		unique_on 'Prev().stp_identifier, stp_identifier'
+		unique_on 'Prev().stp_identifier, stp_identifier, THIS trip[1].rte_service_mode'
 		sort_by TripPatternStopSort {
 			criteria Prev().stp_identifier
 			criteria stp_identifier
@@ -43,7 +48,7 @@ xmlelement timingLinks {
 		array_var av_used_timinglinks { assign 'true' }
 
 		xmlelement TimingLink {
-			xmlattribute id 						{ value 'md_operatorId + ":TimingLink:" + Prev().stp_identifier + "-" + stp_identifier' }
+			xmlattribute id 						{ value 'md_operatorId + ":TimingLink:" + Prev().stp_identifier + "-" + stp_identifier + "-" + THIS trip[1].rte_service_mode' }
 			xmlattribute version 					{ value 'md_frameVersion' }
 			xmlattribute responsibilitySetRef 		{ value '"BISON:ResponsibilitySet:"+md_operatorId' }
 			xmlelement Distance						{ condition 'false' value '"0"' }
@@ -56,8 +61,13 @@ xmlelement timingLinks {
 				xmlattribute ref					{ value 'md_to_point_ref' }
 				xmlattribute version 				{ value 'md_any' }
 			} # xmlelement ToPointRef
-
-			xmlelement VehicleMode	 				{ value 'md_rte_service_mode' }
+			
+			xmlelement "OperationalContextRef" {
+				xmlattribute ref					{ value '"BISON:OperationalContext:" + THIS trip[1].rte_service_mode' }
+				xmlattribute version				{ value '"any"' }
+			}
+			
+			# xmlelement "Route" { value 'THIS trip[1].trp_route' }
 		} # xmlelement TimingLink
 	} # foreach run_time_pattern_stp
 } # xmlelement timingLinks

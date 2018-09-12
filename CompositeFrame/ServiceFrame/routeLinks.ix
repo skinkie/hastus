@@ -1,9 +1,8 @@
-# TODO: werkt nog niet bij HTM
 xmlelement routeLinks {
 
 	foreach itinerary {
-		from 'GetAll(vehicle_schedule, vsc_is_current).Get(Route).Get(trip).Get(trip_pattern).Get(itinerary)'
-
+		from 'GetAll(vehicle_schedule, vsc_is_current).Get(Route).Get(trip).Get(trip_itinerary)'
+		unique_on 'itn_stop_start, itn_stop_end, rte_service_mode'
 		condition 'not av_printed_itn AND itn_stop_start <> itn_stop_end'
 		sort_by rteVersion
 		{
@@ -22,7 +21,7 @@ xmlelement routeLinks {
 			xmlattribute responsibilitySetRef 		{ value '"BISON:ResponsibilitySet:" + md_link_authority' }
 
 			xmlelement "Name"				{ value 'itn_stop_start + "-" + itn_stop_end' }
-			xmlelement "Distance"			{ value 'itn_calc_distance' } # TODO: controleren
+			xmlelement "Distance"			{ value 'Trim(Format(itn_calc_distance, "zzzzzn"))' } # TODO: controleren
 			xmlelement gml:LineString {
 				xmlattribute gml:id			{ value 'md_operatorId + "_LineString_" + itn_stop_start + "-" + itn_stop_end' }
 				xmlattribute srsName		{ value '"EPSG:28992"' }
