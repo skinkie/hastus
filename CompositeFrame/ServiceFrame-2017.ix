@@ -6,9 +6,9 @@ xmlelement ServiceFrame {
 
 	&include ServiceFrame/routePoints-Hastus-2016.ix
 
-	&include ServiceFrame/routeLinks-nogeo.ix
+	# &include ServiceFrame/routeLinks-nogeo.ix
 
-	# &include ServiceFrame/routeLinks.ix
+	&include ServiceFrame/routeLinks.ix
 
 	&include ServiceFrame/routes.ix
 
