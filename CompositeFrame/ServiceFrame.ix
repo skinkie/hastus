@@ -16,7 +16,7 @@ xmlelement ServiceFrame {
 
 	&include ServiceFrame/destinationDisplays.ix
 
-	&include ServiceFrame/scheduledStopPoints.ix
+	&include ServiceFrame/scheduledStopPoints-Hastus-2014.ix
 	
 	&include ServiceFrame/stopAreas.ix
 
