@@ -19,7 +19,7 @@ xmlelement timeDemandTypes {
 						xmlattribute id 			{ value 'md_operatorId + ":JourneyRunTime:" + vsc_int_id + ":" + Trim(rpat_route) + ":" + rpat_identifier + ":" + rpst_stp_pos' }
 						xmlattribute version 		{ value 'md_frameVersion' }
 						xmlelement TimingLinkRef {
-							xmlattribute ref 		{ value 'md_operatorId + ":TimingLink:" + Prev().stp_identifier + "-" + stp_identifier' }
+							xmlattribute ref 		{ value 'md_operatorId + ":TimingLink:" + Prev().stp_identifier + "-" + stp_identifier + "-" + THIS trip[1].rte_service_mode' }
 							xmlattribute version 	{ value 'md_frameVersion' }
 						} # xmlelement TimingLinkRef
 						xmlelement RunTime { value '"PT" + md_runtime + "S"' }
