@@ -19,3 +19,8 @@ array_var av_used_vehicle_group	{ key_part 'vehg_identifier' type 'boolean' assi
 array_var av_used_scheduledstoppoints   { key_part id { value 'stp_identifier' } type 'boolean' assign 'false' }
 array_var av_used_timingpoint   { key_part id { value 'stp_identifier' } type 'boolean' assign 'false' }
 array_var av_used_timinglinks   { key_part FromPointRef { value 'Prev().stp_identifier' } key_part ToPointRef { value 'stp_identifier' } type 'boolean' assign 'false' }
+
+# Used for generation of RouteLinks, including multiple modes.
+array_var av_it_dstr { key_part f { value 'itn_stop_start' } key_part t { value 'itn_stop_end' } key_part o { value 'FirstValue(trp_route.rte_service_mode)' } type 'string' }
+array_var av_it_coor { key_part f { value 'itn_stop_start' } key_part t { value 'itn_stop_end' } key_part o { value 'FirstValue(trp_route.rte_service_mode)' } type 'string' }
+array_var av_it_dist { key_part f { value 'itn_stop_start' } key_part t { value 'itn_stop_end' } key_part o { value 'FirstValue(trp_route.rte_service_mode)' } type 'string' }

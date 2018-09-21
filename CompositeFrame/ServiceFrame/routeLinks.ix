@@ -1,49 +1,47 @@
-xmlelement routeLinks {
+foreach trip {
+	from 'GetAll(vehicle_schedule, vsc_is_current).get(trip, md_trp_sel)'
+	foreach trip_itinerary {
+		unique_on 'itn_stop_start, itn_stop_end, trp_route.rte_service_mode'	
+		condition 'itn_stop_start <> itn_stop_end'
+		array_var av_it_dist { assign 'Trim(Format(itn_calc_distance, "zzzzzn"))' } 
+		array_var av_it_dstr { assign 'FirstValue(trpitn_trip_point.trppt_district)' } 
+		array_var av_it_coor { assign 'Concat(Trim(Format(itn_coord,"nnnnnn")), " ")' } 
+	}
+}
 
-	foreach itinerary {
-		from 'GetAll(vehicle_schedule, vsc_is_current).Get(Route).Get(trip).Get(trip_itinerary)'
-		unique_on 'itn_stop_start, itn_stop_end, rte_service_mode'
-		condition 'not av_printed_itn AND itn_stop_start <> itn_stop_end'
-		sort_by rteVersion
-		{
-			criteria rte_version
-			criteria trp_route
-			criteria trp_via_variant
-			criteria trp_direction
-		}
+xmlelement routeLinks {
+	
+	foreach_var av_it_dist,av_it_dstr,av_it_coor { 
+		condition 'av_it_dist <> ""'
 
 		xmlelement RouteLink
 		{
-			# Indien rte_service_mode leeg blijft, trp_route_statistic.rte_service_mode hier gebruiken en Get(route) weghalen
-
-			xmlattribute "id"				{ value 'md_operatorId + ":RouteLink:" + itn_stop_start + "-" + itn_stop_end + "-" + rte_service_mode' }
+			xmlattribute "id"				{ value 'md_operatorId + ":RouteLink:" + av_it_dist_f + "-" + av_it_dist_t + "-" + av_it_dist_o' }
 			xmlattribute version 			{ value 'md_frameVersion' }
-			xmlattribute responsibilitySetRef 		{ value '"BISON:ResponsibilitySet:" + md_link_authority' }
+			xmlattribute responsibilitySetRef 		{ value '"BISON:ResponsibilitySet:" + av_it_dstr' }
 
-			xmlelement "Name"				{ value 'itn_stop_start + "-" + itn_stop_end' }
-			xmlelement "Distance"			{ value 'Trim(Format(itn_calc_distance, "zzzzzn"))' } # TODO: controleren
+			xmlelement "Name"				{ value 'av_it_dist_f + "-" + av_it_dist_t' }
+			xmlelement "Distance"			{ value 'av_it_dist' }
 			xmlelement gml:LineString {
-				xmlattribute gml:id			{ value 'md_operatorId + "_LineString_" + itn_stop_start + "-" + itn_stop_end' }
+				xmlattribute gml:id			{ value 'md_operatorId + "_LineString_" + av_it_dist_f + "-" + av_it_dist_t + "-" + av_it_dist_o' }
 				xmlattribute srsName		{ value '"EPSG:28992"' }
-				xmlelement gml:posList 		{ value 'Concat(Trim(Format(itn_coord,"nnnnnn")), " ")' }
+				xmlelement gml:posList 		{ value 'av_it_coor' }
 			}
 			
 			xmlelement "FromPointRef" {
-				xmlattribute ref			{ value 'md_operatorId + ":RoutePoint:" + itn_stop_start' }
+				xmlattribute ref			{ value 'md_operatorId + ":RoutePoint:" + av_it_dist_f' }
 				xmlattribute version 		{ value 'md_frameVersion' }
 			}
 			
 			xmlelement "ToPointRef"	{
-				xmlattribute ref			{ value 'md_operatorId + ":RoutePoint:" + itn_stop_end' }
+				xmlattribute ref			{ value 'md_operatorId + ":RoutePoint:" + av_it_dist_t' }
 				xmlattribute version		{ value 'md_frameVersion' }
 			}
 			
 			xmlelement "OperationalContextRef" {
-				xmlattribute ref			{ value '"BISON:OperationalContext:" + trp_route_statistic.rte_service_mode' }
+				xmlattribute ref			{ value '"BISON:OperationalContext:" + av_it_dist_o' }
 				xmlattribute version		{ value '"any"' }
 			}
 		}
-		array_var av_printed_itn {assign 'TRUE'}
-
 	} # foreach itinerary
 }
