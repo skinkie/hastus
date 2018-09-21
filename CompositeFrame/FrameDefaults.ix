@@ -3,4 +3,11 @@ xmlelement FrameDefaults {
 		xmlattribute ref { value '"BISON:DataSource:" + md_operatorId' }
 		xmlattribute version { value '"any"' }
 	}
+	xmlelement DefaultLocale {
+		xmlelement TimeZone { value '"Europe/Amsterdam"' }
+		xmlelement DefaultLanguage { value '"nl"' }
+	}
+	xmlelement DefaultLocationSystem { value '"EPSG:28992"' }
+	xmlelement DefaultSystemOfUnits { value '"SiMetres"' }
+	xmlelement DefaultCurrency { value '"EUR"' }
 }

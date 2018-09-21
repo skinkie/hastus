@@ -16,7 +16,7 @@ xmlelement stopAreas {
 			
 				xmlelement Location {
 					xmlelement gml:pos {
-						xmlattribute srsName { value '"EPSG:28992"' }
+						# xmlattribute srsName { value '"EPSG:28992"' }
 						value 'Trim(Format(Object(place, plc_identifier).loca_x_coord, "zzzzzn" )) + " " + Trim(Format(Object(place, plc_identifier).loca_y_coord, "zzzzzn" ))'
 					} # xmlelement gml:pos
 				}

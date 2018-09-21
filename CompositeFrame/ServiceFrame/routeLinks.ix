@@ -1,17 +1,17 @@
 foreach trip {
 	from 'GetAll(vehicle_schedule, vsc_is_current).get(trip, md_trp_sel)'
 	foreach trip_itinerary {
-		unique_on 'itn_stop_start, itn_stop_end, trp_route.rte_service_mode'	
+		unique_on 'itn_stop_start, itn_stop_end, trp_route.rte_service_mode'
 		condition 'itn_stop_start <> itn_stop_end'
-		array_var av_it_dist { assign 'Trim(Format(itn_calc_distance, "zzzzzn"))' } 
-		array_var av_it_dstr { assign 'FirstValue(trpitn_trip_point.trppt_district)' } 
-		array_var av_it_coor { assign 'Concat(Trim(Format(itn_coord,"nnnnnn")), " ")' } 
+		array_var av_it_dist { assign 'Trim(Format(itn_calc_distance, "zzzzzn"))' }
+		array_var av_it_dstr { assign 'FirstValue(trpitn_trip_point.trppt_district)' }
+		array_var av_it_coor { assign 'Concat(Trim(Format(itn_coord,"nnnnnn")), " ")' }
 	}
 }
 
 xmlelement routeLinks {
-	
-	foreach_var av_it_dist,av_it_dstr,av_it_coor { 
+
+	foreach_var av_it_dist,av_it_dstr,av_it_coor {
 		condition 'av_it_dist <> ""'
 
 		xmlelement RouteLink
@@ -24,7 +24,7 @@ xmlelement routeLinks {
 			xmlelement "Distance"			{ value 'av_it_dist' }
 			xmlelement gml:LineString {
 				xmlattribute gml:id			{ value 'md_operatorId + "_LineString_" + av_it_dist_f + "-" + av_it_dist_t + "-" + av_it_dist_o' }
-				xmlattribute srsName		{ value '"EPSG:28992"' }
+				# xmlattribute srsName		{ value '"EPSG:28992"' }
 				xmlelement gml:posList 		{ value 'av_it_coor' }
 			}
 			

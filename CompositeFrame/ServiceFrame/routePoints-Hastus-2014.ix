@@ -13,7 +13,7 @@ xmlelement routePoints {
 				condition 'v_location <> " "'
 				
 				xmlelement gml:pos {				
-					xmlattribute srsName 			{ value '"EPSG:28992"' }
+					# xmlattribute srsName 			{ value '"EPSG:28992"' }
 					value 'v_location'
 				} # xmlelement gml:pos
 			} # xmlelement Location

@@ -8,7 +8,7 @@ xmlelement routePoints {
 			xmlattribute version 			{ value 'md_frameVersion' }
 			xmlelement Location {
 				xmlelement gml:pos {
-					xmlattribute srsName 			{ value '"EPSG:28992"' }
+					# xmlattribute srsName 			{ value '"EPSG:28992"' }
 					value 'Trim(Format(Object(stop_location,stp_locations).loca_x_coord, "zzzzzn" )) + " " + Trim(Format(Object(stop_location,stp_locations).loca_y_coord, "zzzzzn" ))'
 				} # xmlelement gml:pos
 			} # xmlelement Location
