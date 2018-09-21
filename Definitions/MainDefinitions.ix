@@ -28,5 +28,6 @@ definitions MainDefinitions {
 	DEFINE md_trp_sel CLASS trip { NOT md_trp_is_car_taxi AND NOT trp_is_free AND trp_is_for_blk AND md_block_sel AND trp_duration > 0h00 } 
 	DEFINE md_from_point_ref { md_operatorId + (IF Prev().stp_is_public = True THEN ":ScheduledStopPoint:" ELSE ":TimingPoint:") + Prev().stp_identifier }
 	DEFINE md_to_point_ref { md_operatorId + (IF stp_is_public = True THEN ":ScheduledStopPoint:" ELSE ":TimingPoint:") + stp_identifier }
+	DEFINE md_UserStopCode { IF stp_refnr_eod = Null THEN stp_stoppoint_export_mp  /* stp_identifier */ ELSE stp_refnr_eod }	
 	end
 }
