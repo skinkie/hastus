@@ -27,6 +27,7 @@ xmlelement timingLinks {
 			} # xmlelement ToPointRef
 
 			xmlelement "OperationalContextRef" {
+				condition 'THIS trip[1].rte_service_mode <> ""'
 				xmlattribute ref					{ value '"BISON:OperationalContext:" + THIS trip[1].rte_service_mode' }
 				xmlattribute version				{ value '"any"' }
 			}
@@ -63,6 +64,7 @@ xmlelement timingLinks {
 			} # xmlelement ToPointRef
 			
 			xmlelement "OperationalContextRef" {
+				condition 'THIS trip[1].rte_service_mode <> ""'
 				xmlattribute ref					{ value '"BISON:OperationalContext:" + THIS trip[1].rte_service_mode' }
 				xmlattribute version				{ value '"any"' }
 			}
