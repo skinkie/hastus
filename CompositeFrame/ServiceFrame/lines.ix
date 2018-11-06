@@ -4,24 +4,22 @@ xmlelement lines {
 		condition 'trp_is_public'
 		unique_on 'md_line_id_trp'
 		sort_by 'md_line_id_trp'
-		
+
 		xmlelement Line {
 			xmlattribute id 			{ value 'md_operatorId + ":Line:" + md_line_id_trp' }
 			xmlattribute version 		{ value 'md_any' }
-			xmlelement keyList {
-				xmlelement KeyValue {
-					xmlelement Key 			{ value '"VeTagLineNumber"' }
-					xmlelement Value 		{ value 'Trim(Object(route,trp_route).rte_pub_id)' }
-				} # xmlelement KeyValue
-				xmlelement KeyValue {
-					xmlelement Key 			{ value '"LinePlanningNumber"' }
-					xmlelement Value 		{ value 'md_line_id_trp' }
-				} # xmlelement KeyValue
-			} # xmlelement keyList
 			xmlelement Name 				{ value 'Object(route,trp_route).rte_description' }
 			xmlelement ShortName 			{ value 'Trim(Object(route,trp_route).rte_identifier)' }
 			xmlelement TransportMode 		{ value 'md_rte_service_mode' }
 			xmlelement PublicCode 			{ value 'Trim(Object(route,trp_route).rte_pub_id)' }
+			xmlelement PrivateCode {
+				xmlattribute type			{ value '"LinePlanningNumber"' }
+				value 'md_line_id_trp'
+			}
+			xmlelement ExternalLineRef {
+				xmlattribute type			{ value '"VeTagLineNumber"' }
+				xmlattribute ref			{ value 'Trim(Object(route,trp_route).rte_pub_id)' }
+			}
 
 			foreach trip_stop {
 				unique_on 'tstp_district'
@@ -33,6 +31,18 @@ xmlelement lines {
 
 			xmlelement Monitored 			{ value 'IF trp_is_in_service THEN "true" ELSE "false"' }
 
+			# TODO: Presentation
+			# xmlelement Presentation {
+			#	xmlelement Color			{ value '"0000FF"' }
+			#	xmlelement TextColor		{ value '"FFFFFF"' }
+			#	xmlelement infoLinks {
+			#		xmlelement InfoLink {
+			#			xmlattribute typeOfInfoLink { value '"image"' }
+			#			value '"https://link/naar/plaatje.gif"'
+			#		}
+			#	}
+			# }
+			# 
 			# TODO: AccessibilityAssessment per line.
 			#
 			# xmlelement AccessibilityAssessment {
