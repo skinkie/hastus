@@ -21,21 +21,15 @@ xmlelement scheduledStopPoints {
 		xmlelement ScheduledStopPoint {
 			xmlattribute id 				{ value 'md_operatorId + ":ScheduledStopPoint:" + stp_identifier' }
 			xmlattribute version 			{ value 'md_any' }
-			xmlelement keyList {
-				xmlelement KeyValue {
-					xmlelement Key 			{ value '"UserStopCode"' }
-					xmlelement Value 		{ value 'md_UserStopCode' }
-				} # xmlelement KeyValue
-			} # xmlelement keyList
 			xmlelement Name 				{ value 'stp_description' }
-			
+
 			xmlelement Location {
 				xmlelement gml:pos {
 					# xmlattribute srsName 			{ value '"EPSG:28992"' }
 					value 'Trim(Format(Object(stop_location,stp_locations).loca_x_coord, "zzzzzn" )) + " " + Trim(Format(Object(stop_location,stp_locations).loca_y_coord, "zzzzzn" ))'
 				} # xmlelement gml:pos
 			} # xmlelement Location
-			
+
 			xmlelement projections	{
 				xmlelement PointProjection {
 					xmlattribute id 				{ value 'md_operatorId + ":PointProjection:" + stp_identifier' }
@@ -56,7 +50,7 @@ xmlelement scheduledStopPoints {
 					xmlattribute version 			{ value 'md_any' }
 				}
 			}
-			
+
 			xmlelement tariffZones {
 				condition 'stp_zone <> ""' # Hack
 				xmlelement TariffZoneRef {
@@ -71,10 +65,16 @@ xmlelement scheduledStopPoints {
 				#	xmlattribute version { value 'md_any' }
 				# }
 			}
-			
+
 			# Arriva
 			# xmlelement ShortName			{ value 'stp_short_desc' }
 			# xmlelement ShortStopCode		{ value 'stp_short_name' }
+
+			xmlelement PrivateCode {
+				xmlattribute type	 		{ value '"UserStopCode"' }
+				value 'md_UserStopCode'
+			} # xmlelement PrivateCode
+
 			xmlelement ForAlighting 		{ value 'IF stp_allow_debarking THEN "true" ELSE "false"' }
 			xmlelement ForBoarding 			{ value 'IF stp_allow_boarding THEN "true" ELSE "false"' }
 		} # xmlelement ScheduledStopPoint
