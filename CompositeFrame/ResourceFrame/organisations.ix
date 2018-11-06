@@ -25,4 +25,11 @@ xmlelement organisations {
 			xmlelement ShortName { value 'tstp_district' }
 		}
 	}
+
+	xmlelement Authority {
+		xmlattribute id { value '"BISON:Authority:" + md_authority' }
+		xmlattribute version { value '"any"' }
+		xmlelement Name { value 'md_authority' }
+		xmlelement ShortName { value 'md_authority' }
+	}
 }
