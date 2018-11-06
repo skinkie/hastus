@@ -42,7 +42,7 @@ file PublicationDelivery {
 
 					&include CompositeFrame/VehicleScheduleFrame.ix
 					
-					&include CompositeFrame/DriverScheduleFrame.ix
+					# &include CompositeFrame/DriverScheduleFrame.ix
 				}
 			}
 		}
