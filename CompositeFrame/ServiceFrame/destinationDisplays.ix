@@ -1,14 +1,50 @@
 xmlelement destinationDisplays {
 	foreach veh_disp_code {
 		sort_by 'vdc_id'
-	
+
 		from 'GetAll(vehicle_schedule, vsc_is_current).Get(trip_pattern).Get(veh_disp_code)'
 		unique_on 'vdc_id'
 		xmlelement DestinationDisplay {
 			xmlattribute id			{ value 'md_operatorId + ":DestinationDisplay:" + vdc_id' }
 			xmlattribute version	{ value 'md_frameVersion' }
-			xmlelement Name			{ value 'vdc_message3' }
-			xmlelement ShortName	{ value 'vdc_message1' }
+			xmlelement Name			{ value 'vdc_message1' }
+			xmlelement ShortName	{ value 'vdc_message3' }
+
+			# xmlelement Extensions
+			# 	xmlelement Presentation {
+			#		xmlelement Color			{ value '"0000FF"' }
+			#		xmlelement TextColor		{ value '"FFFFFF"' }
+			#		xmlelement infoLinks {
+			#			xmlelement InfoLink {
+			#				xmlattribute typeOfInfoLink { value '"image"' }
+			#				value '"https://link/naar/plaatje.gif"'
+			#			}
+			#		}
+			# 	}
+			# }
+			xmlelement SideText				{ value 'vdc_message3' }
+			xmlelement FrontText			{ value 'vdc_message1' }
+
+			# TODO: via uit vdc_message2
+			# xmlelement vias {
+			#	xmlelement Via {
+			#		xmlelement Name			{ value '"Alkmaar"' }
+			#	}
+			# }
+
+			# xmlelement variants {
+			#	xmlelement DestinationDisplayVariant {
+			#		xmlelement FrontText {
+			#			xmlattribute textIdType { value '16' }
+			#			value 'vdc_message3'
+			#		}
+			# 		xmlelement vias {
+			#			xmlelement Via {
+			#				xmlelement Name			{ value '"Alkmaar"' }
+			#			}
+			# 		}				
+			#	}
+			# }
 		}
 	} # foreach veh_disp_code
 }
