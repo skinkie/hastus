@@ -1,13 +1,40 @@
+# TODO: See if we can replace md_operatorId with district.
+
 xmlelement responsibilitySets {
 	foreach trip_stop {
 		from 'GetAll(vehicle_schedule, vsc_is_current).Get(block).Get(trip).Get(trip_stop)'
 		condition 'trp_duration > 0h00 AND trp_is_in_service'
 		unique_on 'tstp_district'
 
-		xmlelement ResponsibilitySet {	
+		xmlelement ResponsibilitySet {
 			xmlattribute id { value '"BISON:ResponsibilitySet:" + tstp_district' }
 			xmlattribute version { value '"any"' }
 			xmlelement Name { value 'DefNull(tstp_district.dst_description,tstp_district)' }
+
+			xmlelement roles {
+				xmlelement ResponsibilityRoleAssignment {
+					xmlattribute id { value 'md_operatorId + ":ResponsibilityRoleAssignment:" + tstp_district' }
+					xmlattribute version { value '"any"' }
+
+					xmlelement StakeholderRoleType { value '"EntityLegalOwnership"' }
+					xmlelement ResponsibleOrganisationRef {
+						xmlattribute ref { value '"BISON:Authority:" + tstp_district' }
+						xmlattribute version { value '"any"' }
+						xmlattribute nameOfRefClass { value '"Authority"' }
+					}
+				}
+				xmlelement ResponsibilityRoleAssignment {
+					xmlattribute id { value 'md_operatorId + ":ResponsibilityRoleAssignment:" + tstp_district + "-" + md_operatorId' }
+					xmlattribute version { value '"any"' }
+
+					xmlelement StakeholderRoleType { value '"Planning Operation"' }
+					xmlelement ResponsibleOrganisationRef {
+						xmlattribute ref { value '"BISON:Operator:" + md_operatorId' }
+						xmlattribute version { value '"any"' }
+						xmlattribute nameOfRefClass { value '"Operator"' }
+					}
+				}
+			}
 		}
 	}
 	
@@ -21,6 +48,31 @@ xmlelement responsibilitySets {
 			xmlattribute id { value 'md_operatorId + ":ResponsibilitySet:" + gar_depot_id' }
 			xmlattribute version { value 'md_any' }
 			xmlelement Name { value 'DefNull(Object(division, gar_depot_id).div_description, gar_depot_id)' }
+
+			xmlelement roles {
+				xmlelement ResponsibilityRoleAssignment {
+					xmlattribute id { value 'md_operatorId + ":ResponsibilityRoleAssignment:" + gar_depot_id' }
+					xmlattribute version { value '"any"' }
+
+					xmlelement StakeholderRoleType { value '"EntityLegalOwnership"' }
+					xmlelement ResponsibleOrganisationRef {
+						xmlattribute ref { value '"BISON:Authority:" + gar_depot_id' }
+						xmlattribute version { value '"any"' }
+						xmlattribute nameOfRefClass { value '"Authority"' }
+					}
+				}
+				xmlelement ResponsibilityRoleAssignment {
+					xmlattribute id { value 'md_operatorId + ":ResponsibilityRoleAssignment:" + gar_depot_id + "-" + md_operatorId' }
+					xmlattribute version { value '"any"' }
+
+					xmlelement StakeholderRoleType { value '"Planning Operation"' }
+					xmlelement ResponsibleOrganisationRef {
+						xmlattribute ref { value '"BISON:Operator:" + md_operatorId' }
+						xmlattribute version { value '"any"' }
+						xmlattribute nameOfRefClass { value '"Operator"' }
+					}
+				}
+			}
 		}
 	}
 	
@@ -28,6 +80,30 @@ xmlelement responsibilitySets {
 		xmlattribute id { value '"BISON:ResponsibilitySet:" + md_authority' }
 		xmlattribute version { value '"any"' }
 		xmlelement Name { value 'md_authority' }
+
+		xmlelement roles {
+			xmlelement ResponsibilityRoleAssignment {
+				xmlattribute id { value 'md_operatorId + ":ResponsibilityRoleAssignment:" + md_authority' }
+				xmlattribute version { value '"any"' }
+
+				xmlelement StakeholderRoleType { value '"EntityLegalOwnership"' }
+				xmlelement ResponsibleOrganisationRef {
+					xmlattribute ref { value '"BISON:Authority:" + md_authority' }
+					xmlattribute version { value '"any"' }
+					xmlattribute nameOfRefClass { value '"Authority"' }
+				}
+			}
+			xmlelement ResponsibilityRoleAssignment {
+				xmlattribute id { value 'md_operatorId + ":ResponsibilityRoleAssignment:" + md_authority + "-" + md_operatorId' }
+				xmlattribute version { value '"any"' }
+
+				xmlelement StakeholderRoleType { value '"Planning Operation"' }
+				xmlelement ResponsibleOrganisationRef {
+					xmlattribute ref { value '"BISON:Operator:" + md_operatorId' }
+					xmlattribute version { value '"any"' }
+					xmlattribute nameOfRefClass { value '"Operator"' }
+				}
+			}
+		}
 	}
 }
-
