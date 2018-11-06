@@ -27,7 +27,18 @@ xmlelement routeLinks {
 				# xmlattribute srsName		{ value '"EPSG:28992"' }
 				xmlelement gml:posList 		{ value 'av_it_coor' }
 			}
-			
+
+			# TODO: this would model an activation point, but do we have this in Hastus at all?
+			#
+			# xmlelement "passingThrough" {
+			# 	xmlelement "PointOnLink" {
+			# 		xmlelement "DistanceFromStart" { value '' }
+			# 		xmlelement "ActivationPointRef" {
+			# 			xmlattribute ref	{ value '' }
+			# 		}
+			# 	}
+			# }
+
 			xmlelement "FromPointRef" {
 				xmlattribute ref			{ value 'md_operatorId + ":RoutePoint:" + av_it_dist_f' }
 				xmlattribute version 		{ value 'md_frameVersion' }
