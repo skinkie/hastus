@@ -27,20 +27,13 @@ xmlelement vehicleJourneys {
 					} # xmlelement AvailabilityConditionRef
 				} # xmlelement validityConditions
 
-				xmlelement keyList {
-					xmlelement KeyValue {
-						xmlelement Key              { value '"JourneyNumber"' }
-						xmlelement Value            { value 'Trim(trp_number)' }
-					} # xmlelement keyList
-
-					xmlelement KeyValue {
-						condition 'NOT md_dataownerisoperator'
-							xmlelement Key              { value '"DataOwnerIsOperator"' }
-							xmlelement Value            { value '"false"' }
-					} # xmlelement keyList
-				}
-
 				xmlelement ShortName { value 'trim(trp_number)' }
+
+				xmlelement PrivateCode {
+					xmlattribute type           { value '"JourneyNumber"' }
+					value 'Trim(trp_number)'
+				} # xmlelement PrivateCode
+
 				xmlelement DepartureTime { value 'md_departureTime' }
 				xmlelement DepartureDayOffset { value 'IF trp_time_start >= 24:00 THEN 1 ELSE IF trp_time_start < 0:00 THEN -1 ELSE 0' }
 	
@@ -104,14 +97,13 @@ xmlelement vehicleJourneys {
 					} # xmlelement AvailabilityConditionRef
 				} # xmlelement validityConditions
 
-				xmlelement keyList {
-					xmlelement KeyValue {
-						xmlelement Key              { value '"JourneyNumber"' }
-						xmlelement Value            { value 'trim(trp_number)' }
-					} # xmlelement keyList
-				}
-
 				xmlelement ShortName { value 'Trim(trp_number)' }
+
+				xmlelement PrivateCode {
+					xmlattribute type           { value '"JourneyNumber"' }
+					value 'Trim(trp_number)'
+				} # xmlelement PrivateCode
+
 				xmlelement DepartureTime { value 'md_departureTime' }
 				xmlelement DepartureDayOffset { value 'IF trp_time_start >= 24:00 THEN 1 ELSE IF trp_time_start < 0:00 THEN -1 ELSE 0' }
 
