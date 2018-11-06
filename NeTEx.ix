@@ -16,6 +16,7 @@ file serviceframe {
 
 		xmlelement PublicationTimestamp { value 'Format(DateToday(), "!yyyymmdd|xxxx-xx-xx") + "T00:00:00Z"' }
 		xmlelement ParticipantRef { value '"NDOV"' }
+		xmlelement Description { value '""' } # TODO
 
 		xmlelement dataObjects {
 			xmlelement CompositeFrame {
