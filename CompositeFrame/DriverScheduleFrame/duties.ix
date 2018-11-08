@@ -51,12 +51,15 @@ xmlelement duties {
 							xmlelement EndTimeDayOffset { condition 'dty_act_end_time >= 24:00' value 'IF dty_act_end_time >= 24:00 THEN 1 ELSE IF dty_act_end_time < 0:00 THEN -1 ELSE 0' }							
 							
 							xmlelement StartPointRef {
-								xmlattribute ref { value 'md_operatorId + ":StopPlace:" + dty_act_start_place' }
+								xmlattribute ref { value 'md_operatorId + ":StopArea:" + dty_act_start_place' }
 								xmlattribute version { value 'md_frameVersion' }
+								xmlattribute nameOfRefClass { value '"StopArea"' }
 							}
+
 							xmlelement EndPointRef {
-								xmlattribute ref { value 'md_operatorId + ":StopPlace:" + dty_act_end_place' }
+								xmlattribute ref { value 'md_operatorId + ":StopArea:" + dty_act_end_place' }
 								xmlattribute version { value 'md_frameVersion' }
+								xmlattribute nameOfRefClass { value '"StopArea"' }
 							}
 							
 							# OIG-Hack :)
@@ -97,13 +100,15 @@ xmlelement duties {
 							xmlelement EndTimeDayOffset { condition 'dty_act_end_time >= 24:00' value 'IF dty_act_end_time >= 24:00 THEN 1 ELSE IF dty_act_end_time < 0:00 THEN -1 ELSE 0' }
 																						
 							xmlelement StartPointRef {
-								xmlattribute ref { value 'md_operatorId + ":StopPlace:" + dty_act_start_place' }
+								xmlattribute ref { value 'md_operatorId + ":StopArea:" + dty_act_start_place' }
 								xmlattribute version { value 'md_frameVersion' }
+								xmlattribute nameOfRefClass { value '"StopArea"' }
 							}
 							
 							xmlelement EndPointRef {
-								xmlattribute ref { value 'md_operatorId + ":StopPlace:" + dty_act_end_place' }
+								xmlattribute ref { value 'md_operatorId + ":StopArea:" + dty_act_end_place' }
 								xmlattribute version { value 'md_frameVersion' }
+								xmlattribute nameOfRefClass { value '"StopArea"' }
 							}
 
 							foreach trip {	
@@ -140,20 +145,30 @@ xmlelement duties {
 							xmlelement EndTime { value 'md_endTime' }
 							# RFC: DayOffset to EndTimeDayOffset
 							xmlelement EndTimeDayOffset { condition 'dty_act_end_time >= 24:00' value 'IF dty_act_end_time >= 24:00 THEN 1 ELSE IF dty_act_end_time < 0:00 THEN -1 ELSE 0' }
-							
+
 							# xmlelement StartPointRef { value 'md_operatorId + ":TimingPoint:" + dty_act_start_place' }
 							# xmlelement EndPointRef { value 'md_operatorId + ":TimingPoint:" + dty_act_end_place' }
-														
+
 							xmlelement StartPointRef {
-								xmlattribute ref { value 'md_operatorId + ":TimingPoint:" + DefNull(Get(trip_tp, dty_act_start_time = ttp_passing_time, 1), Get(trip_tp, 1)).trppt_stop.stp_identifier' }
+								xmlattribute ref {
+									value 'IF DefNull(Get(trip_tp, dty_act_start_time = ttp_passing_time, 1), Get(trip_tp, 1)).trppt_stop.stp_is_public THEN md_operatorId + ":ScheduledStopPoint:" + DefNull(Get(trip_tp, dty_act_start_time = ttp_passing_time, 1), Get(trip_tp, 1)).trppt_stop.stp_identifier ELSE md_operatorId + ":TimingPoint:" + DefNull(Get(trip_tp, dty_act_start_time = ttp_passing_time, 1), Get(trip_tp, 1)).trppt_stop.stp_identifier'
+								}
 								xmlattribute version { value 'md_frameVersion' }
+								xmlattribute nameOfRefClass {
+									value 'IF DefNull(Get(trip_tp, dty_act_start_time = ttp_passing_time, 1), Get(trip_tp, 1)).trppt_stop.stp_is_public THEN "ScheduledStopPoint" ELSE "TimingPoint"'
+								}
 							}
-							
+
 							xmlelement EndPointRef {
-								xmlattribute ref { value 'md_operatorId + ":TimingPoint:" + DefNull(Get(trip_tp, dty_act_end_time = ttp_passing_time, 1), Get(trip_tp, "*")).trppt_stop.stp_identifier' }
+								xmlattribute ref {
+									value 'IF DefNull(Get(trip_tp, dty_act_end_time = ttp_passing_time, 1), Get(trip_tp, "*")).trppt_stop.stp_is_public THEN md_operatorId + ":ScheduledStopPoint:" + DefNull(Get(trip_tp, dty_act_end_time = ttp_passing_time, 1), Get(trip_tp, "*")).trppt_stop.stp_identifier ELSE md_operatorId + ":TimingPoint:" + DefNull(Get(trip_tp, dty_act_end_time = ttp_passing_time, 1), Get(trip_tp, "*")).trppt_stop.stp_identifier'
+								}
 								xmlattribute version { value 'md_frameVersion' }
+								xmlattribute nameOfRefClass {
+									value 'IF DefNull(Get(trip_tp, dty_act_end_time = ttp_passing_time, 1), Get(trip_tp, "*")).trppt_stop.stp_is_public THEN "ScheduledStopPoint" ELSE "TimingPoint"'
+								}
 							}
-							
+
 							# RFC:
 							foreach trip {
 								sort_by tripSort {
@@ -210,15 +225,25 @@ xmlelement duties {
 									
 									# xmlelement StartPointRef { value 'md_operatorId + ":TimingPoint:" + trp_plc_strt_pce' }
 									# xmlelement EndPointRef { value 'md_operatorId + ":TimingPoint:" + trp_plc_end_pce' }
-									
+
 									xmlelement StartPointRef {
-										xmlattribute ref { value 'md_operatorId + ":TimingPoint:" + DefNull(Get(trip_tp, pce_time_start = ttp_passing_time, 1), Get(trip_tp, 1)).trppt_stop.stp_identifier' }
+										xmlattribute ref {
+											value 'IF DefNull(Get(trip_tp, pce_time_start = ttp_passing_time, 1), Get(trip_tp, 1)).trppt_stop.stp_is_public THEN md_operatorId + ":ScheduledStopPoint:" + DefNull(Get(trip_tp, pce_time_start = ttp_passing_time, 1), Get(trip_tp, 1)).trppt_stop.stp_identifier ELSE md_operatorId + ":TimingPoint:" + DefNull(Get(trip_tp, pce_time_start = ttp_passing_time, 1), Get(trip_tp, 1)).trppt_stop.stp_identifier'
+										}
 										xmlattribute version { value 'md_frameVersion' }
+										xmlattribute nameOfRefClass {
+											value 'IF DefNull(Get(trip_tp, pce_time_start = ttp_passing_time, 1), Get(trip_tp, 1)).trppt_stop.stp_is_public THEN "ScheduledStopPoint" ELSE "TimingPoint"'
+										}
 									}
-									
+
 									xmlelement EndPointRef {
-										xmlattribute ref { value 'md_operatorId + ":TimingPoint:" + DefNull(Get(trip_tp, pce_time_end = ttp_passing_time, 1), Get(trip_tp, "*")).trppt_stop.stp_identifier' }
+										xmlattribute ref {
+											value 'IF DefNull(Get(trip_tp, pce_time_end = ttp_passing_time, 1), Get(trip_tp, "*")).trppt_stop.stp_is_public THEN md_operatorId + ":ScheduledStopPoint:" + DefNull(Get(trip_tp, pce_time_end = ttp_passing_time, 1), Get(trip_tp, "*")).trppt_stop.stp_identifier ELSE md_operatorId + ":TimingPoint:" + DefNull(Get(trip_tp, pce_time_end = ttp_passing_time, 1), Get(trip_tp, "*")).trppt_stop.stp_identifier'
+										}
 										xmlattribute version { value 'md_frameVersion' }
+										xmlattribute nameOfRefClass {
+											value 'IF DefNull(Get(trip_tp, pce_time_end = ttp_passing_time, 1), Get(trip_tp, "*")).trppt_stop.stp_is_public THEN "ScheduledStopPoint" ELSE "TimingPoint"'
+										}
 									}
 
 									# RFC:
