@@ -15,11 +15,14 @@ definitions MainDefinitions {
 	DEFINE md_runtime { Trim(Format(rpst_stp_run_time, "sssss")) }
 	DEFINE md_loadtime { Trim(Format(rpst_stp_load_time, "sssss")) }
 	DEFINE md_dty_act_duration { "PT" + Trim(Format(dty_act_duration, "sssss")) + "S" }
+	DEFINE md_half_dty_duration { "PT" + Trim(Format(half_dty_duration, "sssss")) + "S" }
 	DEFINE md_durationCalc { "PT" + Trim(Format(trp_tim_end_pce - trp_tim_strt_pce, "sssss")) + "S" }
 	/* DEFINE md_link_authority { Get(trip_pattern).Get(trip, 1).Get(trip_stop, tstp_position = THIS trip_pattern[2].tpatpt_position).tstp_district } */
 	DEFINE md_link_authority { DefNull(Prev().tstp_district, md_authority) }
 	/* DEFINE md_link_authority { IF Prev().tstp_district <> "" THEN Prev().tstp_district ELSE md_authority } */
-	DEFINE md_departureTime { StrReplace(Format(trp_time_start_24h, "0hh\'mm:ss"), ";", ":") }
+	DEFINE md_departureTime { StrReplace(Format(trp_time_start_24h, "0hh\'mm:ss"), ";", ":") }	
+	DEFINE md_halfDtyStartTime { StrReplace(Format(half_dty_start_time, "0hh\'mm:ss"), ";", ":") }	
+	DEFINE md_halfDtyEndTime { StrReplace(Format(half_dty_end_time, "0hh\'mm:ss"), ";", ":") }
 	DEFINE md_startTime { StrReplace(Format(dty_act_start_time, "0hh\'mm:ss"), ";", ":") }	
 	DEFINE md_endTime { StrReplace(Format(dty_act_end_time, "0hh\'mm:ss"), ";", ":") }
 	DEFINE md_startTimeCalc { StrReplace(Format(trp_tim_strt_pce, "0hh\'mm:ss"), ";", ":") }

@@ -2,6 +2,6 @@ xmlelement contentValidityConditions {
 
 	&include contentValidityConditions/vehicle_schedule.ix
 	
-	# &include contentValidityConditions/crew_schedule.ix
+	&include contentValidityConditions/crew_schedule.ix
 	
 } # xmlelement contentValidityConditions

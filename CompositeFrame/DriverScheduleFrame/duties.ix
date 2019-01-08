@@ -4,7 +4,7 @@ xmlelement duties {
 			criteria csc_int_no
 		} # sort_by	CSC				
 
-		foreach duty {			
+		foreach duty {
 			sort_by dutySort {
 				criteria dty_number { value 'dty_number' }
 			}
@@ -25,248 +25,186 @@ xmlelement duties {
 				} # xmlelement validityConditions
 				
 				xmlelement Description { value 'Trim(dty_number)' }
-				xmlelement dutyParts {
-					foreach duty_activity {
-						sort_by tripSort {
-							criteria dty_act_start_time { value 'dty_act_start_time' }
-						}
-						
-						# TODO: hoe optellen binnen XML element?
-						var v_duty_part_index 		{ assign 'IF dty_act_category IN [4, 14, 17, 18] THEN v_duty_part_index + 1 ELSE v_duty_part_index'}
-									
-						xmlelement DriverTrip {							
-							condition '(dty_act_category = 14 /* Travel */ OR dty_act_category = 17 /* Walk */)'							
-							xmlattribute id { value 'md_operatorId + ":Duty:" + csc_int_no + ":" + dty_crew_base + ":" + dty_type + ":" + Trim(dty_number) + ":" + v_duty_part_index' }
-							xmlattribute version { value 'md_frameVersion' }
-							# RFC
-							xmlattribute order { value 'v_duty_part_index'}
-							xmlelement Description { value 'dty_act_name' }
-							xmlelement AccountingTime { value 'md_dty_act_duration' }
-							# RFC: 
-							xmlelement StartTime { value 'md_startTime' }
-							# RFC: 
-							xmlelement StartDayOffset { condition 'dty_act_start_time >= 24:00' value 'IF dty_act_start_time >= 24:00 THEN 1 ELSE IF dty_act_start_time < 0:00 THEN -1 ELSE 0' }							
-							xmlelement EndTime { value 'md_endTime' }
-							# RFC: DayOffset to EndTimeDayOffset
-							xmlelement EndTimeDayOffset { condition 'dty_act_end_time >= 24:00' value 'IF dty_act_end_time >= 24:00 THEN 1 ELSE IF dty_act_end_time < 0:00 THEN -1 ELSE 0' }							
-							
-							xmlelement StartPointRef {
-								xmlattribute ref { value 'md_operatorId + ":StopArea:" + dty_act_start_place' }
-								xmlattribute version { value 'md_frameVersion' }
-								xmlattribute nameOfRefClass { value '"StopArea"' }
-							}
-
-							xmlelement EndPointRef {
-								xmlattribute ref { value 'md_operatorId + ":StopArea:" + dty_act_end_place' }
-								xmlattribute version { value 'md_frameVersion' }
-								xmlattribute nameOfRefClass { value '"StopArea"' }
-							}
-							
-							# OIG-Hack :)
-							foreach trip {
-								xmlelement BlockRef {
-									xmlattribute id         { value 'md_operatorId + ":Block:" + vsc_int_id + ":" + Trim(blk_number)' }
-									xmlattribute version	{ value 'md_frameVersion' }
-								}
-
-								xmlelement ServiceJourneyRef {
-									condition 'trp_is_in_service'
-									xmlattribute ref { value 'md_operatorId + ":ServiceJourney:" + vsc_int_id + ":" + vsc_sched_type + ":" + Trim(trp_route) + ":" + trim(trp_number)' }
-									xmlattribute version { value 'md_frameVersion' }
-								}
-							
-								xmlelement DeadRunRef {
-									condition 'NOT trp_is_in_service'
-									xmlattribute ref { value 'md_operatorId + ":ServiceJourney:" + vsc_int_id + ":" + vsc_sched_type + ":" + Trim(trp_route) + ":" + trim(trp_number)' }
-									xmlattribute version { value 'md_frameVersion' }							 	
-								}
-							}
-						}
-						
-						xmlelement DriverTrip {	
-							condition '(dty_act_category = 18 /* Travel trip */)'
-							xmlattribute id { value 'md_operatorId + ":Duty:" + csc_int_no + ":" + dty_crew_base + ":" + dty_type + ":" + Trim(dty_number) + ":" + v_duty_part_index' }
-							xmlattribute version { value 'md_frameVersion' }
-							# RFC 
-							xmlattribute order { value 'v_duty_part_index'}
-							xmlelement Description { value 'Trim(dty_act_name)' }
-							xmlelement AccountingTime { value 'md_dty_act_duration' }
-							# RFC: 
-							xmlelement StartTime { value 'md_startTime' }
-							# RFC: 
-							xmlelement StartDayOffset { condition 'dty_act_start_time >= 24:00' value 'IF dty_act_start_time >= 24:00 THEN 1 ELSE IF dty_act_start_time < 0:00 THEN -1 ELSE 0' }							
-							xmlelement EndTime { value 'md_endTime' }
-							# RFC: DayOffset to EndTimeDayOffset
-							xmlelement EndTimeDayOffset { condition 'dty_act_end_time >= 24:00' value 'IF dty_act_end_time >= 24:00 THEN 1 ELSE IF dty_act_end_time < 0:00 THEN -1 ELSE 0' }
-																						
-							xmlelement StartPointRef {
-								xmlattribute ref { value 'md_operatorId + ":StopArea:" + dty_act_start_place' }
-								xmlattribute version { value 'md_frameVersion' }
-								xmlattribute nameOfRefClass { value '"StopArea"' }
-							}
-							
-							xmlelement EndPointRef {
-								xmlattribute ref { value 'md_operatorId + ":StopArea:" + dty_act_end_place' }
-								xmlattribute version { value 'md_frameVersion' }
-								xmlattribute nameOfRefClass { value '"StopArea"' }
-							}
-
-							foreach trip {	
-								xmlelement BlockRef {
-									xmlattribute id         { value 'md_operatorId + ":Block:" + vsc_int_id + ":" + Trim(blk_number)' }
-									xmlattribute version	{ value 'md_frameVersion' }
-								}								
-							
-								xmlelement ServiceJourneyRef {
-									condition 'trp_is_in_service'
-									xmlattribute ref { value 'md_operatorId + ":ServiceJourney:" + vsc_int_id + ":" + vsc_sched_type + ":" + Trim(trp_route) + ":" + trim(trp_number)' }
-									xmlattribute version { value 'md_frameVersion' }
-								}
-							
-								xmlelement DeadRunRef {
-									condition 'NOT trp_is_in_service'
-									xmlattribute ref { value 'md_operatorId + ":ServiceJourney:" + vsc_int_id + ":" + vsc_sched_type + ":" + Trim(trp_route) + ":" + trim(trp_number)' }
-									xmlattribute version { value 'md_frameVersion' }							 	
-								}
-							}
-						}
-									
+				
+				xmlelement dutyParts {					
+					foreach half_duty {
 						xmlelement DutyPart {
-							condition '(dty_act_category = 4 /* DeadHead */)'
-							# RFC 
-							xmlattribute id { value 'md_operatorId + ":Duty:" + csc_int_no + ":" + dty_crew_base + ":" + dty_type + ":" + Trim(dty_number) + ":" + v_duty_part_index' }
-							xmlattribute version { value 'md_frameVersion' }
-							xmlattribute order { value 'v_duty_part_index'}						
-							xmlelement Description { value 'Trim(dty_act_name)' }
-							xmlelement AccountingTime { value 'md_dty_act_duration' }
-							xmlelement StartTime { value 'md_startTime' }
-							# RFC:
-							xmlelement StartDayOffset { condition 'dty_act_start_time >= 24:00' value 'IF dty_act_start_time >= 24:00 THEN 1 ELSE IF dty_act_start_time < 0:00 THEN -1 ELSE 0' }							
-							xmlelement EndTime { value 'md_endTime' }
-							# RFC: DayOffset to EndTimeDayOffset
-							xmlelement EndTimeDayOffset { condition 'dty_act_end_time >= 24:00' value 'IF dty_act_end_time >= 24:00 THEN 1 ELSE IF dty_act_end_time < 0:00 THEN -1 ELSE 0' }
-
-							# xmlelement StartPointRef { value 'md_operatorId + ":TimingPoint:" + dty_act_start_place' }
-							# xmlelement EndPointRef { value 'md_operatorId + ":TimingPoint:" + dty_act_end_place' }
-
-							xmlelement StartPointRef {
-								xmlattribute ref {
-									value 'IF DefNull(Get(trip_tp, dty_act_start_time = ttp_passing_time, 1), Get(trip_tp, 1)).trppt_stop.stp_is_public THEN md_operatorId + ":ScheduledStopPoint:" + DefNull(Get(trip_tp, dty_act_start_time = ttp_passing_time, 1), Get(trip_tp, 1)).trppt_stop.stp_identifier ELSE md_operatorId + ":TimingPoint:" + DefNull(Get(trip_tp, dty_act_start_time = ttp_passing_time, 1), Get(trip_tp, 1)).trppt_stop.stp_identifier'
-								}
-								xmlattribute version { value 'md_frameVersion' }
-								xmlattribute nameOfRefClass {
-									value 'IF DefNull(Get(trip_tp, dty_act_start_time = ttp_passing_time, 1), Get(trip_tp, 1)).trppt_stop.stp_is_public THEN "ScheduledStopPoint" ELSE "TimingPoint"'
-								}
-							}
-
-							xmlelement EndPointRef {
-								xmlattribute ref {
-									value 'IF DefNull(Get(trip_tp, dty_act_end_time = ttp_passing_time, 1), Get(trip_tp, "*")).trppt_stop.stp_is_public THEN md_operatorId + ":ScheduledStopPoint:" + DefNull(Get(trip_tp, dty_act_end_time = ttp_passing_time, 1), Get(trip_tp, "*")).trppt_stop.stp_identifier ELSE md_operatorId + ":TimingPoint:" + DefNull(Get(trip_tp, dty_act_end_time = ttp_passing_time, 1), Get(trip_tp, "*")).trppt_stop.stp_identifier'
-								}
-								xmlattribute version { value 'md_frameVersion' }
-								xmlattribute nameOfRefClass {
-									value 'IF DefNull(Get(trip_tp, dty_act_end_time = ttp_passing_time, 1), Get(trip_tp, "*")).trppt_stop.stp_is_public THEN "ScheduledStopPoint" ELSE "TimingPoint"'
-								}
-							}
-
-							# RFC:
-							foreach trip {
-								sort_by tripSort {
-									criteria trp_time_start { value 'trp_time_start' }
-								}
-								condition 'trp_duration > 0h00'
-								
-								xmlelement BlockRef {
-									xmlattribute id         { value 'md_operatorId + ":Block:" + vsc_int_id + ":" + Trim(blk_number)' }
-									xmlattribute version	{ value 'md_frameVersion' }
-								}								
+							xmlattribute id { value 'md_operatorId + ":DutyPart:" + csc_int_no + ":" + dty_crew_base + ":" + dty_type + ":" + Trim(dty_number) + ":" + half_dty_position' }
+							xmlattribute version { value 'md_frameVersion' }						
+							xmlelement AccountingTime { value 'md_half_dty_duration' }						
+							xmlelement StartTime { value 'md_halfDtyStartTime' }							
+							xmlelement StartTimeDayOffset { condition 'half_dty_start_time >= 24:00' value 'IF half_dty_start_time >= 24:00 THEN 1 ELSE IF half_dty_start_time < 0:00 THEN -1 ELSE 0' }							
+							xmlelement EndTime { value 'md_halfDtyEndTime' }							
+							xmlelement EndTimeDayOffset { condition 'half_dty_end_time >= 24:00' value 'IF half_dty_end_time >= 24:00 THEN 1 ELSE IF half_dty_end_time < 0:00 THEN -1 ELSE 0' }
 							
-							 	xmlelement ServiceJourneyRef {
-										condition 'trp_is_in_service'
-										xmlattribute ref { value 'md_operatorId + ":ServiceJourney:" + vsc_int_id + ":" + vsc_sched_type + ":" + Trim(trp_route) + ":" + trim(trp_number)' }
-										xmlattribute version { value 'md_frameVersion' }
-									}
-									
-								xmlelement DeadRunRef {
-									condition 'NOT trp_is_in_service'
-									xmlattribute ref { value 'md_operatorId + ":DeadRun:" + vsc_int_id + ":" + vsc_sched_type + ":" + Trim(trp_route) + ":" + trim(trp_number)' }
-									xmlattribute version { value 'md_frameVersion' }
-								}
-							}
-						}
-						
-						foreach piece {
-							condition 'dty_act_category = 9 /* Piece */ AND pce_duration > 0h00'
-							
-							foreach trip {
-								sort_by tripSort {
-									criteria trp_time_start { value 'trp_time_start' }
-									criteria trp_time_end { value 'trp_time_end' }
-								}
-								condition 'trp_duration > 0h00'
-								
-								var v_duty_part_index 		{assign ' v_duty_part_index + 1 '}
-								
-								xmlelement DutyPart {
-									# RFC 
-									xmlattribute id { value 'md_operatorId + ":Duty:" + csc_int_no + ":" + dty_crew_base + ":" + dty_type + ":" + Trim(dty_number) + ":" + v_duty_part_index' }
-									xmlattribute version { value 'md_frameVersion' }
-									xmlattribute order { value 'v_duty_part_index' }
-
-									xmlelement Description { value 'IF trp_is_in_service THEN Trim(blk_number) + ": " + Trim(trp_route) + " (" + Trim(trp_route_public) + ") " + Trim(trp_number) ELSE Trim(dty_act_name)' }									
-									
-									xmlelement AccountingTime { value 'md_durationCalc' }
-									xmlelement StartTime { value 'md_startTimeCalc' }
-									# RFC:
-									xmlelement StartDayOffset { condition 'trp_tim_strt_pce >= 24:00' value 'IF trp_tim_strt_pce >= 24:00 THEN 1 ELSE IF trp_tim_strt_pce < 0:00 THEN -1 ELSE 0' }
-									xmlelement EndTime { value 'md_endTimeCalc' }
-									# RFC: DayOffset to EndTimeDayOffset
-									xmlelement EndTimeDayOffset { condition 'trp_tim_end_pce >= 24:00' value 'IF trp_tim_end_pce >= 24:00 THEN 1 ELSE IF trp_tim_end_pce < 0:00 THEN -1 ELSE 0' }
-									
-									# xmlelement StartPointRef { value 'md_operatorId + ":TimingPoint:" + trp_plc_strt_pce' }
-									# xmlelement EndPointRef { value 'md_operatorId + ":TimingPoint:" + trp_plc_end_pce' }
-
-									xmlelement StartPointRef {
-										xmlattribute ref {
-											value 'IF DefNull(Get(trip_tp, pce_time_start = ttp_passing_time, 1), Get(trip_tp, 1)).trppt_stop.stp_is_public THEN md_operatorId + ":ScheduledStopPoint:" + DefNull(Get(trip_tp, pce_time_start = ttp_passing_time, 1), Get(trip_tp, 1)).trppt_stop.stp_identifier ELSE md_operatorId + ":TimingPoint:" + DefNull(Get(trip_tp, pce_time_start = ttp_passing_time, 1), Get(trip_tp, 1)).trppt_stop.stp_identifier'
-										}
-										xmlattribute version { value 'md_frameVersion' }
-										xmlattribute nameOfRefClass {
-											value 'IF DefNull(Get(trip_tp, pce_time_start = ttp_passing_time, 1), Get(trip_tp, 1)).trppt_stop.stp_is_public THEN "ScheduledStopPoint" ELSE "TimingPoint"'
-										}
+							xmlelement dutyActivities {							
+								foreach duty_activity {
+									sort_by tripSort {
+										criteria dty_act_sort_rank { value 'dty_act_sort_rank' }
 									}
 
-									xmlelement EndPointRef {
-										xmlattribute ref {
-											value 'IF DefNull(Get(trip_tp, pce_time_end = ttp_passing_time, 1), Get(trip_tp, "*")).trppt_stop.stp_is_public THEN md_operatorId + ":ScheduledStopPoint:" + DefNull(Get(trip_tp, pce_time_end = ttp_passing_time, 1), Get(trip_tp, "*")).trppt_stop.stp_identifier ELSE md_operatorId + ":TimingPoint:" + DefNull(Get(trip_tp, pce_time_end = ttp_passing_time, 1), Get(trip_tp, "*")).trppt_stop.stp_identifier'
-										}
+									# TODO: hoe optellen binnen XML element?
+									var v_duty_part_index 		{ assign 'IF dty_act_category IN [4, 14, 17, 18] THEN v_duty_part_index + 1 ELSE v_duty_part_index'}
+									
+									xmlelement DriverTrip {							
+										condition '(dty_act_category = 14 /* Travel */ OR dty_act_category = 17 /* Walk */)'							
+										xmlattribute id { value 'md_operatorId + ":DriverTrip:" + csc_int_no + ":" + dty_crew_base + ":" + dty_type + ":" + Trim(dty_number) + ":" + v_duty_part_index' }
 										xmlattribute version { value 'md_frameVersion' }
-										xmlattribute nameOfRefClass {
-											value 'IF DefNull(Get(trip_tp, pce_time_end = ttp_passing_time, 1), Get(trip_tp, "*")).trppt_stop.stp_is_public THEN "ScheduledStopPoint" ELSE "TimingPoint"'
+										xmlelement Description { value 'Trim(dty_act_name)' }
+										xmlelement AccountingTime { value 'md_dty_act_duration' }										
+										
+										xmlelement StartPointRef {
+											xmlattribute ref { value 'md_operatorId + ":StopArea:" + dty_act_start_place' }
+											xmlattribute version { value 'md_frameVersion' }
+											xmlattribute nameOfRefClass { value '"StopArea"' }
 										}
-									}
 
-									# RFC:
-									xmlelement BlockRef {
-										xmlattribute id         { value 'md_operatorId + ":Block:" + vsc_int_id + ":" + Trim(blk_number)' }
-										xmlattribute version	{ value 'md_frameVersion' }
+										xmlelement EndPointRef {
+											xmlattribute ref { value 'md_operatorId + ":StopArea:" + dty_act_end_place' }
+											xmlattribute version { value 'md_frameVersion' }
+											xmlattribute nameOfRefClass { value '"StopArea"' }
+										}									
 									}
 									
-									xmlelement ServiceJourneyRef {
-										condition 'trp_is_in_service'
-										xmlattribute ref { value 'md_operatorId + ":ServiceJourney:" + vsc_int_id + ":" + vsc_sched_type + ":" + Trim(trp_route) + ":" + trim(trp_number)' }
+									xmlelement DriverTrip {	
+										condition '(dty_act_category = 18 /* Travel trip */)'
+										xmlattribute id { value 'md_operatorId + ":DriverTrip:" + csc_int_no + ":" + dty_crew_base + ":" + dty_type + ":" + Trim(dty_number) + ":" + v_duty_part_index' }
 										xmlattribute version { value 'md_frameVersion' }
+										xmlelement Description { value 'Trim(dty_act_name)' }
+										xmlelement AccountingTime { value 'md_dty_act_duration' }										
+																									
+										xmlelement StartPointRef {
+											xmlattribute ref { value 'md_operatorId + ":StopArea:" + dty_act_start_place' }
+											xmlattribute version { value 'md_frameVersion' }
+											xmlattribute nameOfRefClass { value '"StopArea"' }
+										}
+										
+										xmlelement EndPointRef {
+											xmlattribute ref { value 'md_operatorId + ":StopArea:" + dty_act_end_place' }
+											xmlattribute version { value 'md_frameVersion' }
+											xmlattribute nameOfRefClass { value '"StopArea"' }
+										}
 									}
 									
-									xmlelement DeadRunRef {
-										condition 'NOT trp_is_in_service'
-										xmlattribute ref { value 'md_operatorId + ":DeadRun:" + vsc_int_id + ":" + vsc_sched_type + ":" + Trim(trp_route) + ":" + trim(trp_number)' }
-										xmlattribute version { value 'md_frameVersion' }
-									}
-								} # DutyPart
-							} # trip
-						} # piece
-					} # duty_activity
+									foreach piece {
+										condition 'dty_act_category = 9 /* Piece */ AND pce_duration > 0h00'
+										
+										var v_duty_part_index 		{assign ' v_duty_part_index + 1 '} # TODO
+										
+										xmlelement DriverTrip {	
+											condition 'md_trp_is_car_taxi'
+											xmlattribute id { value 'md_operatorId + ":DriverTrip:" + csc_int_no + ":" + dty_crew_base + ":" + dty_type + ":" + Trim(dty_number) + ":" + v_duty_part_index' }
+											xmlattribute version { value 'md_frameVersion' }
+											xmlelement Description { value 'Trim(dty_act_name)' }
+											xmlelement AccountingTime { value 'md_dty_act_duration' }											
+																										
+											xmlelement StartPointRef {
+												xmlattribute ref { value 'md_operatorId + ":StopArea:" + dty_act_start_place' }
+												xmlattribute version { value 'md_frameVersion' }
+												xmlattribute nameOfRefClass { value '"StopArea"' }
+											}
+											
+											xmlelement EndPointRef {
+												xmlattribute ref { value 'md_operatorId + ":StopArea:" + dty_act_end_place' }
+												xmlattribute version { value 'md_frameVersion' }
+												xmlattribute nameOfRefClass { value '"StopArea"' }
+											}
+										}
+
+										xmlelement Stretch {
+											condition 'NOT md_trp_is_car_taxi'
+										
+											# RFC 
+											xmlattribute id { value 'md_operatorId + ":Stretch:" + csc_int_no + ":" + dty_crew_base + ":" + dty_type + ":" + Trim(dty_number) + ":" + pce_position' }
+											xmlattribute version { value 'md_frameVersion' }
+
+											xmlelement spells {
+												foreach trip {													
+													condition 'trp_duration > 0h00'
+																							
+													var v_duty_part_index 		{assign 'v_duty_part_index + 1 '}
+																							
+													xmlelement DrivingSpell {
+														# TODO														
+														xmlattribute id { value 'md_operatorId + ":DriverTrip:" + csc_int_no + ":" + dty_crew_base + ":" + dty_type + ":" + Trim(dty_number) + ":" + v_duty_part_index' }
+														xmlattribute version { value 'md_frameVersion' }
+														
+														xmlelement Description { value 'IF trp_is_in_service THEN Trim(blk_number) + ": " + Trim(trp_route) + " (" + Trim(trp_route_public) + ") " + Trim(trp_number) ELSE Trim(dty_act_name)' }
+														
+														xmlelement AccountingTime { value 'md_durationCalc' }
+														xmlelement StartTime { value 'md_startTimeCalc' }
+														# RFC:
+														xmlelement StartTimeDayOffset { condition 'trp_tim_strt_pce >= 24:00' value 'IF trp_tim_strt_pce >= 24:00 THEN 1 ELSE IF trp_tim_strt_pce < 0:00 THEN -1 ELSE 0' }
+														xmlelement EndTime { value 'md_endTimeCalc' }
+														# RFC: DayOffset to EndTimeDayOffset
+														xmlelement EndTimeDayOffset { condition 'trp_tim_end_pce >= 24:00' value 'IF trp_tim_end_pce >= 24:00 THEN 1 ELSE IF trp_tim_end_pce < 0:00 THEN -1 ELSE 0' }
+														
+														xmlelement StartReliefOpportunityRef {
+															xmlattribute ref {
+																value 'IF DefNull(Get(trip_tp, pce_time_start = ttp_passing_time, 1), Get(trip_tp, 1)).trppt_stop.stp_is_public THEN md_operatorId + ":ScheduledStopPoint:" + DefNull(Get(trip_tp, pce_time_start = ttp_passing_time, 1), Get(trip_tp, 1)).trppt_stop.stp_identifier ELSE md_operatorId + ":TimingPoint:" + DefNull(Get(trip_tp, pce_time_start = ttp_passing_time, 1), Get(trip_tp, 1)).trppt_stop.stp_identifier'
+															}
+															xmlattribute version { value 'md_frameVersion' }
+															xmlattribute nameOfRefClass {
+																value 'IF DefNull(Get(trip_tp, pce_time_start = ttp_passing_time, 1), Get(trip_tp, 1)).trppt_stop.stp_is_public THEN "ScheduledStopPoint" ELSE "TimingPoint"'
+															}
+														}
+
+														xmlelement EndReliefOpportunityRef {
+															xmlattribute ref {
+																value 'IF DefNull(Get(trip_tp, pce_time_end = ttp_passing_time, 1), Get(trip_tp, "*")).trppt_stop.stp_is_public THEN md_operatorId + ":ScheduledStopPoint:" + DefNull(Get(trip_tp, pce_time_end = ttp_passing_time, 1), Get(trip_tp, "*")).trppt_stop.stp_identifier ELSE md_operatorId + ":TimingPoint:" + DefNull(Get(trip_tp, pce_time_end = ttp_passing_time, 1), Get(trip_tp, "*")).trppt_stop.stp_identifier'
+															}
+															xmlattribute version { value 'md_frameVersion' }
+															xmlattribute nameOfRefClass {
+																value 'IF DefNull(Get(trip_tp, pce_time_end = ttp_passing_time, 1), Get(trip_tp, "*")).trppt_stop.stp_is_public THEN "ScheduledStopPoint" ELSE "TimingPoint"'
+															}
+														}
+														
+														# RFC:
+														xmlelement BlockRef {
+															xmlattribute ref        { value 'md_operatorId + ":Block:" + vsc_int_id + ":" + Trim(blk_number)' }
+															xmlattribute version	{ value 'md_frameVersion' }
+														}
+
+														xmlelement LineRef {
+															condition 'trp_is_in_service'
+															xmlattribute ref { value 'md_operatorId + ":Line:" + Trim(trp_route_statistic)' }
+															xmlattribute version 		{ value 'md_any' }
+														}
+														
+														xmlelement VehicleJourneyRef {
+															xmlattribute ref { 
+																condition 'trp_is_in_service'
+																value 'md_operatorId + ":ServiceJourney:" + vsc_int_id + ":" + vsc_sched_type + ":" + Trim(trp_route) + ":" + trim(trp_number)' 
+															}
+															
+															xmlattribute ref { 
+																condition 'NOT trp_is_in_service'													
+																value 'md_operatorId + ":DeadRun:" + vsc_int_id + ":" + vsc_sched_type + ":" + Trim(trp_route_statistic) + ":" + trim(trp_number)' 
+															}
+
+															xmlattribute version { value 'md_frameVersion' }
+															
+															xmlattribute nameOfRefClass { 
+																condition 'trp_is_in_service'
+																value '"ServiceJourney"' 
+															}
+															
+															xmlattribute nameOfRefClass { 
+																condition 'NOT trp_is_in_service'													
+																value '"DeadRun"' 
+															}
+														}
+													}
+												} # trip
+											}		
+										} # Stretch
+									} # piece
+									
+									
+								} # duty_activity
+							} # dutyActivities							
+						} # DutyPart						
+					} # half_duty
 				} # dutyParts
 			} # xmlelement Duty
 		} # duty
