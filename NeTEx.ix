@@ -30,11 +30,11 @@ file serviceframe {
 				xmlelement frames {
 					&include CompositeFrame/ResourceFrame.ix
 
-					&include CompositeFrame/InfrastructureFrame.ix
-
 					# &include CompositeFrame/SiteFrame.ix
 
 					&include CompositeFrame/ServiceFrame.ix
+					
+					&include CompositeFrame/InfrastructureFrame.ix
 
 					&include CompositeFrame/TimetableFrame.ix
 
