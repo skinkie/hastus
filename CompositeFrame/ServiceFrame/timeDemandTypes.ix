@@ -45,7 +45,7 @@ xmlelement timeDemandTypes {
 						xmlelement TimingPointRef {
 							condition 'NOT stp_is_public'
 							xmlattribute ref 		{ value 'md_operatorId + ":TimingPoint:" + stp_identifier' }
-							xmlattribute version 	{ value 'md_frameVersion' }
+							xmlattribute version 	{ value 'md_any' }
 						} # xmlelement TimingPointRef
 
 						xmlelement WaitTime { value '"PT" + md_loadtime + "S"' }
