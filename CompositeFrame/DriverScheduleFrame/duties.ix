@@ -76,7 +76,7 @@ xmlelement duties {
 												xmlelement EndPointRef { condition 'false' xmlattribute ref { value '""' } xmlattribute version { value '""' } xmlattribute nameOfRefClass { value '""' } }
 												xmlelement LineRef { condition 'false'  xmlattribute ref { value '""' } xmlattribute version { value '""' } }
 												xmlelement ServiceJourneyRef { condition 'false' xmlattribute ref { value '""' } xmlattribute version { value '""' } }
-												xmlelement TransportMode { value '"walk"' }
+												xmlelement TransportMode { value '"foot"' }
 											}
 										}
 									}
@@ -212,6 +212,7 @@ xmlelement duties {
 										}
 
 										xmlelement Stretch {
+											# TODO: er voor zorgen dat er geen lege Stretches komen
 											condition 'pce_vehicle_group <> "AFau"'
 										
 											# RFC 
