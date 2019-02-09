@@ -30,11 +30,11 @@ file PublicationDelivery {
 				xmlelement frames {
 					&include CompositeFrame/ResourceFrame.ix
 
-					&include CompositeFrame/InfrastructureFrame.ix
-
 					# &include CompositeFrame/SiteFrame.ix
 
 					&include CompositeFrame/ServiceFrame-2017.ix
+					
+					&include CompositeFrame/InfrastructureFrame.ix
 
 					&include CompositeFrame/TimetableFrame-2017.ix
 
