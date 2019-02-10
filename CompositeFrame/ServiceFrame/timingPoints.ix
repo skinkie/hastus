@@ -20,6 +20,13 @@ xmlelement timingPoints {
 		xmlelement TimingPoint {
 			xmlattribute id 			{ value 'md_operatorId + ":TimingPoint:" + stp_identifier' }
 			xmlattribute version 		{ value 'md_any' }
+			
+			xmlelement keyList {
+				xmlelement KeyValue {
+					xmlelement Key 			{ value '"UserStopCode"' }
+					xmlelement Value 		{ value 'md_UserStopCode' }
+				} # xmlelement KeyValue
+			} # xmlelement keyList
 
 			xmlelement Name 			{ value 'stp_description' }
 

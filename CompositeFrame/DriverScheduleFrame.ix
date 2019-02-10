@@ -1,6 +1,8 @@
 xmlelement DriverScheduleFrame {
 	xmlattribute id { value 'md_operatorId + ":DriverScheduleFrame:" + md_frameIdentifier' }
 	xmlattribute version { value 'md_frameVersion' }
-
+	
+	&include DriverScheduleFrame/contentValidityConditions.ix
+	
 	&include DriverScheduleFrame/duties.ix
 }
