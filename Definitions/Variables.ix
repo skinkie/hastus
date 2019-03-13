@@ -5,6 +5,7 @@ var v_tpat_stop_index 					{ type 'integer' assign '0' }
 var v_valid_days { type 'string' }
 var v_location { type 'string' }
 var v_duty_part_index					{ type 'integer' assign '0' }
+var v_vsc_int_id					{ type 'integer' assign '0' }
 
 array_var av_printed_itn {
 	key_part 'itn_stop_start'

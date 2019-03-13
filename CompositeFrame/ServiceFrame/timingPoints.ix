@@ -50,10 +50,10 @@ xmlelement timingPoints {
 				} # xmlelement PointProjection
 			} # xmlelement projections
 
-			xmlelement PrivateCode {
-				xmlattribute type	 		{ value '"UserStopCode"' }
-				value 'md_UserStopCode'
-			} # xmlelement PrivateCode
+			# xmlelement PrivateCode {
+			#	xmlattribute type	 		{ value '"UserStopCode"' }
+			#	value 'md_UserStopCode'
+			# } # xmlelement PrivateCode
 		} # xmlelement TimingPoint
 	} # foreach stop
 } # xmlelement timingPoints

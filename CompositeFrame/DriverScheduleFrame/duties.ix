@@ -11,6 +11,8 @@ xmlelement duties {
 			
 			var v_duty_part_index 		{assign '0'}
 			
+			var v_vsc_int_id 			{assign 'FirstValue(vsc_int_id)'}
+			
 			xmlelement Duty {
 				xmlattribute id { value 'md_operatorId + ":Duty:" + csc_int_no + ":" + dty_crew_base + ":" + dty_type + ":" + Trim(dty_number)' }
 				xmlattribute version { value 'md_frameVersion' }
@@ -100,7 +102,7 @@ xmlelement duties {
 											xmlattribute nameOfRefClass { value '"StopArea"' }
 										}
 										
-										foreach trip {
+										foreach trip {											
 											condition 'trp_duration > 0h00'
 											xmlelement tripTimes {
 												xmlelement DriverTripTime {
@@ -139,7 +141,7 @@ xmlelement duties {
 													
 													xmlelement ServiceJourneyRef {
 														xmlattribute ref { 																
-															value 'md_operatorId + ":ServiceJourney:" + vsc_int_id + ":" + vsc_sched_type + ":" + Trim(trp_route) + ":" + trim(trp_number)' 
+															value 'md_operatorId + ":ServiceJourney:" + v_vsc_int_id + ":" + Trim(trp_route) + ":" + trim(trp_number)' 
 														}
 
 														xmlattribute version { value 'md_frameVersion' }
@@ -176,7 +178,7 @@ xmlelement duties {
 											}
 											
 											xmlelement tripTimes {
-												foreach trip {
+												foreach trip {													
 													condition 'trp_duration > 0h00'													
 													xmlelement DriverTripTime {
 														xmlattribute id { value 'md_operatorId + ":DriverTripTime:" + csc_int_no + ":" + dty_crew_base + ":" + dty_type + ":" + Trim(dty_number) + ":" + v_duty_part_index' }
@@ -261,7 +263,7 @@ xmlelement duties {
 														
 														# RFC:
 														xmlelement BlockRef {
-															xmlattribute ref        { value 'md_operatorId + ":Block:" + vsc_int_id + ":" + Trim(blk_number)' }
+															xmlattribute ref        { value 'md_operatorId + ":Block:" + v_vsc_int_id + ":" + Trim(blk_number)' }
 															xmlattribute version	{ value 'md_frameVersion' }
 														}
 
@@ -274,12 +276,12 @@ xmlelement duties {
 														xmlelement VehicleJourneyRef {
 															xmlattribute ref { 
 																condition 'trp_is_in_service'
-																value 'md_operatorId + ":ServiceJourney:" + vsc_int_id + ":" + vsc_sched_type + ":" + Trim(trp_route) + ":" + trim(trp_number)' 
+																value 'md_operatorId + ":ServiceJourney:" + v_vsc_int_id + ":" + Trim(trp_route) + ":" + trim(trp_number)' 
 															}
 															
 															xmlattribute ref { 
 																condition 'NOT trp_is_in_service'													
-																value 'md_operatorId + ":DeadRun:" + vsc_int_id + ":" + vsc_sched_type + ":" + Trim(trp_route_statistic) + ":" + trim(trp_number)' 
+																value 'md_operatorId + ":DeadRun:" + v_vsc_int_id + ":" + Trim(trp_route_statistic) + ":" + trim(trp_number)' 
 															}
 
 															xmlattribute version { value 'md_frameVersion' }
