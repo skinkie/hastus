@@ -15,6 +15,11 @@ xmlelement blocks {
 				
 			xmlelement Description	{ value 'Trim(blk_number)' }
 				
+			xmlelement StartTime { value 'md_BlockStartTime' }							
+			xmlelement StartTimeDayOffset { condition 'blk_time_start >= 24:00' value 'md_BlockStartTimeDayOffset' }							
+			xmlelement EndTime { value 'md_BlockEndTime' }							
+			xmlelement EndTimeDayOffset { condition 'blk_time_end >= 24:00' value 'md_BlockEndTimeDayOffset' }
+				
 			xmlelement dayTypes {
 				xmlelement DayTypeRef {
 					xmlattribute ref { value 'md_operatorId + ":DayType:B" + blk_oper_days_12' }

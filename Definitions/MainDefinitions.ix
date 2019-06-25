@@ -39,6 +39,10 @@ definitions MainDefinitions {
 	DEFINE md_SpellStartTimeDayOffset { IF dty_act_start_time >= 24:00 THEN 1 ELSE IF dty_act_start_time < 0:00 THEN -1 ELSE 0 }
 	DEFINE md_SpellEndTime { StrReplace(Format(IF dty_act_end_time >= 24:00 THEN dty_act_end_time - 24h00 ELSE IF dty_act_end_time < 0:00 THEN dty_act_end_time + 24h00 ELSE dty_act_end_time, "0hh\'mm:ss"), ";", ":") }
 	DEFINE md_SpellEndTimeDayOffset { IF dty_act_end_time >= 24:00 THEN 1 ELSE IF dty_act_end_time < 0:00 THEN -1 ELSE 0 } 
-		
+
+ 	DEFINE md_BlockStartTime { StrReplace(Format(IF blk_time_start >= 24:00 THEN blk_time_start - 24h00 ELSE IF blk_time_start < 0:00 THEN blk_time_start + 24h00 ELSE blk_time_start, "0hh\'mm:ss"), ";", ":") }
+	DEFINE md_BlockStartTimeDayOffset { IF blk_time_start >= 24:00 THEN 1 ELSE IF blk_time_start < 0:00 THEN -1 ELSE 0 }
+ 	DEFINE md_BlockEndTime { StrReplace(Format(IF blk_time_end >= 24:00 THEN blk_time_end - 24h00 ELSE IF blk_time_end < 0:00 THEN blk_time_end + 24h00 ELSE blk_time_end, "0hh\'mm:ss"), ";", ":") }
+	DEFINE md_BlockEndTimeDayOffset { IF blk_time_end >= 24:00 THEN 1 ELSE IF blk_time_end < 0:00 THEN -1 ELSE 0 }	
 	end
 }
