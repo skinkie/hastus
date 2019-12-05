@@ -2,6 +2,7 @@ xmlelement versions {
 	xmlelement Version {	
 		xmlattribute id { value 'md_operatorId + ":Version:" + md_frameVersion' }
 		xmlattribute version { value 'md_frameVersion' }
+		xmlattribute modification { value '"new"' }
 		xmlelement StartDate { value 'Format(p_DateStart, "!yyyymmdd|xxxx-xx-xx") + "T00:00:00Z"' }
 		xmlelement EndDate { value 'Format(p_DateEnd, "!yyyymmdd|xxxx-xx-xx") + "T00:00:00Z"' }
 		xmlelement VersionType { value '"baseline"' }
