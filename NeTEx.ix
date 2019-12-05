@@ -22,10 +22,11 @@ file serviceframe {
 			xmlelement CompositeFrame {
 				xmlattribute id 			{ value 'md_operatorId + ":CompositeFrame:" + md_frameIdentifier' }
 				xmlattribute version 		{ value 'md_frameVersion' }
+				xmlattribute modification   { value 'new' }
 
 				&include CompositeFrame/FrameDefaults.ix
 
-				&include CompositeFrame/Versions.ix
+				&include CompositeFrame/versions.ix
 				
 				xmlelement frames {
 					&include CompositeFrame/ResourceFrame.ix
