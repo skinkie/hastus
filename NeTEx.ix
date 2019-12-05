@@ -12,7 +12,7 @@ file serviceframe {
 	xmlelement PublicationDelivery {
 		xmlattribute xmlns { value '"http://www.netex.org.uk/netex"' }
 		xmlattribute xmlns:gml { value '"http://www.opengis.net/gml/3.2"' }
-		xmlattribute version { value '"1.0"' }
+		xmlattribute version { value '"9.1.0"' }
 
 		xmlelement PublicationTimestamp { value 'Format(DateToday(), "!yyyymmdd|xxxx-xx-xx") + "T00:00:00Z"' }
 		xmlelement ParticipantRef { value '"NDOV"' }
