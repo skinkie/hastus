@@ -12,8 +12,8 @@ xmlelement destinationDisplays {
 
 			# xmlelement Extensions
 			# 	xmlelement Presentation {
-			#		xmlelement Color			{ value '"0000FF"' }
-			#		xmlelement TextColor		{ value '"FFFFFF"' }
+			#		xmlelement Colour			{ value '"0000FF"' }
+			#		xmlelement TextColour		{ value '"FFFFFF"' }
 			#		xmlelement infoLinks {
 			#			xmlelement InfoLink {
 			#				xmlattribute typeOfInfoLink { value '"image"' }
