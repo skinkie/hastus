@@ -32,17 +32,18 @@ xmlelement lines {
 			xmlelement Monitored 			{ value 'IF trp_is_in_service THEN "true" ELSE "false"' }
 
 			# TODO: Presentation
-			# xmlelement Presentation {
-			#	xmlelement Color			{ value '"0000FF"' }
-			#	xmlelement TextColor		{ value '"FFFFFF"' }
+			xmlelement Presentation {
+				# TODO: must be converted to RRGGBB
+				xmlelement Colour			{ condition 'rte_main_color_rgb <> ""' value 'rte_main_color_rgb' }
+			#	xmlelement TextColour		{ value '"FFFFFF"' }
 			#	xmlelement infoLinks {
 			#		xmlelement InfoLink {
 			#			xmlattribute typeOfInfoLink { value '"image"' }
 			#			value '"https://link/naar/plaatje.gif"'
 			#		}
 			#	}
-			# }
-			# 
+			}
+			 
 			# TODO: AccessibilityAssessment per line.
 			#
 			# xmlelement AccessibilityAssessment {
