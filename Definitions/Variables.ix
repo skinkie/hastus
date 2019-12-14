@@ -6,6 +6,7 @@ var v_valid_days { type 'string' }
 var v_location { type 'string' }
 var v_duty_part_index					{ type 'integer' assign '0' }
 var v_vsc_int_id					{ type 'integer' assign '0' }
+var v_used_stoparea_parent { type 'string' }
 
 array_var av_printed_itn {
 	key_part 'itn_stop_start'
@@ -18,6 +19,8 @@ array_var av_used_gar			{ key_part 'gar_id' type 'boolean' assign 'false' }
 array_var av_used_gar_stop		{ key_part 'stp_identifier' type 'boolean' assign 'false' }
 array_var av_used_vehicle_group	{ key_part 'vehg_identifier' type 'boolean' assign 'false' }
 array_var av_used_scheduledstoppoints   { key_part id { value 'stp_identifier' } type 'boolean' assign 'false' }
+array_var av_used_stoparea      { key_part id { value 'plc_identifier' } type 'boolean' assign 'false' }
+array_var av_used_stoparea_parent      { key_part id { value 'plc_reference_place' } type 'boolean' assign 'false' }
 array_var av_used_timingpoint   { key_part id { value 'stp_identifier' } type 'boolean' assign 'false' }
 array_var av_used_timinglinks   { key_part FromPointRef { value 'Prev().stp_identifier' } key_part ToPointRef { value 'stp_identifier' } type 'boolean' assign 'false' }
 
