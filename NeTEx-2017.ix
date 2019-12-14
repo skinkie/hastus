@@ -22,7 +22,7 @@ file PublicationDelivery {
 			xmlelement CompositeFrame {
 				xmlattribute id 			{ value 'md_operatorId + ":CompositeFrame:" + md_frameIdentifier' }
 				xmlattribute version 		{ value 'md_frameVersion' }
-				xmlattribute modification   { value 'new' }
+				xmlattribute modification   { value '"new"' }
 
 				&include CompositeFrame/FrameDefaults.ix
 
