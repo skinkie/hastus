@@ -8,24 +8,21 @@ foreach stop {
 foreach place {
     from 'GetAll(place, av_used_stoparea)'
     condition 'plc_reference_place <> NULL'
-    unique_on 'plc_refenence_place'
+    unique_on 'plc_reference_place'
 
-    forach place {
-        condition 'THIS plc_reference_place == plc_identifier'
-	    array_var av_used_stoparea { assign 'true' }
-    }
+	array_var av_used_stoparea_parent { assign 'true' }
 }
 
 xmlelement stopAreas {
 	foreach place {
-        from 'GetAll(place, av_used_stoparea)'
+        from 'GetAll(place, av_used_stoparea OR av_used_stoparea_parent)'
 		unique_on 'plc_identifier'
 		sort_by 'plc_identifier'
 		
 		xmlelement StopArea {
 			xmlattribute id		   {value 'md_operatorId + ":StopArea:" + plc_identifier' }
 			xmlattribute version 	  {value 'md_any' }
-			xmlelement Name		   {value 'ject(place, plc_identifier).plc_description' }
+			xmlelement Name		   {value 'plc_description' }
 			xmlelement ShortName	  {value 'plc_identifier' }
 
 			xmlelement Centroid {
