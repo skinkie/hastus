@@ -1,12 +1,12 @@
 foreach run_time_pattern_stp {
-	from 'GetAll(vehicle_schedule, vsc_is_current).Get(trip).Get(run_time_pattern).Get(run_time_pattern_stp)'
+	from 'GetFirstOfAll(vehicle_schedule, vsc_is_current, 1).Get(trip).Get(run_time_pattern).Get(run_time_pattern_stp)'
 	condition 'stp_identifier <> "" AND NOT stp_is_public AND NOT trp_is_in_service AND tpat_id = ""'
 	unique_on 'stp_identifier'
 	array_var av_used_timingpoint { assign 'true' }
 }
 
 foreach trip_pattern_point {
-	from 'GetAll(vehicle_schedule, vsc_is_current).get(trip, md_trp_sel).get(trip_pattern).get(trip_pattern_point)'
+	from 'GetFirstOfAll(vehicle_schedule, vsc_is_current, 1).get(trip, md_trp_sel).get(trip_pattern).get(trip_pattern_point)'
 	condition 'stp_identifier <> "" AND NOT stp_is_public'
 	unique_on 'stp_identifier'
 	array_var av_used_timingpoint { assign 'true' }
@@ -14,7 +14,7 @@ foreach trip_pattern_point {
 
 xmlelement timingPoints {
 	foreach stop {
-		from 'GetAll(vehicle_schedule, vsc_is_current).Get(stop, av_used_timingpoint)'
+		from 'GetFirstOfAll(vehicle_schedule, vsc_is_current, 1).Get(stop, av_used_timingpoint)'
 		unique_on 'stp_identifier'
 
 		xmlelement TimingPoint {

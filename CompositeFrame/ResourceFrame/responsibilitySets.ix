@@ -2,7 +2,7 @@
 
 xmlelement responsibilitySets {
 	foreach trip_stop {
-		from 'GetAll(vehicle_schedule, vsc_is_current).Get(block).Get(trip).Get(trip_stop)'
+		from 'GetFirstOfAll(vehicle_schedule, vsc_is_current, 1).Get(block).Get(trip).Get(trip_stop)'
 		condition 'trp_duration > 0h00 AND trp_is_in_service'
 		unique_on 'tstp_district'
 

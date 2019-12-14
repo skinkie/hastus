@@ -1,6 +1,6 @@
 xmlelement operationalContexts {
 	foreach route {
-		from 'GetAll(vehicle_schedule).Get(trip, md_trp_valid).Get(route)'
+		from 'GetFirstOfAll(vehicle_schedule, vsc_is_current, 1).Get(trip, md_trp_valid).Get(route)'
 		unique_on 'rte_service_mode'
 		xmlelement OperationalContext {
 			xmlattribute id 						{ value '"BISON:OperationalContext:" + rte_service_mode' }

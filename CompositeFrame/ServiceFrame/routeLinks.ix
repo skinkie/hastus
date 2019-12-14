@@ -1,5 +1,5 @@
 foreach trip {
-	from 'GetAll(vehicle_schedule, vsc_is_current).get(trip, md_trp_sel)'
+	from 'GetFirstOfAll(vehicle_schedule, vsc_is_current, 1).get(trip, md_trp_sel)'
 	foreach trip_itinerary {
 		unique_on 'itn_stop_start, itn_stop_end, trp_route.rte_service_mode'
 		condition 'itn_stop_start <> itn_stop_end'

@@ -1,6 +1,6 @@
 xmlelement blocks {
 	foreach block {
-		from 'GetAll(vehicle_schedule, vsc_is_current AND vsc_is_multiple).Get(block)'
+		from 'GetFirstOfAll(vehicle_schedule, vsc_is_current, 1).Get(block)'
 		sort_by BlockSort {
 			criteria vsc_int_id
 			criteria blk_number			

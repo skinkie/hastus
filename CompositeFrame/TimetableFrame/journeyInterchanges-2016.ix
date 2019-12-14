@@ -1,5 +1,5 @@
 xmlelement journeyInterchanges {
-	condition 'GetAll(vehicle_schedule, vsc_is_current).Get(trip_meet, 1) <> NULL'
+	condition 'GetFirstOfAll(vehicle_schedule, vsc_is_current, 1).Get(trip_meet, 1) <> NULL'
 	
 	foreach trip_meet {			
 		condition 'meet_is_feasible'

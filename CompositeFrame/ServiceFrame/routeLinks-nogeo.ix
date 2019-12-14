@@ -1,7 +1,7 @@
 xmlelement routeLinks {
 
 	foreach trip_pattern_point {
-		from 'GetAll(vehicle_schedule, vsc_is_current).Get(trip, md_trp_valid).Get(trip_pattern).Get(trip_pattern_point)'
+		from 'GetFirstOfAll(vehicle_schedule, vsc_is_current, 1).Get(trip, md_trp_valid).Get(trip_pattern).Get(trip_pattern_point)'
 
 		condition 'Prev().stp_identifier <> "" AND stp_identifier <> "" AND Prev().stp_identifier <> stp_identifier'
 		unique_on 'Prev().stp_identifier, stp_identifier, trp_route_statistic.rte_service_mode'

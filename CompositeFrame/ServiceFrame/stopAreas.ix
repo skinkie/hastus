@@ -1,6 +1,6 @@
 xmlelement stopAreas {
 	foreach stop {
-		from 'GetAll(vehicle_schedule, vsc_is_current).Get(stop, av_used_scheduledstoppoints)'
+		from 'GetFirstOfAll(vehicle_schedule, vsc_is_current, 1).Get(stop, av_used_scheduledstoppoints)'
 		condition 'plc_identifier <> ""'
 		unique_on 'plc_identifier'
 		sort_by 'plc_identifier'

@@ -23,7 +23,7 @@ xmlelement dayTypes {
 	}
 	
 	foreach block {	
-		from 'GetAll(vehicle_schedule, vsc_is_current).Get(block)'
+		from 'GetFirstOfAll(vehicle_schedule, vsc_is_current, 1).Get(block)'
 		unique_on 'blk_oper_days_12'
 		
 		xmlelement DayType {

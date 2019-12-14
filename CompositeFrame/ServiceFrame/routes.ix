@@ -1,6 +1,6 @@
 xmlelement routes {
 	foreach trip_pattern {
-		from 'GetAll(vehicle_schedule, vsc_is_current).Get(trip, md_trp_sel).Get(trip_pattern)'
+		from 'GetFirstOfAll(vehicle_schedule, vsc_is_current, 1).Get(trip, md_trp_sel).Get(trip_pattern)'
 		sort_by TripSort {
 			criteria vsc_int_id
 			criteria tpat_route
