@@ -9,8 +9,26 @@ foreach place {
     from 'GetAll(place, av_used_stoparea)'
     condition 'plc_reference_place <> NULL'
     unique_on 'plc_reference_place'
+	var v_used_stoparea_parent { assign 'plc_reference_place' }
+	
+	foreach place {
+		from 'GetAll(place)'
+		condition 'v_used_stoparea_parent = plc_identifier'
+		array_var av_used_stoparea_parent { assign 'true' }
+	}
+}
 
-	array_var av_used_stoparea_parent { assign 'true' }
+foreach place {
+    from 'GetAll(place, av_used_stoparea)'
+    condition 'plc_reference_place <> NULL'
+    unique_on 'plc_reference_place'
+	var v_used_stoparea_parent { assign 'plc_reference_place' }
+	
+	foreach place {
+		from 'GetAll(place)'
+		condition 'v_used_stoparea_parent = plc_identifier'
+		array_var av_used_stoparea_parent { assign 'true' }
+	}
 }
 
 xmlelement stopAreas {
@@ -26,12 +44,12 @@ xmlelement stopAreas {
 			xmlelement ShortName	  {value 'plc_identifier' }
 
 			xmlelement Centroid {
-				condition 'Object(place, plc_identifier).loca_x_coord <> NULL'
+				condition 'loca_x_coord <> NULL'
 			
 				xmlelement Location {
 					xmlelement gml:pos {
 						# xmlattribute srsName { value '"EPSG:28992"' }
-						value 'Trim(Format(Object(place, plc_identifier).loca_x_coord, "zzzzzn" )) + " " + Trim(Format(Object(place, plc_identifier).loca_y_coord, "zzzzzn" ))'
+						value 'Trim(Format(loca_x_coord, "zzzzzn" )) + " " + Trim(Format(loca_y_coord, "zzzzzn" ))'
 					} # xmlelement gml:pos
 				}
 			}
