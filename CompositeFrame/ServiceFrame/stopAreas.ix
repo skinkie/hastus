@@ -1,14 +1,31 @@
+foreach stop {
+    from 'GetAll(vehicle_schedule, vsc_is_current).Get(stop, av_used_scheduledstoppoints)'
+    condition 'plc_identifier <> ""'
+    unique_on 'plc_identifier'
+	array_var av_used_stoparea { assign 'true' }
+}
+
+foreach place {
+    from 'GetAll(place, av_used_stoparea)'
+    condition 'plc_reference_place <> NULL'
+    unique_on 'plc_refenence_place'
+
+    forach place {
+        condition 'THIS plc_reference_place == plc_identifier'
+	    array_var av_used_stoparea { assign 'true' }
+    }
+}
+
 xmlelement stopAreas {
-	foreach stop {
-		from 'GetAll(vehicle_schedule, vsc_is_current).Get(stop, av_used_scheduledstoppoints)'
-		condition 'plc_identifier <> ""'
+	foreach place {
+        from 'GetAll(place, av_used_stoparea)'
 		unique_on 'plc_identifier'
 		sort_by 'plc_identifier'
 		
 		xmlelement StopArea {
 			xmlattribute id		   {value 'md_operatorId + ":StopArea:" + plc_identifier' }
 			xmlattribute version 	  {value 'md_any' }
-			xmlelement Name		   {value 'Object(place, plc_identifier).plc_description' }
+			xmlelement Name		   {value 'ject(place, plc_identifier).plc_description' }
 			xmlelement ShortName	  {value 'plc_identifier' }
 
 			xmlelement Centroid {
@@ -21,6 +38,12 @@ xmlelement stopAreas {
 					} # xmlelement gml:pos
 				}
 			}
+
+            xmlelement ParentStopAreaRef {
+                condition 'plc_reference_place <> NULL'
+			    xmlattribute ref		   {value 'md_operatorId + ":StopArea:" + plc_reference_place' }
+			    xmlattribute version 	  {value 'md_any' }
+            }
 		}
 	} # foreach stop
 }
