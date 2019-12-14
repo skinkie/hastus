@@ -7,9 +7,9 @@ xmlelement stopAreas {
 		
 		xmlelement StopArea {
 			xmlattribute id		   {value 'md_operatorId + ":StopArea:" + plc_identifier' }
+			xmlattribute version 	  {value 'md_any' }
 			xmlelement Name		   {value 'Object(place, plc_identifier).plc_description' }
 			xmlelement ShortName	  {value 'plc_identifier' }
-			xmlattribute version 	  {value 'md_any' }
 
 			xmlelement Centroid {
 				condition 'Object(place, plc_identifier).loca_x_coord <> NULL'
