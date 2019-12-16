@@ -12,6 +12,7 @@ xmlelement blocks {
 		xmlelement Block {
 			xmlattribute id         { value 'md_operatorId + ":Block:" + vsc_int_id + ":" + Trim(blk_number)' }
 			xmlattribute version	{ value 'md_frameVersion' }
+			xmlelement Name	{ value 'Trim(blk_number)' }
 				
 			xmlelement Description	{ value 'Trim(blk_number)' }
 				
