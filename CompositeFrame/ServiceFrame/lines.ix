@@ -5,6 +5,8 @@ xmlelement lines {
 		unique_on 'md_line_id_trp'
 		sort_by 'md_line_id_trp'
 
+		&include lineColour.ix
+
 		xmlelement Line {
 			xmlattribute id 			{ value 'md_operatorId + ":Line:" + md_line_id_trp' }
 			xmlattribute version 		{ value 'md_any' }
@@ -33,8 +35,8 @@ xmlelement lines {
 
 			# TODO: Presentation
 			xmlelement Presentation {
-				# TODO: must be converted to RRGGBB
-				xmlelement Colour			{ condition 'rte_main_color_rgb <> ""' value 'rte_main_color_rgb' }
+				condition 'rte_main_color_rgb <> ""'
+				xmlelement Colour			{ value 'v_colour' }
 			#	xmlelement TextColour		{ value '"FFFFFF"' }
 			#	xmlelement infoLinks {
 			#		xmlelement InfoLink {

@@ -8,6 +8,25 @@ var v_duty_part_index					{ type 'integer' assign '0' }
 var v_vsc_int_id					{ type 'integer' assign '0' }
 var v_used_stoparea_parent { type 'string' }
 
+# Support for converting rte_main_color_rgb to a HEX value.
+var v_part_r { type 'integer' assign '0' }
+var v_full_r					{ type 'integer' assign '0' }
+var v_mod_r					{ type 'integer' assign '0' }
+var v_r1 { type 'string' }
+var v_r2 { type 'string' }
+var v_part_g { type 'integer' assign '0' }
+var v_full_g					{ type 'integer' assign '0' }
+var v_mod_g					{ type 'integer' assign '0' }
+var v_g1 { type 'string' }
+var v_g2 { type 'string' }
+var v_part_b { type 'integer' assign '0' }
+var v_full_b					{ type 'integer' assign '0' }
+var v_mod_b					{ type 'integer' assign '0' }
+var v_b1 { type 'string' }
+var v_b2 { type 'string' }
+var v_colour { type 'string' }
+
+
 array_var av_printed_itn {
 	key_part 'itn_stop_start'
 	key_part 'itn_stop_end'

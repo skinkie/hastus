@@ -1,0 +1,55 @@
+var v_part_r { assign 'StrToLng(AtIndex(StrSplit(rte_main_color_rgb, ","), 1))' }
+var v_full_r { assign 'v_part_r / 16' }
+var v_mod_r { assign 'v_part_r MOD 16' }
+var v_r1 { assign 'if v_full_r >= 0 AND v_full_r < 10 then v_full_r
+	else if v_full_r = 10 then "A"
+	else if v_full_r = 11 then "B" 
+	else if v_full_r = 12 then "C" 
+	else if v_full_r = 13 then "D" 
+	else if v_full_r = 14 then "E" 
+	else if v_full_r = 15 then "F"' } 
+var v_r2 { assign 'if v_mod_r >= 0 AND v_mod_r < 10 then v_mod_r
+	else if v_mod_r = 10 then "A"
+	else if v_mod_r = 11 then "B"
+	else if v_mod_r = 12 then "C"
+	else if v_mod_r = 13 then "D"
+	else if v_mod_r = 14 then "E"
+	else if v_mod_r = 15 then "F"' }		
+
+var v_part_g { assign 'StrToLng(AtIndex(StrSplit(rte_main_color_rgb, ","), 2))' }
+var v_full_g { assign 'v_part_g / 16' }
+var v_mod_g { assign 'v_part_g MOD 16' }
+var v_g1 { assign 'if v_full_g >= 0 AND v_full_g < 10 then v_full_g
+	else if v_full_g = 10 then "A"
+	else if v_full_g = 11 then "B" 
+	else if v_full_g = 12 then "C" 
+	else if v_full_g = 13 then "D" 
+	else if v_full_g = 14 then "E" 
+	else if v_full_g = 15 then "F"' } 
+var v_g2 { assign 'if v_mod_g >= 0 AND v_mod_g < 10 then v_mod_g
+	else if v_mod_g = 10 then "A"
+	else if v_mod_g = 11 then "B"
+	else if v_mod_g = 12 then "C"
+	else if v_mod_g = 13 then "D"
+	else if v_mod_g = 14 then "E"
+	else if v_mod_g = 15 then "F"' }		
+
+var v_part_b { assign 'StrToLng(AtIndex(StrSplit(rte_main_color_rgb, ","), 3))' }
+var v_full_b { assign 'v_part_b / 16' }
+var v_mod_b { assign 'v_part_b MOD 16' }
+var v_b1 { assign 'if v_full_b >= 0 AND v_full_b < 10 then v_full_b
+	else if v_full_b = 10 then "A"
+	else if v_full_b = 11 then "B" 
+	else if v_full_b = 12 then "C" 
+	else if v_full_b = 13 then "D" 
+	else if v_full_b = 14 then "E" 
+	else if v_full_b = 15 then "F"' } 
+var v_b2 { assign 'if v_mod_b >= 0 AND v_mod_b < 10 then v_mod_b
+	else if v_mod_b = 10 then "A"
+	else if v_mod_b = 11 then "B"
+	else if v_mod_b = 12 then "C"
+	else if v_mod_b = 13 then "D"
+	else if v_mod_b = 14 then "E"
+	else if v_mod_b = 15 then "F"' }
+	
+var v_colour { assign 'v_r1 + v_r2 + v_g1 + v_g2 + v_b1 + v_b2' }
