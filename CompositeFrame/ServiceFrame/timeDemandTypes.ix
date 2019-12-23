@@ -1,6 +1,6 @@
 xmlelement timeDemandTypes {
 	foreach run_time_pattern {
-		from 'GetAll(vehicle_schedule, vsc_is_current).get(trip, md_trp_sel).get(run_time_pattern)'
+		from 'GetFirstOfAll(vehicle_schedule, vsc_is_current, 1).get(trip, md_trp_sel).get(run_time_pattern)'
 		sort_by TripSort {
 			criteria vsc_int_id
 			criteria rpat_route

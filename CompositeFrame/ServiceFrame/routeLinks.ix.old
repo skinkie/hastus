@@ -1,7 +1,7 @@
 xmlelement routeLinks {
 	
 	foreach trip_itinerary {
-		from 'GetAll(vehicle_schedule).Get(trip, md_trp_sel).Get(trip_itinerary)'
+		from 'GetFirstOfAll(vehicle_schedule, vsc_is_current, 1).Get(trip, md_trp_sel).Get(trip_itinerary)'
 		unique_on 'itn_stop_start, itn_stop_end, trp_route.rte_service_mode'
 		condition 'not av_printed_itn AND itn_stop_start <> itn_stop_end'
 		sort_by rteVersion

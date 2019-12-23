@@ -1,6 +1,6 @@
 xmlelement routePoints {
 	foreach trip_pattern_point {
-		from 'GetAll(vehicle_schedule).get(trip, md_trp_valid).get(trip_pattern).get(trip_pattern_point)'
+		from 'GetFirstOfAll(vehicle_schedule, vsc_is_current, 1).get(trip, md_trp_valid).get(trip_pattern).get(trip_pattern_point)'
 		condition 'stp_identifier <> ""'
 		unique_on 'stp_identifier'
 		xmlelement RoutePoint {

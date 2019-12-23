@@ -1,6 +1,6 @@
 xmlelement directions {
 	foreach trip {
-		from 'GetAll(vehicle_schedule, vsc_is_current).Get(block).Get(trip)'
+		from 'GetFirstOfAll(vehicle_schedule, vsc_is_current, 1).Get(block).Get(trip)'
 		unique_on 'tpat_direction'
 		condition 'tpat_direction <> ""'
 

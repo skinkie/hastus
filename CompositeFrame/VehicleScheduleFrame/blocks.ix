@@ -1,6 +1,6 @@
 xmlelement blocks {
 	foreach block {
-		from 'GetAll(vehicle_schedule, vsc_is_current AND vsc_is_multiple).Get(block)'
+		from 'GetFirstOfAll(vehicle_schedule, vsc_is_current, 1).Get(block)'
 		sort_by BlockSort {
 			criteria vsc_int_id
 			criteria blk_number			
@@ -12,7 +12,6 @@ xmlelement blocks {
 		xmlelement Block {
 			xmlattribute id         { value 'md_operatorId + ":Block:" + vsc_int_id + ":" + Trim(blk_number)' }
 			xmlattribute version	{ value 'md_frameVersion' }
-
 			xmlelement Name         { value 'Trim(blk_number)' }
 			xmlelement Description	{ value 'Trim(blk_number)' }
 				

@@ -18,19 +18,6 @@ foreach place {
 	}
 }
 
-foreach place {
-    from 'GetFirstOfAll(vehicle_schedule, vsc_is_current, 1).Get(place, av_used_stoparea)'
-    condition 'plc_reference_place <> NULL'
-    unique_on 'plc_reference_place'
-	var v_used_stoparea_parent { assign 'plc_reference_place' }
-	
-	foreach place {
-		from 'GetAll(place)'
-		condition 'v_used_stoparea_parent = plc_identifier'
-		array_var av_used_stoparea_parent { assign 'true' }
-	}
-}
-
 xmlelement stopAreas {
 	foreach place {
         from 'GetAll(place, av_used_stoparea OR av_used_stoparea_parent)'
