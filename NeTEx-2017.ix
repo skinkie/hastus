@@ -15,7 +15,7 @@ file PublicationDelivery {
 		xmlattribute version { value '"9.1.0"' }
 
 		xmlelement PublicationTimestamp { value 'Format(DateToday(), "!yyyymmdd|xxxx-xx-xx") + "T00:00:00Z"' }
-		xmlelement ParticipantRef { value '"NDOV"' }
+		xmlelement ParticipantRef { value 'md_operatorId' }
 		xmlelement Description { value 'md_operatorId + " Dutch NeTEx export."' }
 
 		xmlelement dataObjects {

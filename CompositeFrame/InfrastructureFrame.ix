@@ -6,5 +6,5 @@ xmlelement InfrastructureFrame {
 
 	&include InfrastructureFrame/vehicleAndCrewPoints.ix
 
-	&include InfrastructureFrame/vehicleTypes.ix
+	# &include InfrastructureFrame/vehicleTypes.ix
 }

@@ -8,8 +8,11 @@ xmlelement lines {
 		&include lineColour.ix
 
 		xmlelement Line {
-			xmlattribute id 			{ value 'md_operatorId + ":Line:" + md_line_id_trp' }
-			xmlattribute version 		{ value 'md_any' }
+			xmlattribute id                 { value 'md_operatorId + ":Line:" + md_line_id_trp' }
+			xmlattribute version            { value 'md_any' }
+			xmlelement BrandingRef          {
+				xmlattribute ref			{ value 'md_operatorId + ":Branding:" + md_brandingRef' }
+			}
 			xmlelement Name 				{ value 'Object(route,trp_route).rte_description' }
 			xmlelement ShortName 			{ value 'Trim(Object(route,trp_route).rte_identifier)' }
 			xmlelement TransportMode 		{ value 'md_rte_service_mode' }
@@ -31,6 +34,11 @@ xmlelement lines {
 				} # xmlelement AuthorityRef
 			}
 
+			xmlelement TypeOfServiceRef {
+				xmlattribute ref 			{ value 'md_typeOfServiceRef' }
+				xmlattribute version		{ value '"any"' }
+			}
+
 			xmlelement Monitored 			{ value 'IF trp_is_in_service THEN "true" ELSE "false"' }
 
 			# TODO: Presentation
@@ -45,13 +53,13 @@ xmlelement lines {
 			#		}
 			#	}
 			}
-			 
+					  
 			# TODO: AccessibilityAssessment per line.
 			#
-			# xmlelement AccessibilityAssessment {
-			#	xmlattribute id 			{ value 'md_operatorId + ":AccessibilityAssessment:" + trp_route' }
-			#	xmlattribute version 		{ value 'md_frameVersion' }
-			#	xmlelement MobilityImpairedAccess { value 'false' }
+			xmlelement AccessibilityAssessment {
+			xmlattribute id 			{ value 'md_operatorId + ":AccessibilityAssessment:" + md_line_id_trp' }
+			xmlattribute version 		{ value '"any"' }
+			xmlelement MobilityImpairedAccess { value 'true' }
 			#	xmlelement suitabilities {
 			#		xmlelement Suitability {
 			#			xmlattribute id { value '"BISON:Suitability:WheelchairNotSuitable"' }
@@ -60,7 +68,7 @@ xmlelement lines {
 			#			xmlelement Suitable { value '"notSuitable"' }
 			#		}
 			#	}
-			# } # xmlelement AccessibilityAssessment
+			} # xmlelement AccessibilityAssessment
 		} # xmlelement Line
 	} # foreach trip
 } # xmlelement lines

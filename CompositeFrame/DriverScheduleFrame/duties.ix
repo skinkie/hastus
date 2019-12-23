@@ -70,6 +70,8 @@ xmlelement duties {
 										xmlelement tripTimes {
 											xmlelement DriverTripTime {
 												xmlattribute id { value 'md_operatorId + ":DriverTripTime:" + csc_int_no + ":" + dty_crew_base + ":" + dty_type + ":" + Trim(dty_number) + ":" + v_duty_part_index' }
+												xmlattribute version { value 'md_frameVersion' }
+												
 												xmlelement StartTime { value 'md_SpellStartTime' }														
 												xmlelement StartTimeDayOffset { condition 'dty_act_start_time >= 24:00' value 'md_SpellStartTimeDayOffset' }
 												xmlelement EndTime { value 'md_SpellEndTime' }														
@@ -107,6 +109,7 @@ xmlelement duties {
 											xmlelement tripTimes {
 												xmlelement DriverTripTime {
 													xmlattribute id { value 'md_operatorId + ":DriverTripTime:" + csc_int_no + ":" + dty_crew_base + ":" + dty_type + ":" + Trim(dty_number) + ":" + v_duty_part_index' }
+													xmlattribute version { value 'md_frameVersion' }
 													
 													xmlelement StartTime { value 'md_SpellStartTime' }														
 													xmlelement StartTimeDayOffset { condition 'dty_act_start_time >= 24:00' value 'md_SpellStartTimeDayOffset' }
@@ -182,6 +185,8 @@ xmlelement duties {
 													condition 'trp_duration > 0h00'													
 													xmlelement DriverTripTime {
 														xmlattribute id { value 'md_operatorId + ":DriverTripTime:" + csc_int_no + ":" + dty_crew_base + ":" + dty_type + ":" + Trim(dty_number) + ":" + v_duty_part_index' }
+														xmlattribute version { value 'md_frameVersion' }
+														
 														xmlelement StartTime { value 'md_DrivingStartTime' }														
 														xmlelement StartTimeDayOffset { condition 'trp_tim_strt_pce >= 24:00' value 'md_DrivingStartTimeDayOffset' }
 														xmlelement EndTime { value 'md_DrivingEndTime' }														

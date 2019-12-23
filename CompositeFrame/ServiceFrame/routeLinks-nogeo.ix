@@ -28,7 +28,7 @@ xmlelement routeLinks {
 			}
 			
 			xmlelement "OperationalContextRef" {
-				xmlattribute ref			{ value '"BISON:OperationalContext:" + trp_route_statistic.rte_service_mode' }
+				xmlattribute ref			{ value 'md_operatorId + ":OperationalContext:" + trp_route_statistic.rte_service_mode' }
 				xmlattribute version		{ value '"any"' }
 			}
 		} # xmlelement RouteLink

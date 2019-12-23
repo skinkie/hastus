@@ -4,6 +4,13 @@ xmlelement organisations {
 		xmlattribute version { value '"any"' }
 		xmlelement Name  { value 'md_operatorName' }
 		xmlelement ShortName { value 'md_operatorId' }
+		
+		xmlelement CustomerServiceContactDetails {
+			condition 'md_operatorEmail <> "" OR md_operatorPhone <> "" OR md_operatorUrl <> ""'
+			xmlelement Email { condition 'md_operatorEmail <> ""' value 'md_operatorEmail' }
+			xmlelement Phone { condition 'md_operatorPhone <> ""' value 'md_operatorPhone' }
+			xmlelement Url { condition 'md_operatorUrl <> ""' value 'md_operatorUrl' }
+		}
 
 		# TODO members
 		# xmlelement parts {

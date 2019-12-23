@@ -12,4 +12,10 @@ xmlelement ResourceFrame {
 	&include ResourceFrame/organisations.ix
 	
 	&include ResourceFrame/operationalContexts.ix
+	
+	&include ResourceFrame/vehicleTypes.ix
+
+	&include ResourceFrame/vehicles.ix
+
+	&include ResourceFrame/zones.ix
 }

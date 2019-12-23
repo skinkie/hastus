@@ -1,10 +1,19 @@
 xmlelement typesOfValue {
+	&include typesOfValue/Branding.ix
+	
 	xmlelement ValueSet {
 		xmlattribute id { value 'md_operatorId + ":ValueSet:1"' }
 		xmlattribute version { value '"any"' }
 
 		xmlelement Name { value '"Zone types"'}
 		xmlelement values {
+			xmlelement TypeOfService {
+				condition 'False' 
+				xmlattribute id { value '"BISON:TypeOfService:Standaard"' }
+				xmlattribute version { value '"any"' }
+				xmlelement Name { value '"Standaard"' }
+			}
+			
 			xmlelement TypeOfZone {
 				xmlattribute id { value '"BISON:TypeOfZone:Zone"' }
 				xmlattribute version { value '"any"' }
@@ -13,6 +22,29 @@ xmlelement typesOfValue {
 
 			# Arriva TariffStop
 			# &include typesOfValue/TypeOfZone-TariffStop.ix
+		}
+	}
+	
+	xmlelement ValueSet {
+		xmlattribute id { value '"BISON:ValueSet:TypeOfService"' }
+		xmlattribute version { value '"any"' }
+
+		xmlelement Name { value '"TypeOfService types"'}
+		xmlelement values {
+			# TODO: rte_service_type
+			xmlelement TypeOfService {
+				xmlattribute id { value '"BISON:TypeOfService:Standaard"' }
+				xmlattribute version { value '"any"' }
+				xmlelement Name { value '"Standaard"' }
+			}
+
+			
+			xmlelement TypeOfZone {
+				condition 'False'
+				xmlattribute id { value '"BISON:TypeOfZone:Zone"' }
+				xmlattribute version { value '"any"' }
+				xmlelement Name { value '"Nationale Zone"' }
+			}
 		}
 	}
 }

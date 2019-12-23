@@ -9,6 +9,19 @@ definitions MainDefinitions {
 	DEFINE tpat_last_public_stop  { Get(trip_pattern_point, stp_is_public, "*").tpatpt_stop_id }
 	*/
 	
+	DEFINE md_rte_num_id CLASS route { DefNull(rte_num_id, DefNull(StrToLng(rte_pub_id), StrToLng(rte_identifier))) }
+	
+	DEFINE md_TpatDestCodesObj CLASS trip_pattern { SeqRemove(AppendMult(Object(tpat_veh_display),Object(tpatpt_veh_display_code)), NULL) }
+	DEFINE md_DestNameFull CLASS veh_disp_code { vdc_message1 + " " + vdc_message2 }
+	DEFINE md_DestNameMain CLASS veh_disp_code { vdc_message3 }
+	DEFINE md_DestNameVia CLASS veh_disp_code { vdc_message4 }
+	DEFINE md_DestNameMain21 CLASS veh_disp_code { StrSubStr(vdc_message3, 0, 21) }
+	DEFINE md_DestNameVia21 CLASS veh_disp_code { StrSubStr(vdc_message4, 0, 21) }
+	DEFINE md_DestNameMain19 CLASS veh_disp_code { StrSubStr(vdc_message3, 0, 19) }
+	DEFINE md_DestNameVia19 CLASS veh_disp_code { StrSubStr(vdc_message4, 0, 19) }
+	DEFINE md_DestNameMain16 CLASS veh_disp_code { StrSubStr(vdc_message3, 0, 16) }
+	DEFINE md_DestNameVia16 CLASS veh_disp_code { StrSubStr(vdc_message4, 0, 16) }
+	
 	DEFINE md_frameIdentifier { v_source }
 	DEFINE md_frameVersion { v_source + "_" + Format(datetoday(),"!yyyymmdd|xxxx-xx-xx") }
 	DEFINE md_trp_valid CLASS trip { trp_duration > 0h00 }
@@ -26,6 +39,8 @@ definitions MainDefinitions {
 	DEFINE md_from_point_ref { md_operatorId + (IF Prev().stp_is_public = True THEN ":ScheduledStopPoint:" ELSE ":TimingPoint:") + Prev().stp_identifier }
 	DEFINE md_to_point_ref { md_operatorId + (IF stp_is_public = True THEN ":ScheduledStopPoint:" ELSE ":TimingPoint:") + stp_identifier }
 	DEFINE md_UserStopCode { IF stp_refnr_eod = Null THEN stp_stoppoint_export_mp  /* stp_identifier */ ELSE stp_refnr_eod }	
+	DEFINE md_brandingRef { md_operatorId }
+	DEFINE md_typeOfServiceRef { "BISON:TypeOfService:Standaard" }
 	
 	DEFINE md_DrivingStartTime { StrReplace(Format(IF trp_tim_strt_pce >= 24:00 THEN trp_tim_strt_pce - 24h00 ELSE IF trp_tim_strt_pce < 0:00 THEN trp_tim_strt_pce + 24h00 ELSE trp_tim_strt_pce, "0hh\'mm:ss"), ";", ":") }
 	DEFINE md_DrivingStartTimeDayOffset { IF trp_tim_strt_pce >= 24:00 THEN 1 ELSE IF trp_tim_strt_pce < 0:00 THEN -1 ELSE 0 }

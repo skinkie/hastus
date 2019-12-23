@@ -1,12 +1,12 @@
 foreach stop {
-    from 'GetAll(vehicle_schedule, vsc_is_current).Get(stop, av_used_scheduledstoppoints)'
+    from 'GetFirstOfAll(vehicle_schedule, vsc_is_current, 1).Get(stop, av_used_scheduledstoppoints)'
     condition 'plc_identifier <> ""'
     unique_on 'plc_identifier'
 	array_var av_used_stoparea { assign 'true' }
 }
 
 foreach place {
-    from 'GetAll(place, av_used_stoparea)'
+    from 'GetFirstOfAll(vehicle_schedule, vsc_is_current, 1).Get(place, av_used_stoparea)'
     condition 'plc_reference_place <> NULL'
     unique_on 'plc_reference_place'
 	var v_used_stoparea_parent { assign 'plc_reference_place' }
@@ -19,7 +19,7 @@ foreach place {
 }
 
 foreach place {
-    from 'GetAll(place, av_used_stoparea)'
+    from 'GetFirstOfAll(vehicle_schedule, vsc_is_current, 1).Get(place, av_used_stoparea)'
     condition 'plc_reference_place <> NULL'
     unique_on 'plc_reference_place'
 	var v_used_stoparea_parent { assign 'plc_reference_place' }

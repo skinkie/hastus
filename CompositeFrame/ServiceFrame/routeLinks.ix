@@ -50,7 +50,7 @@ xmlelement routeLinks {
 			}
 			
 			xmlelement "OperationalContextRef" {
-				xmlattribute ref			{ value '"BISON:OperationalContext:" + av_it_dist_o' }
+				xmlattribute ref			{ value 'md_operatorId + ":OperationalContext:" + av_it_dist_o' }
 				xmlattribute version		{ value '"any"' }
 			}
 		}

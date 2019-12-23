@@ -47,3 +47,5 @@ array_var av_used_timinglinks   { key_part FromPointRef { value 'Prev().stp_iden
 array_var av_it_dstr { key_part f { value 'itn_stop_start' } key_part t { value 'itn_stop_end' } key_part o { value 'FirstValue(trp_route.rte_service_mode)' } type 'string' }
 array_var av_it_coor { key_part f { value 'itn_stop_start' } key_part t { value 'itn_stop_end' } key_part o { value 'FirstValue(trp_route.rte_service_mode)' } type 'string' }
 array_var av_it_dist { key_part f { value 'itn_stop_start' } key_part t { value 'itn_stop_end' } key_part o { value 'FirstValue(trp_route.rte_service_mode)' } type 'string' }
+
+array_var av_vdc_in_schedule { key_part 'vdc_id' type 'boolean' }

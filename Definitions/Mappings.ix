@@ -6,7 +6,7 @@ definitions Mappings {
 		DEFINE md_rte_service_mode CLASS route {
 			IF rte_service_mode = 0 /* BUS */ THEN "bus"
 			ELSE IF rte_service_mode = 1 /* TRAMWAY */ THEN "tram"
-			ELSE IF rte_service_mode = 2 /* METRO */ THEN "metro"
+			ELSE IF rte_service_mode = 2 /* METRO */ THEN md_metro
 			ELSE "rail"
 		}
 
@@ -26,5 +26,23 @@ definitions Mappings {
 			ELSE blk_gar_plc_strt
 		}
 		*/
+		
+		DEFINE md_admin_zone {
+			IF tstp_district = "SGHR" THEN "HGL-R"
+			ELSE IF tstp_district = "SGHB" THEN "HGL-STD"
+			ELSE tstp_district
+		}
+		
+		DEFINE md_admin_zone_desc {
+			IF tstp_district = "SGHR" THEN "Rail Haaglanden"
+			ELSE IF tstp_district = "SGHB" THEN "Bus Haaglanden Stad"
+			ELSE tstp_district.dst_description
+		}
+		
+		DEFINE md_direction_type {
+			IF tpat_direction = 10 THEN "inbound"
+			ELSE IF tpat_direction = 11 THEN "outbound"
+			ELSE ""
+		}
 	end
 }

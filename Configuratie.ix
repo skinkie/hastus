@@ -10,22 +10,32 @@ definitions Configuratie {
 	/* HTM */
 	DEFINE md_operatorId { "HTM" }
 	DEFINE md_operatorName { "HTM" }
+	DEFINE md_operatorPhone { "+319004864636" }
+	DEFINE md_operatorEmail { "" }
+	DEFINE md_operatorUrl { "https://htm.nl/klantenservice/" }
 	DEFINE md_authority { "MRDH" }
-	DEFINE md_line_id_trp { Trim(trp_route) }
+	DEFINE md_line_id_trp { Trim(trp_route_statistic) }
 	DEFINE md_timingpoint { tpatpt_position = 2 OR stp_regulation_point }
 	DEFINE md_line_id_tpat { Trim(tpat_route) }
 	DEFINE md_dataownerisoperator { NOT (trp_vehicle_group_1.vehg_identifier = "EXT") }
 	DEFINE md_quay_id { stp_number_ndov_export }
+	DEFINE md_metro { "tram" }
+	
 
 	/* Arriva
 	DEFINE md_operatorId { "ARR" }
 	DEFINE md_operatorName { "ARR" }
+	DEFINE md_operatorPhone { "" }
+	DEFINE md_operatorEmail { "" }
+	DEFINE md_operatorUrl { "https://arriva.nl/" }
+
 	DEFINE md_authority { "ARR" }
 	DEFINE md_line_id_trp { trp_route_regio_alb }
 	DEFINE md_line_id_tpat { trp_route_regio_alb }
 	DEFINE md_timingpoint { tpatpt_position = 2 OR tpatpt_is_timing_point }	
 	DEFINE md_dataownerisoperator { NOT (trp_vehicle_group_1.vehg_identifier = "EXT" AND StrLocateStr(blk_gar_plc_strt, "Cxx", "Bre", "Syn", "Twe") <> NULL) }	
 	DEFINE md_quay_id { stp_chb_id }
+	DEFINE md_metro { "metro" }
 	*/
 	end
 }
