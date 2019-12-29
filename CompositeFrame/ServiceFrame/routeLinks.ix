@@ -18,7 +18,7 @@ xmlelement routeLinks {
 		{
 			xmlattribute "id"				{ value 'md_operatorId + ":RouteLink:" + av_it_dist_f + "-" + av_it_dist_t + "-" + av_it_dist_o' }
 			xmlattribute version 			{ value 'md_frameVersion' }
-			xmlattribute responsibilitySetRef 		{ value '"BISON:ResponsibilitySet:" + av_it_dstr' }
+			xmlattribute responsibilitySetRef 		{ value 'md_operatorId + ":ResponsibilitySet:" + av_it_dstr' }
 
 			xmlelement "Name"				{ value 'av_it_dist_f + "-" + av_it_dist_t' }
 			xmlelement "Distance"			{ value 'av_it_dist' }

@@ -14,7 +14,7 @@ xmlelement routeLinks {
 		xmlelement RouteLink {
 			xmlattribute id 						{ value 'md_operatorId + ":RouteLink:" + Prev().stp_identifier + "-" + stp_identifier + "-" + trp_route_statistic.rte_service_mode' }
 			xmlattribute version 					{ value 'md_frameVersion' }
-			xmlattribute responsibilitySetRef 		{ value '"BISON:ResponsibilitySet:" + md_link_authority' }
+			xmlattribute responsibilitySetRef 		{ value 'md_operatorId + ":ResponsibilitySet:" + md_link_authority' }
 			xmlelement Distance 					{ value 'Trim(Format(tpatpt_distance,"zzzzz.n"))' }
 
 			xmlelement "FromPointRef" {

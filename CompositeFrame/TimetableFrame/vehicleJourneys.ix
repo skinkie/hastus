@@ -15,7 +15,7 @@ xmlelement vehicleJourneys {
 
 				xmlattribute dataSourceRef {
 					condition 'NOT md_dataownerisoperator'
-					value '"BISON:DataSource:UNKNOWN"'
+					value 'md_operatorId + ":DataSource:UNKNOWN"'
 				}
 
 				xmlelement validityConditions {

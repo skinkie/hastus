@@ -14,7 +14,7 @@ xmlelement timingLinks {
 		xmlelement TimingLink {
 			xmlattribute id 						{ value 'md_operatorId + ":TimingLink:" + Prev().stp_identifier + "-" + stp_identifier + "-" + THIS trip[1].rte_service_mode' }
 			xmlattribute version 					{ value 'md_frameVersion' }
-			xmlattribute responsibilitySetRef 		{ value '"BISON:ResponsibilitySet:"+md_link_authority' }
+			xmlattribute responsibilitySetRef 		{ value 'md_operatorId + ":ResponsibilitySet:" + md_link_authority' }
 			xmlelement Distance 					{ value 'Trim(Format(tpatpt_distance,"zzzzz.n"))' }
 			xmlelement FromPointRef {
 				xmlattribute ref					{ value 'md_from_point_ref' }
@@ -51,7 +51,7 @@ xmlelement timingLinks {
 		xmlelement TimingLink {
 			xmlattribute id 						{ value 'md_operatorId + ":TimingLink:" + Prev().stp_identifier + "-" + stp_identifier + "-" + THIS trip[1].rte_service_mode' }
 			xmlattribute version 					{ value 'md_frameVersion' }
-			xmlattribute responsibilitySetRef 		{ value '"BISON:ResponsibilitySet:"+md_operatorId' }
+			xmlattribute responsibilitySetRef 		{ value 'md_operatorId + ":ResponsibilitySet:"+md_operatorId' }
 			xmlelement Distance						{ condition 'false' value '"0"' }
 			xmlelement FromPointRef {
 				xmlattribute ref					{ value 'md_from_point_ref' }

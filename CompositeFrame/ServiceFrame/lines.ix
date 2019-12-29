@@ -29,7 +29,7 @@ xmlelement lines {
 			foreach trip_stop {
 				unique_on 'tstp_district'
 				xmlelement AuthorityRef	{
-					xmlattribute ref 			{ value '"BISON:Authority:" + tstp_district' }
+					xmlattribute ref 			{ value 'md_operatorId + ":Authority:" + tstp_district' }
 					xmlattribute version		{ value '"any"' }
 				} # xmlelement AuthorityRef
 			}

@@ -1,10 +1,10 @@
 xmlelement FrameDefaults {
 	xmlelement DefaultDataSourceRef {
-		xmlattribute ref { value '"BISON:DataSource:" + md_operatorId' }
+		xmlattribute ref { value 'md_operatorId + ":DataSource:" + md_operatorId' }
 		xmlattribute version { value '"any"' }
 	}
 	xmlelement DefaultResponsibilitySetRef {
-		xmlattribute ref { value '"BISON:ResponsibilitySet:" + md_authority' }
+		xmlattribute ref { value 'md_operatorId + ":ResponsibilitySet:" + md_authority' }
 		xmlattribute version { value '"any"' }
 	}
 	xmlelement DefaultLocale {

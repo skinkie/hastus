@@ -16,7 +16,7 @@ xmlelement routeLinks {
 		{
 			xmlattribute "id"				{ value 'md_operatorId + ":RouteLink:" + itn_stop_start + "-" + itn_stop_end + "-" + trp_route.rte_service_mode' }
 			xmlattribute version 			{ value 'md_frameVersion' }
-			xmlattribute responsibilitySetRef 		{ value '"BISON:ResponsibilitySet:" + Get(trip_stop, 1).tstp_district' } # trpitn_trip_point
+			xmlattribute responsibilitySetRef 		{ value 'md_operatorId + ":ResponsibilitySet:" + Get(trip_stop, 1).tstp_district' } # trpitn_trip_point
 
 			xmlelement "Name"				{ value 'itn_stop_start + "-" + itn_stop_end' }
 			xmlelement "Distance"			{ value 'Trim(Format(itn_calc_distance, "zzzzzn"))' } # TODO: controleren
@@ -37,7 +37,7 @@ xmlelement routeLinks {
 			}
 			
 			xmlelement "OperationalContextRef" {
-				xmlattribute ref			{ value '"BISON:OperationalContext:" + trp_route.rte_service_mode' }
+				xmlattribute ref			{ value 'md_operatorId + ":OperationalContext:" + trp_route.rte_service_mode' }
 				xmlattribute version		{ value '"any"' }
 			}
 		}

@@ -1,6 +1,6 @@
 xmlelement organisations {
 	xmlelement Operator {
-		xmlattribute id { value '"BISON:Operator:" + md_operatorId' }
+		xmlattribute id { value 'md_operatorId + ":Operator:" + md_operatorId' }
 		xmlattribute version { value '"any"' }
 		xmlelement Name  { value 'md_operatorName' }
 		xmlelement ShortName { value 'md_operatorId' }
@@ -26,7 +26,7 @@ xmlelement organisations {
 		unique_on 'tstp_district'
 
 		xmlelement Authority {
-			xmlattribute id { value '"BISON:Authority:" + tstp_district' }
+			xmlattribute id { value 'md_operatorId + ":Authority:" + tstp_district' }
 			xmlattribute version { value '"any"' }
 			xmlelement Name { value 'DefNull(tstp_district.dst_description,tstp_district)' }
 			xmlelement ShortName { value 'tstp_district' }
@@ -34,7 +34,7 @@ xmlelement organisations {
 	}
 
 	xmlelement Authority {
-		xmlattribute id { value '"BISON:Authority:" + md_authority' }
+		xmlattribute id { value 'md_operatorId + ":Authority:" + md_authority' }
 		xmlattribute version { value '"any"' }
 		xmlelement Name { value 'md_authority' }
 		xmlelement ShortName { value 'md_authority' }

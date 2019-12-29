@@ -7,7 +7,7 @@ xmlelement responsibilitySets {
 		unique_on 'tstp_district'
 
 		xmlelement ResponsibilitySet {
-			xmlattribute id { value '"BISON:ResponsibilitySet:" + tstp_district' }
+			xmlattribute id { value 'md_operatorId + ":ResponsibilitySet:" + tstp_district' }
 			xmlattribute version { value '"any"' }
 			xmlelement Name { value 'DefNull(tstp_district.dst_description,tstp_district)' }
 
@@ -18,7 +18,7 @@ xmlelement responsibilitySets {
 
 					xmlelement StakeholderRoleType { value '"EntityLegalOwnership"' }
 					xmlelement ResponsibleOrganisationRef {
-						xmlattribute ref { value '"BISON:Authority:" + tstp_district' }
+						xmlattribute ref { value 'md_operatorId + ":Authority:" + tstp_district' }
 						xmlattribute version { value '"any"' }
 						xmlattribute nameOfRefClass { value '"Authority"' }
 					}
@@ -29,7 +29,7 @@ xmlelement responsibilitySets {
 
 					xmlelement StakeholderRoleType { value '"Planning Operation"' }
 					xmlelement ResponsibleOrganisationRef {
-						xmlattribute ref { value '"BISON:Operator:" + md_operatorId' }
+						xmlattribute ref { value 'md_operatorId + ":Operator:" + md_operatorId' }
 						xmlattribute version { value '"any"' }
 						xmlattribute nameOfRefClass { value '"Operator"' }
 					}
@@ -56,7 +56,7 @@ xmlelement responsibilitySets {
 
 					xmlelement StakeholderRoleType { value '"EntityLegalOwnership"' }
 					xmlelement ResponsibleOrganisationRef {
-						xmlattribute ref { value '"BISON:Authority:" + gar_depot_id' }
+						xmlattribute ref { value 'md_operatorId + ":Authority:" + gar_depot_id' }
 						xmlattribute version { value '"any"' }
 						xmlattribute nameOfRefClass { value '"Authority"' }
 					}
@@ -67,7 +67,7 @@ xmlelement responsibilitySets {
 
 					xmlelement StakeholderRoleType { value '"Planning Operation"' }
 					xmlelement ResponsibleOrganisationRef {
-						xmlattribute ref { value '"BISON:Operator:" + md_operatorId' }
+						xmlattribute ref { value 'md_operatorId + ":Operator:" + md_operatorId' }
 						xmlattribute version { value '"any"' }
 						xmlattribute nameOfRefClass { value '"Operator"' }
 					}
@@ -77,7 +77,7 @@ xmlelement responsibilitySets {
 	}
 	
 	xmlelement ResponsibilitySet {	
-		xmlattribute id { value '"BISON:ResponsibilitySet:" + md_authority' }
+		xmlattribute id { value 'md_operatorId + ":ResponsibilitySet:" + md_authority' }
 		xmlattribute version { value '"any"' }
 		xmlelement Name { value 'md_authority' }
 
@@ -88,7 +88,7 @@ xmlelement responsibilitySets {
 
 				xmlelement StakeholderRoleType { value '"EntityLegalOwnership"' }
 				xmlelement ResponsibleOrganisationRef {
-					xmlattribute ref { value '"BISON:Authority:" + md_authority' }
+					xmlattribute ref { value 'md_operatorId + ":Authority:" + md_authority' }
 					xmlattribute version { value '"any"' }
 					xmlattribute nameOfRefClass { value '"Authority"' }
 				}
@@ -99,7 +99,7 @@ xmlelement responsibilitySets {
 
 				xmlelement StakeholderRoleType { value '"Planning Operation"' }
 				xmlelement ResponsibleOrganisationRef {
-					xmlattribute ref { value '"BISON:Operator:" + md_operatorId' }
+					xmlattribute ref { value 'md_operatorId + ":Operator:" + md_operatorId' }
 					xmlattribute version { value '"any"' }
 					xmlattribute nameOfRefClass { value '"Operator"' }
 				}
