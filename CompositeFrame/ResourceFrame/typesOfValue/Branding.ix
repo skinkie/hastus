@@ -1,0 +1,5 @@
+xmlelement Branding {
+	xmlattribute id { value 'md_operatorId + ":Branding:" + md_operatorId' }
+	xmlattribute version { value '"any"' }
+	xmlelement Name { value 'md_operatorName' }
+}

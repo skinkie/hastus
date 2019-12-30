@@ -1,0 +1,22 @@
+xmlelement vehicleTypes {
+	foreach vehicle_group {
+		from 'GetFirstOfAll(vehicle_schedule, vsc_is_current, 1).Get(block).Get(vehicle_group)'
+		unique_on 'vehg_identifier'
+										
+		xmlelement VehicleType { 
+			xmlattribute id { value 'md_operatorId + ":VehicleType:" + vehg_identifier' }
+			xmlattribute version { value '"any"' }
+			xmlelement Name { value 'vehg_description' }
+			xmlelement ShortName { value 'vehg_identifier' }
+			xmlelement Description { value 'vehg_description' }
+			
+			xmlelement PassengerCapacity {
+				condition 'vehg_seating_capacity <> NULL AND vehg_passenger_capacity <> NULL'
+				xmlelement SeatingCapacity { value 'vehg_seating_capacity' }
+				xmlelement StandingCapacity { value 'vehg_passenger_capacity - vehg_seating_capacity' }
+			}
+			
+			xmlelement Length { value '0' } 
+		}
+	}
+}	

@@ -1,0 +1,16 @@
+xmlelement zones {
+	foreach trip_stop {
+		from 'GetFirstOfAll(vehicle_schedule, vsc_is_current, 1).Get(trip, md_trp_sel).Get(trip_stop)'
+		condition 'trp_is_in_service'
+		unique_on 'tstp_district'
+		
+		xmlelement AdministrativeZone {
+			xmlattribute id { value '"NL:AdministrativeZone:" + md_admin_zone' }
+			#xmlattribute version { value '"any"' }
+
+			xmlelement Name { value 'md_admin_zone_desc'}
+			xmlelement ShortName { value 'md_admin_zone' }
+			xmlelement Description { value 'md_admin_zone_desc' }
+		}
+	}
+}

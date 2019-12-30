@@ -1,0 +1,13 @@
+xmlelement vehicles {									
+	xmlelement Vehicle { 
+		xmlattribute id { value 'md_operatorId + ":Vehicle:" + "4014"' }
+		xmlattribute version { value '"any"' }
+		xmlelement Name { value '"InnOVatietram"' }
+		xmlelement OperationalNumber { value '"4014"' }
+		
+		xmlelement VehicleTypeRef { 
+			xmlattribute ref { value 'md_operatorId + ":VehicleType:" + "RR"' } 
+			xmlattribute version { value '"any"' }
+		}
+	}
+}	
