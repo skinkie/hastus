@@ -12,6 +12,16 @@ xmlelement blocks {
 		xmlelement Block {
 			xmlattribute id         { value 'md_operatorId + ":Block:" + vsc_int_id + ":" + Trim(blk_number)' }
 			xmlattribute version	{ value 'md_frameVersion' }
+
+			xmlelement validityConditions {
+				xmlelement AvailabilityConditionRef {
+					# TODO: uitzoeken wat de relatie trip naar scheduling_unit is
+					# TODO: this assumes that the trip doesn't have his own changes
+					xmlattribute ref        { value 'md_operatorId + ":AvailabilityCondition:" + vsc_int_id ' }
+					xmlattribute version	{ value 'md_frameVersion' }
+				} # xmlelement AvailabilityConditionRef
+			} # xmlelement validityConditions
+
 			xmlelement Name         { value 'Trim(blk_number)' }
 			xmlelement Description	{ value 'Trim(blk_number)' }
 				
