@@ -31,4 +31,8 @@ xmlelement ServiceFrame {
 	&include ServiceFrame/journeyPatterns.ix
 
 	&include ServiceFrame/timeDemandTypes.ix
+	
+	&include ServiceFrame/notices.ix
+	
+	&include ServiceFrame/NoticesAssignment.ix
 }
