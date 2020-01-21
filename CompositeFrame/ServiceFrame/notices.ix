@@ -1,0 +1,33 @@
+xmlelement notices {
+	foreach trip {
+		from 'GetFirstOfAll(vehicle_schedule, vsc_is_current, 1).Get(trip, md_trp_sel)'
+			#trp_note_usage: 1 = PUBLIC, 3 = PUBLIC/DRIVER
+			condition 'md_trp_note AND trp_note_usage = 1 OR md_trp_note AND trp_note_usage = 3'
+			unique_on 'trp_note'
+			sort_by noteSort {
+				criteria trp_note
+			} # sort_by noteSort
+
+			xmlelement Notice {
+				xmlattribute id         { value 'md_operatorId + ":Notice:"  + Trim(trp_note)' }
+				#xmlelement Text 				{ value 'Object(note, trp_note).nte_text' }
+				xmlelement Text 				{ value 'IF md_trp_note THEN Object(note, trp_note).nte_text ELSE Object(note, trp_second_note).nte_text' }
+
+		} # xmlelement Notice
+	} # foreach trip
+	foreach trip {
+		from 'GetFirstOfAll(vehicle_schedule, vsc_is_current, 1).Get(trip, md_trp_sel)'
+			condition 'md_trp_second_note AND trp_second_note_usage = 1 OR md_trp_second_note AND trp_second_note_usage = 3'
+			unique_on 'trp_second_note'
+			sort_by noteSort {
+				criteria trp_second_note
+			} # sort_by noteSort
+
+			xmlelement Notice {
+				xmlattribute id         { value 'md_operatorId + ":Notice:"  + Trim(trp_second_note)' }
+				xmlelement Text 				{ value 'Object(note, trp_second_note).nte_text' }
+
+		} # xmlelement Notice
+	} # foreach trip
+
+} # xmlelement notices

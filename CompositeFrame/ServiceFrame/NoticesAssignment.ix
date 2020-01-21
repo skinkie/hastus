@@ -1,0 +1,47 @@
+xmlelement noticeAssignments {
+	foreach trip {
+		from 'GetFirstOfAll(vehicle_schedule, vsc_is_current, 1).Get(trip, md_trp_sel)'
+			#trp_note_usage: 1 = PUBLIC, 3 = PUBLIC/DRIVER
+			condition 'trp_note <> NULL AND trp_note_usage = 1 OR trp_note <> NULL AND trp_note_usage = 3'
+			unique_on 'vsc_int_id, trp_route, trp_number'
+			sort_by NoteSort {
+				criteria trp_note
+				criteria trp_route
+				criteria trp_number
+			} # sort_by NoteSort
+
+			xmlelement NoticeAssignment {
+				xmlattribute id         { value 'md_operatorId + ":NoticeAssignment:"  + Trim(trp_note) +"-" + vsc_int_id + "-" + Trim(trp_number)' }
+				xmlattribute order         { value '"1"' }
+				xmlelement NoticeRef {	
+				xmlattribute id { value 'md_operatorId + ":Notice:"  + Trim(trp_note)' }
+				}#xmlelement NoticeRef
+				xmlelement NoticeObjectRef {	
+				xmlattribute ref { value 'md_operatorId + ":ServiceJourney:" + vsc_int_id + ":" + Trim(trp_route) + ":" + trim(trp_number)' }
+				}#xmlelement NoticeObjectRef
+		} # xmlelement NoticeAssignment
+	} # foreach trip
+	
+	foreach trip {
+		from 'GetFirstOfAll(vehicle_schedule, vsc_is_current, 1).Get(trip, md_trp_sel)'
+			condition 'trp_second_note <> NULL AND trp_second_note_usage = 1 OR trp_second_note <> NULL AND trp_second_note_usage = 3'
+			unique_on 'vsc_int_id, trp_route, trp_number'
+			sort_by NoteSort {
+				criteria trp_second_note
+				criteria trp_route
+				criteria trp_number
+			} # sort_by NoteSort
+
+			xmlelement NoticeAssignment {
+				xmlattribute id         { value 'md_operatorId + ":NoticeAssignment:"  + Trim(trp_second_note) +"-" + vsc_int_id + "-" + Trim(trp_number)' }
+				xmlattribute order         { value '"" + Trim(md_trp_second_note_order) + ""' }
+				xmlelement NoticeRef {	
+				xmlattribute id { value 'md_operatorId + ":Notice:"  + Trim(trp_second_note)' }
+				}#xmlelement NoticeRef
+				xmlelement NoticeObjectRef {	
+				xmlattribute ref { value 'md_operatorId + ":ServiceJourney:" + vsc_int_id + ":" + Trim(trp_route) + ":" + trim(trp_number)' }
+				}#xmlelement NoticeObjectRef
+		} # xmlelement NoticeAssignment
+	} # foreach trip
+
+} # xmlelement noticeAssignments
