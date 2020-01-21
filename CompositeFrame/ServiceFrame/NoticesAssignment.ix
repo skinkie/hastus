@@ -2,7 +2,7 @@ xmlelement noticeAssignments {
 	foreach trip {
 		from 'GetFirstOfAll(vehicle_schedule, vsc_is_current, 1).Get(trip, md_trp_sel)'
 			#trp_note_usage: 1 = PUBLIC, 3 = PUBLIC/DRIVER
-			condition 'trp_note <> NULL AND trp_note_usage = 1 OR trp_note <> NULL AND trp_note_usage = 3'
+			condition 'md_trp_note AND trp_note_usage = 1 OR md_trp_note AND trp_note_usage = 3'
 			unique_on 'vsc_int_id, trp_route, trp_number'
 			sort_by NoteSort {
 				criteria trp_note
@@ -24,7 +24,7 @@ xmlelement noticeAssignments {
 	
 	foreach trip {
 		from 'GetFirstOfAll(vehicle_schedule, vsc_is_current, 1).Get(trip, md_trp_sel)'
-			condition 'trp_second_note <> NULL AND trp_second_note_usage = 1 OR trp_second_note <> NULL AND trp_second_note_usage = 3'
+			condition 'md_trp_second_note AND trp_second_note_usage = 1 OR md_trp_second_note AND trp_second_note_usage = 3'
 			unique_on 'vsc_int_id, trp_route, trp_number'
 			sort_by NoteSort {
 				criteria trp_second_note
