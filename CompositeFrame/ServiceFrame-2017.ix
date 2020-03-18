@@ -34,5 +34,5 @@ xmlelement ServiceFrame {
 	
 	&include ServiceFrame/notices.ix
 	
-	&include ServiceFrame/noticesAssignment.ix
+	&include ServiceFrame/noticesAssignments.ix
 }
