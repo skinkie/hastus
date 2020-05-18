@@ -7,6 +7,9 @@ definitions MainDefinitions {
 	DEFINE trp_tim_strt_pce { Max(trp_time_start, m_trp_pce_start.pce_time_start) }	
 	DEFINE tpat_first_public_stop { Get(trip_pattern_point, stp_is_public, 1).tpatpt_stop_id }
 	DEFINE tpat_last_public_stop  { Get(trip_pattern_point, stp_is_public, "*").tpatpt_stop_id }
+	DEFINE md_trp_note { If (trp_note = NULL) THEN false ELSE true } 
+	DEFINE md_trp_second_note { If (trp_second_note = NULL) THEN false ELSE true } 
+	DEFINE md_trp_second_note_order { If (md_trp_note AND trp_note_usage = "1" OR md_trp_note AND trp_note_usage = 3) THEN "2" ELSE 1 } 
 	*/
 	
 	DEFINE md_rte_num_id CLASS route { DefNull(rte_num_id, DefNull(StrToLng(rte_pub_id), StrToLng(rte_identifier))) }

@@ -33,7 +33,7 @@ definitions Configuratie {
 	DEFINE md_line_id_trp { trp_route_regio_alb }
 	DEFINE md_line_id_tpat { trp_route_regio_alb }
 	DEFINE md_timingpoint { tpatpt_position = 2 OR tpatpt_is_timing_point }	
-	DEFINE md_dataownerisoperator { NOT (trp_vehicle_group_1.vehg_identifier = "EXT" AND StrLocateStr(blk_gar_plc_strt, "Cxx", "Bre", "Syn", "Twe") <> NULL) }	
+	DEFINE md_dataownerisoperator { NOT (trp_vehicle_group_1.vehg_identifier = "EXT" AND StrIsInList(FirstValue(blk_gar_plc_strt), "Cxx;Bre;Syn;Twe", ";")) }	
 	DEFINE md_quay_id { stp_chb_id }
 	DEFINE md_metro { "metro" }
 	*/
