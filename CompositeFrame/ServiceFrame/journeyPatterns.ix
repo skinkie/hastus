@@ -6,15 +6,14 @@ xmlelement journeyPatterns {
 	foreach trip_pattern {
 		from 'GetFirstOfAll(vehicle_schedule, vsc_is_current, 1).Get(trip, md_trp_sel).Get(trip_pattern)'
 		sort_by TripSort {
-			criteria vsc_int_id
 			criteria tpat_route
 			criteria tpat_id
 		}
-		unique_on 'vsc_int_id, tpat_route, tpat_id'
+		unique_on 'tpat_route, tpat_id'
 		condition 'trp_is_in_service'
 
 		xmlelement ServiceJourneyPattern {
-			xmlattribute id 			{ value 'md_operatorId + ":ServiceJourneyPattern:" + vsc_int_id + ":" + Trim(tpat_route) + ":" + tpat_id' }
+			xmlattribute id 			{ value 'md_operatorId + ":ServiceJourneyPattern:" + Trim(tpat_route) + ":" + tpat_id' }
 			xmlattribute version 		{ value 'md_frameVersion' }
 
 			# xmlelement Name { value '"Patroon voor lijn " + rte_pub_id' }
@@ -27,7 +26,7 @@ xmlelement journeyPatterns {
 			}
 
 			xmlelement RouteRef {
-				xmlattribute ref		{ value 'md_operatorId + ":Route:" + vsc_int_id + ":" + Trim(tpat_route) + ":" + tpat_id' }
+				xmlattribute ref		{ value 'md_operatorId + ":Route:" + Trim(tpat_route) + ":" + tpat_id' }
 				xmlattribute version 	{ value 'md_frameVersion' }
 			}
 
@@ -94,10 +93,10 @@ xmlelement journeyPatterns {
 	foreach trip {
 		from 'GetFirstOfAll(vehicle_schedule, vsc_is_current, 1).Get(trip, md_trp_sel)'
 		condition 'NOT trp_is_in_service AND rpat_identifier <> ""' # Hack
-		unique_on 'vsc_int_id, rpat_route, rpat_identifier'
+		unique_on 'rpat_route, rpat_identifier'
 
 		xmlelement DeadRunJourneyPattern {
-			xmlattribute id 			{ value 'md_operatorId + ":DeadRunJourneyPattern:" + vsc_int_id + ":" + Trim(rpat_route) + ":" + rpat_identifier' }
+			xmlattribute id 			{ value 'md_operatorId + ":DeadRunJourneyPattern:" + Trim(rpat_route) + ":" + rpat_identifier' }
 			xmlattribute version 		{ value 'md_frameVersion' }
 
 			xmlelement ShortName { value 'rpat_identifier' }
