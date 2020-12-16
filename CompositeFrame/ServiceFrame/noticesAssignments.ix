@@ -16,9 +16,9 @@ xmlelement noticeAssignments {
 				xmlelement NoticeRef {	
 				xmlattribute ref { value 'md_operatorId + ":Notice:"  + Trim(trp_note)' }
 				}#xmlelement NoticeRef
-				xmlelement NoticeObjectRef {	
+				xmlelement NoticedObjectRef {	
 				xmlattribute ref { value 'md_operatorId + ":ServiceJourney:" + vsc_int_id + ":" + Trim(trp_route) + ":" + trim(trp_number)' }
-				}#xmlelement NoticeObjectRef
+				}#xmlelement NoticedObjectRef
 		} # xmlelement NoticeAssignment
 	} # foreach trip
 	
@@ -38,9 +38,9 @@ xmlelement noticeAssignments {
 				xmlelement NoticeRef {	
 				xmlattribute ref { value 'md_operatorId + ":Notice:"  + Trim(trp_second_note)' }
 				}#xmlelement NoticeRef
-				xmlelement NoticeObjectRef {	
+				xmlelement NoticedObjectRef {	
 				xmlattribute ref { value 'md_operatorId + ":ServiceJourney:" + vsc_int_id + ":" + Trim(trp_route) + ":" + trim(trp_number)' }
-				}#xmlelement NoticeObjectRef
+				}#xmlelement NoticedObjectRef
 		} # xmlelement NoticeAssignment
 	} # foreach trip
 
